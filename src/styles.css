@@ -1,0 +1,371 @@
+:root {
+  --navy: #07111f;
+  --navy2: #0a1e33;
+  --paper: #f7f5f0;
+  --amber: #e8a33d;
+  --line: rgba(247, 245, 240, 0.14);
+  --muted: rgba(247, 245, 240, 0.66);
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--navy);
+  color: var(--paper);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  display: block;
+}
+
+main {
+  position: relative;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(7, 17, 31, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(247, 245, 240, 0.06);
+}
+
+.wordmark {
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.wordmark span {
+  display: block;
+  font-weight: 300;
+  font-size: 0.55em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.nav nav {
+  display: flex;
+  gap: 26px;
+}
+
+.nav nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.25s;
+}
+
+.nav nav a:hover {
+  color: var(--paper);
+}
+
+.login {
+  border: 1px solid var(--line);
+  padding: 8px 18px;
+  border-radius: 999px;
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.84rem;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.login:hover {
+  border-color: var(--amber);
+}
+
+@media (max-width: 880px) {
+  .nav nav {
+    display: none;
+  }
+}
+
+/* ---------- Shared ---------- */
+.eyebrow {
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.72rem;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 5.4vw, 4.6rem);
+  line-height: 1.04;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+h2 {
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+  line-height: 1.06;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+
+.sub,
+.body {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  line-height: 1.55;
+  max-width: 54ch;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 17, 31, 0.55) 0%,
+    rgba(7, 17, 31, 0.12) 42%,
+    rgba(7, 17, 31, 0.85) 100%
+  );
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 13vh;
+  padding: 0 6vw;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: cue 2.4s infinite;
+}
+
+@keyframes cue {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+/* ---------- Beats ---------- */
+.beat {
+  position: relative;
+  min-height: 165vh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.stage-dark {
+  background: radial-gradient(120% 100% at 50% 30%, #0c2136 0%, var(--navy) 70%);
+}
+
+.beat-content {
+  position: absolute;
+  left: 0;
+  bottom: 11vh;
+  padding: 0 6vw;
+  max-width: 900px;
+}
+
+.canvas-wrap {
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;
+}
+
+.canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.caption {
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.38);
+}
+
+.stat {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-num {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.badge {
+  display: inline-block;
+  width: max-content;
+  margin-top: 8px;
+  border: 1px dashed rgba(232, 163, 61, 0.55);
+  color: var(--amber);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ---------- Proof ---------- */
+.proof {
+  position: relative;
+  padding: 18vh 6vw;
+  background: var(--navy2);
+}
+
+.counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 64px;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+@media (max-width: 880px) {
+  .counters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quote {
+  margin-top: 90px;
+  max-width: 760px;
+}
+
+.quote-text {
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+.quote-attr {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  padding: 12vh 6vw 6vh;
+  border-top: 1px solid var(--line);
+  background: var(--navy);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 50px;
+}
+
+@media (max-width: 880px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer h3 {
+  font-size: 0.76rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.footer p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.footer a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(247, 245, 240, 0.25);
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.footer a:hover {
+  color: var(--paper);
+  border-color: var(--amber);
+}
+
+.legal {
+  margin-top: 70px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: rgba(247, 245, 240, 0.45);
+  font-size: 0.8rem;
+}
+
+.legal a {
+  color: rgba(247, 245, 240, 0.45);
+}
