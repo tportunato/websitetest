@@ -1,21 +1,21 @@
 /* Beat 03 - Origination. Faithful port of the Sonar cold-open intro (v10):
    MapLibre dark basemap as static backdrop, all animation on a 2D canvas.
-   Exact palette, timeline and drawing code from the app. Differences from
-   the app version: scoped to a scroll section (not fullscreen), starts when
-   the section first enters the viewport, no ENTER/SKIP buttons, no counters,
-   endless patrol.
-   Data (copy from the sonar repo for the exact original visual):
-   - /data/showcase/lyon.json  (roads + industrial points + candidates)
-   - /data/metro/lyon.json     (motorway isochrones)
-   Fallback: /data/showcase-lyon.json (bundled salvaged snapshot, no roads:
-   road network is synthesized until the real file is copied in). */
-import { useEffect, useRef, useState } from 'react'
+   Road network and isochrones are REAL (Lyon corridor data files).
+   Orange dots and red candidates are REPRESENTATIVE: seeded decorative
+   clusters generated from the road network (approved composition, preview5):
+   16 inner pockets (outer ones must hug main roads), 18 candidates at major
+   intersections plus 4 singles on the first ring. Sweep 5.6s, soft ripple.
+   Data files:
+   - /data/showcase/lyon.json  (real road network)
+   - /data/metro/lyon.json     (real motorway isochrones)
+   Fallback: /data/showcase-lyon.json (salvaged snapshot, synthetic roads). */
+import { useEffect, useRef } from 'react'
 
 const MAP_MS = 800
 const ROADS_START = 250
 const ROADS_MS = 1550
 const SWEEP_START = 1800
-const SWEEP_MS = 4000
+const SWEEP_MS = 5600
 
 function ensureMaplibre(cb) {
   if (window.maplibregl) { cb(); return }
@@ -53,12 +53,126 @@ function mulberry32(s) {
   }
 }
 
+/* Approved composition (preview5): clustered orange pockets + red candidates
+   at major-road intersections + first-ring singles. All seeded: every visitor
+   sees the identical picture. */
+function genScatter(roads, center, maxR, rand) {
+  const roadPts = []
+  roads.forEach((r) => r.pts.forEach((p) => roadPts.push(p)))
+  const majorPts = []
+  roads.forEach((r) => { if (r.m) r.pts.forEach((p) => majorPts.push(p)) })
+  const nearMajor = (x, y) =>
+    majorPts.some((p) => {
+      const dx = (p[0] - x) / maxR
+      const dy = (p[1] - y) / (maxR * 0.72)
+      return Math.hypot(dx, dy) < 0.07
+    })
+  const inEll = (x, y) => {
+    const dx = (x - center[0]) / maxR
+    const dy = (y - center[1]) / (maxR * 0.72)
+    return dx * dx + dy * dy <= 0.94
+  }
+  const bear = (x, y) =>
+    ((Math.atan2(x - center[0], -(y - center[1]) / 0.72) * 180) / Math.PI + 360) % 360
+  const gauss = () => (rand() + rand() + rand() - 1.5) / 1.5
+
+  const dots = []
+  const push = (x, y) => { if (inEll(x, y)) dots.push({ a: bear(x, y), p: [x, y] }) }
+  const clusterCenters = []
+  let guard = 0
+  while (clusterCenters.length < 16 && guard++ < 6000) {
+    let x, y
+    if (rand() < 0.7 && roadPts.length) {
+      const p = roadPts[Math.floor(rand() * roadPts.length)]
+      x = p[0]; y = p[1]
+    } else {
+      const ang = rand() * Math.PI * 2
+      const rr = Math.sqrt(rand()) * maxR * 0.62
+      x = center[0] + Math.cos(ang) * rr
+      y = center[1] + Math.sin(ang) * rr * 0.72
+    }
+    if (!inEll(x, y)) continue
+    const dxc = (x - center[0]) / maxR
+    const dyc = (y - center[1]) / (maxR * 0.72)
+    const dc = Math.hypot(dxc, dyc)
+    if (dc > 0.62) continue
+    if (dc > 0.42 && !nearMajor(x, y)) continue
+    const ok = clusterCenters.every((c) => {
+      const dx = (x - c[0]) / maxR
+      const dy = (y - c[1]) / (maxR * 0.72)
+      return Math.hypot(dx, dy) > 0.22
+    })
+    if (ok) clusterCenters.push([x, y])
+  }
+  clusterCenters.forEach((c) => {
+    const n = 70 + Math.floor(rand() * 90)
+    const sig = maxR * (0.045 + rand() * 0.04)
+    for (let i = 0; i < n; i++) push(c[0] + gauss() * sig, c[1] + gauss() * sig * 0.72)
+  })
+  for (let i = 0; i < 350 && roadPts.length; i++) {
+    const p = roadPts[Math.floor(rand() * roadPts.length)]
+    push(p[0] + (rand() - 0.5) * maxR * 0.03, p[1] + (rand() - 0.5) * maxR * 0.022)
+  }
+
+  const cell = maxR * 0.05
+  const buckets = {}
+  roads.forEach((r, ri) => {
+    if (!r.m) return
+    r.pts.forEach((p) => {
+      const key = Math.floor(p[0] / cell) + '_' + Math.floor(p[1] / cell)
+      if (!buckets[key]) buckets[key] = { pts: [], rs: new Set() }
+      buckets[key].pts.push(p)
+      buckets[key].rs.add(ri)
+    })
+  })
+  const inter = []
+  Object.values(buckets).forEach((b) => {
+    if (b.rs.size < 2) return
+    let sx = 0, sy = 0
+    b.pts.forEach((p) => { sx += p[0]; sy += p[1] })
+    const x = sx / b.pts.length
+    const y = sy / b.pts.length
+    const dx = (x - center[0]) / maxR
+    const dy = (y - center[1]) / (maxR * 0.72)
+    const d = Math.hypot(dx, dy)
+    if (d > 0.12 && d < 0.6) inter.push([x, y])
+  })
+  const centers = []
+  guard = 0
+  const pool = inter.length ? inter : roadPts
+  while (centers.length < 6 && guard++ < 6000 && pool.length) {
+    const p = pool[Math.floor(rand() * pool.length)]
+    const ok = centers.every((c) => {
+      const dx = (p[0] - c[0]) / maxR
+      const dy = (p[1] - c[1]) / (maxR * 0.72)
+      return Math.hypot(dx, dy) > 0.2
+    })
+    if (ok) centers.push(p)
+  }
+  const tops = []
+  centers.forEach((c) => {
+    for (let k = 0; k < 3; k++) {
+      const x = c[0] + (rand() - 0.5) * maxR * 0.07
+      const y = c[1] + (rand() - 0.5) * maxR * 0.05
+      tops.push({ a: bear(x, y), s: 7.5 + rand() * 2.5, p: [x, y] })
+    }
+  })
+  const ringOff = rand() * Math.PI * 2
+  for (let i = 0; i < 4; i++) {
+    const ang = ringOff + (i / 4) * Math.PI * 2 + (rand() - 0.5) * 0.5
+    const rr = maxR * (0.35 + (rand() - 0.5) * 0.05)
+    const x = center[0] + Math.sin(ang) * rr
+    const y = center[1] - Math.cos(ang) * rr * 0.72
+    tops.push({ a: bear(x, y), s: 7 + rand() * 2, p: [x, y] })
+  }
+  return { dots, tops }
+}
+
 export default function Edge() {
   const sectionRef = useRef(null)
   const mapDiv = useRef(null)
   const cvs = useRef(null)
   const mapRef = useRef(null)
-  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     const section = sectionRef.current
@@ -68,7 +182,6 @@ export default function Edge() {
     let raf = 0
     let started = false
     let startPending = false
-    let sceneReady = false
     let scene = null
     let vt = 0
     let last = 0
@@ -119,7 +232,6 @@ export default function Edge() {
 
         map.on('load', () => {
           if (cancelled) return
-          setLoaded(true)
 
           const build = () => {
             const W = section.offsetWidth
@@ -128,11 +240,9 @@ export default function Edge() {
               const p = map.project(ll)
               return [p.x, p.y]
             }
-            const brg = (c) => ((Math.atan2(c[0] - ctr[0], c[1] - ctr[1]) * 180) / Math.PI + 360) % 360
             const center = P(ctr)
+            const maxR = Math.hypot(W, H) * 0.42
             let roads = (show.roads || []).map((r) => ({ d: r.d, m: r.m, pts: r.pts.map(P) }))
-            const inds = show.inds.map((c) => ({ a: brg(c), p: P(c) }))
-            const tops = show.top.map((t) => ({ a: brg(t.c), s: t.s, p: P(t.c) }))
             const isos = metro && metro.iso_junctions
               ? metro.iso_junctions.polys.map((gm) =>
                   (gm.type === 'Polygon' ? gm.coordinates[0] : gm.coordinates[0][0])
@@ -140,7 +250,6 @@ export default function Edge() {
                     .map(P)
                 )
               : []
-            const maxR = Math.hypot(W, H) * 0.42
 
             if (!roads.length) {
               const rand = mulberry32(11)
@@ -162,14 +271,15 @@ export default function Edge() {
               }
             }
 
+            const { dots, tops } = genScatter(roads, center, maxR, mulberry32(23))
+
             const dpr = Math.min(2, window.devicePixelRatio || 1)
             canvas.width = W * dpr
             canvas.height = H * dpr
             canvas.style.width = W + 'px'
             canvas.style.height = H + 'px'
             g.setTransform(dpr, 0, 0, dpr, 0, 0)
-            scene = { W, H, center, roads, inds, tops, isos, maxR }
-            sceneReady = true
+            scene = { W, H, center, roads, dots, tops, isos, maxR }
           }
           build()
 
@@ -186,11 +296,10 @@ export default function Edge() {
             vt += Math.min(now - last, 50)
             last = now
             const t = vt
-            const { W, H, center, roads, inds, tops, isos, maxR } = scene
+            const { W, H, center, roads, dots, tops, isos, maxR } = scene
             map.setPaintProperty('base', 'raster-opacity', Math.min(0.34, (t / MAP_MS) * 0.34))
             g.clearRect(0, 0, W, H)
 
-            /* radar rings */
             const ringsK = Math.min(1, Math.max(0, (t - ROADS_START) / ROADS_MS))
             g.strokeStyle = `rgba(46,78,110,${0.5 * ringsK})`
             g.lineWidth = 1
@@ -200,7 +309,6 @@ export default function Edge() {
               g.stroke()
             }
 
-            /* roads growing outward */
             if (t > ROADS_START) {
               const rad = Math.min(1.02, ((t - ROADS_START) / ROADS_MS) * 1.02)
               for (const r of roads) {
@@ -222,9 +330,9 @@ export default function Edge() {
             const raw = t <= SWEEP_START ? -1 : ((t - SWEEP_START) / SWEEP_MS) * 360
             const sweep = raw < 0 ? -1 : Math.min(360, raw)
 
-            /* birth ripple as the sonar fires */
-            if (t > SWEEP_START - 100 && t < SWEEP_START + 600) {
-              const k = (t - SWEEP_START + 100) / 700
+            /* soft birth ripple */
+            if (t > SWEEP_START - 100 && t < SWEEP_START + 1400) {
+              const k = (t - SWEEP_START + 100) / 1500
               g.strokeStyle = `rgba(226,124,56,${0.7 * (1 - k)})`
               g.lineWidth = 2
               g.beginPath()
@@ -233,7 +341,6 @@ export default function Edge() {
             }
 
             if (sweep >= 0) {
-              /* conic beam: first revolution reveals, following ones patrol dimmer */
               const beamK = raw <= 360 ? 1 : 0.55
               const a1 = ((raw % 360) * Math.PI) / 180
               g.save()
@@ -250,8 +357,7 @@ export default function Edge() {
               }
               g.restore()
 
-              /* industrial dots ignite under the beam */
-              for (const d of inds) {
+              for (const d of dots) {
                 if (d.a > sweep) continue
                 const trail = sweep - d.a
                 const op = trail < 30 ? 1 - (trail / 30) * 0.35 : 0.6
@@ -259,7 +365,6 @@ export default function Edge() {
                 g.fillRect(d.p[0] - 1.1, d.p[1] - 1.1, 2.2, 2.2)
               }
 
-              /* isochrones from mid-sweep */
               if (isos.length && t > SWEEP_START) {
                 g.strokeStyle = `rgba(79,184,201,${Math.min(0.35, ((t - SWEEP_START) / 1000) * 0.35)})`
                 g.lineWidth = 0.8
@@ -272,7 +377,6 @@ export default function Edge() {
                 }
               }
 
-              /* candidates bloom 25 degrees behind the beam */
               const tr = sweep - 25
               for (const c of tops) {
                 if (c.a > tr) continue
