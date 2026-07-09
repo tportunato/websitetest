@@ -79,7 +79,7 @@ export default function Portfolio() {
   }, [])
 
   return (
-    <section className="beat" id="portfolio">
+    <section className="beat" id="portfolio-story">
       <div className="stage stage-dark">
         <div className="canvas-wrap">
           <canvas ref={ref} />
@@ -92,6 +92,7 @@ export default function Portfolio() {
             A consolidation strategy in a fragmented market: aggregating urban logistics assets
             across Western Europe&rsquo;s main corridors into an institutional portfolio.
           </p>
+          <a className="beat-cta" data-reveal href="#/portfolio">Explore the portfolio &rarr;</a>
         </div>
         <div className="caption">Illustrative visual</div>
       </div>

@@ -9,8 +9,8 @@ export default function Nav() {
         <a href="#market">Market</a>
         <a href="#origination">Origination</a>
         <a href="#assets">Assets</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#track-record">Track record</a>
+        <a href="#/portfolio">Portfolio</a>
+        <a href="#/leadership">Leadership</a>
         <a href="#contact">Contact</a>
       </nav>
       <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">

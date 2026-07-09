@@ -25,13 +25,19 @@ Current files are 720p Veo Fast drafts. Final = 1080p Veo Quality renders.
 - Colors/typography: `src/styles.css` (`:root` variables at top)
 - Canvas animations (beats 03/05): `src/sections/Edge.jsx`, `src/sections/Portfolio.jsx`
 
-## Beat 03: the Sonar scan
-`Edge.jsx` is a port of the Sonar app intro (canvas engine). It ships with a REAL
-engine snapshot (`public/data/showcase-lyon.json`: 2,901 industrial points, 71
-candidates, real counters, Lyon corridor, 2026-07-07). The road-growth phase is
-synthesized because the full snapshot was too large to transfer. To get the real
-road network: copy `public/data/showcase/lyon.json` from the sonar repo over
-`public/data/showcase-lyon.json` in this repo (the component auto-detects roads).
+## Beat 03: the Sonar scan — IMPORTANT, two files to copy
+`Edge.jsx` is a faithful port of the Sonar app intro: same MapLibre dark basemap,
+same palette, same timeline, same drawing code. To make it visually IDENTICAL to
+the app, copy TWO files from the sonar repo into this repo:
+
+    sonar/public/data/showcase/lyon.json  ->  daa-website/public/data/showcase/lyon.json
+    sonar/public/data/metro/lyon.json     ->  daa-website/public/data/metro/lyon.json
+
+(create the folders). The first carries the real road network; the second the
+motorway isochrones. Without them the component falls back to the bundled
+salvaged snapshot (`public/data/showcase-lyon.json`: real industrial points and
+candidates, but synthesized roads and no isochrones).
+The basemap loads MapLibre from jsDelivr and dark tiles from Carto's public CDN.
 
 ## Placeholders requiring sign-off (all marked with dashed amber badges on the page)
 - "-35% completions (CBRE)" stat — verify source and figure
@@ -45,3 +51,14 @@ road network: copy `public/data/showcase/lyon.json` from the sonar repo over
 - Mobile uses CSS-cropped 16:9 videos (fine for drafts)
 - No cookie banner / GDPR wiring yet
 - Wordmark is styled text; drop in the real DAA logo SVG when ready
+
+
+## Pages (added in pass 3)
+Hash-routed pages, no server config needed:
+- `#/portfolio` — interactive asset map (MapLibre), data in `src/data/assets.js`
+- `#/leadership` — team page, data in `src/data/team.js`
+
+Asset and team photos are hotlinked from the existing daacap.com WordPress.
+To use better photos: drop files into `public/images/` and update the `img`
+fields in the two data files. Keep the old WordPress running as long as the
+new site hotlinks its media.
