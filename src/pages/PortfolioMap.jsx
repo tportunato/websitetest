@@ -56,11 +56,10 @@ export default function PortfolioMap() {
           },
           layers: [
             { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-            { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.55, 'raster-fade-duration': 300 } }
+            { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
           ]
         }
       })
-      map.scrollZoom.disable()
       map.addControl(new window.maplibregl.NavigationControl({ showCompass: false }), 'bottom-right')
       mapRef.current = map
 

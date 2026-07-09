@@ -9,7 +9,7 @@ export default function Hero() {
         <p className="eyebrow" data-reveal>European urban logistics real estate</p>
         <h1 data-reveal>Europe&rsquo;s cities run on goods moving closer to people.</h1>
         <p className="sub" data-reveal>
-          DAA Capital Partners invests in the last-mile and light-industrial assets that keep them moving.
+          DAA Capital Partners invests in the last-mile logistics assets that keep them moving.
         </p>
       </div>
       <div className="scroll-cue">Scroll</div>

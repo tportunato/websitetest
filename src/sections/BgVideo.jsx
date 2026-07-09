@@ -10,7 +10,6 @@ export default function BgVideo({ src }) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (video.ended) video.currentTime = 0
             video.play().catch(() => {})
           } else {
             video.pause()
@@ -23,5 +22,5 @@ export default function BgVideo({ src }) {
     return () => io.disconnect()
   }, [])
 
-  return <video ref={ref} className="bg" src={src} muted playsInline preload="metadata" />
+  return <video ref={ref} className="bg" src={src} muted playsInline loop preload="metadata" />
 }
