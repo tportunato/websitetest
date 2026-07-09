@@ -96,11 +96,11 @@ export default function PortfolioMap() {
   return (
     <div className="page-map">
       <header className="page-bar">
-        <a className="page-home" href="#/">&larr; DAA <span>Capital Partners</span></a>
+        <a className="page-home" href="#/"><span className="back-arrow">&larr;</span><img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" /></a>
         <div className="page-title">Portfolio</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
       </header>
-      <div ref={mapDiv} className="map-full" />
+      <div ref={mapDiv} className="map-full" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }} />
       <div className="map-hint">Select an asset</div>
 
       <aside className={'asset-panel' + (active ? ' open' : '')}>

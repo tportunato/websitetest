@@ -2,8 +2,7 @@ export default function Nav() {
   return (
     <header className="nav">
       <a className="wordmark" href="#top">
-        DAA
-        <span>Capital Partners</span>
+        <img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" />
       </a>
       <nav>
         <a href="#market">Market</a>
