@@ -7,7 +7,7 @@ Plain-language notes on how exact everything on this site is.
 | Hero video (Paris vans) | REPRESENTATIVE | AI-generated (Veo 3.1) mood footage. Not owned assets. Never present as portfolio. |
 | Market video (warehouse time-lapse) | REPRESENTATIVE | AI-generated. Depicts a typical first-ring urban logistics asset, not a DAA property. |
 | Asset mgmt video (facade) | REPRESENTATIVE | AI-generated. Illustrates the refurbishment thesis, not a specific asset. |
-| Origination canvas (parcel scan) | REPRESENTATIVE | Decorative code animation. Not real parcel data and not the actual screening tool. Labelled "Illustrative visual" on page. |
+| Origination canvas (sonar scan) | REAL (snapshot) | Ported from the actual Sonar engine intro. Industrial points (2,901), top candidates (71) and counters (61,689 parcels, 21,799 owners named, 9 communes) are a REAL engine snapshot of the Lyon corridor dated 2026-07-07, bundled at public/data/showcase-lyon.json. Road network is SYNTHETIC until the full lyon.json (with roads) is copied from the sonar repo. Page caption states "Engine snapshot - Lyon corridor". |
 | Portfolio canvas (corridor network) | REPRESENTATIVE | Abstract node network. Not a map of actual holdings. Labelled "Illustrative visual" on page. |
 | -35% completions (CBRE) | UNVERIFIED | From draft materials; must be verified against the CBRE source before publication. |
 | XX% off-market | MISSING | Real figure needed from DAA records. |

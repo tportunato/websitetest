@@ -25,6 +25,14 @@ Current files are 720p Veo Fast drafts. Final = 1080p Veo Quality renders.
 - Colors/typography: `src/styles.css` (`:root` variables at top)
 - Canvas animations (beats 03/05): `src/sections/Edge.jsx`, `src/sections/Portfolio.jsx`
 
+## Beat 03: the Sonar scan
+`Edge.jsx` is a port of the Sonar app intro (canvas engine). It ships with a REAL
+engine snapshot (`public/data/showcase-lyon.json`: 2,901 industrial points, 71
+candidates, real counters, Lyon corridor, 2026-07-07). The road-growth phase is
+synthesized because the full snapshot was too large to transfer. To get the real
+road network: copy `public/data/showcase/lyon.json` from the sonar repo over
+`public/data/showcase-lyon.json` in this repo (the component auto-detects roads).
+
 ## Placeholders requiring sign-off (all marked with dashed amber badges on the page)
 - "-35% completions (CBRE)" stat — verify source and figure
 - "XX% off-market" stat — real number needed

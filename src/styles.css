@@ -369,3 +369,45 @@ h2 {
 .legal a {
   color: rgba(247, 245, 240, 0.45);
 }
+
+/* ---------- Sonar scan (Beat 03) ---------- */
+.scan-stats {
+  position: absolute;
+  right: 4vw;
+  bottom: 12vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: right;
+}
+
+.scan-stat-num {
+  font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-weight: 700;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+.scan-stat-label {
+  font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: rgba(247, 245, 240, 0.45);
+  margin-top: 2px;
+}
+
+.scrim-light {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 17, 31, 0.35) 0%,
+    rgba(7, 17, 31, 0.05) 45%,
+    rgba(7, 17, 31, 0.72) 100%
+  );
+}
+
+@media (max-width: 880px) {
+  .scan-stats {
+    display: none;
+  }
+}
