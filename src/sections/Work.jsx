@@ -6,7 +6,7 @@ export default function Work() {
       <div className="stage">
         <BgVideo src="/videos/beat04-facade-dolly.mp4" poster="/videos/beat04-facade-dolly-poster.jpg" />
         <div className="scrim" />
-        <div className="beat-content">
+        <div className="beat-content beat-content--right">
           <p className="eyebrow" data-reveal>Asset management</p>
           <h2 data-reveal>We buy well. Then we make assets better.</h2>
           <p className="body" data-reveal>

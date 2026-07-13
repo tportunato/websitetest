@@ -742,3 +742,164 @@ h2 {
   color: var(--muted);
   font-size: 1.1rem;
 }
+
+
+/* ---------- Finish layer ---------- */
+::selection {
+  background: rgba(232, 163, 61, 0.85);
+  color: #081527;
+}
+
+html {
+  scrollbar-color: rgba(232, 163, 61, 0.35) #07111f;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+/* arrival veil */
+.intro-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #07111f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: veilLift 0.6s cubic-bezier(0.7, 0, 0.3, 1) 1.15s forwards;
+}
+
+.intro-logo {
+  height: 58px;
+  opacity: 0;
+  animation: logoIn 0.9s ease-out 0.15s forwards;
+}
+
+@keyframes logoIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes veilLift {
+  to { transform: translateY(-101%); }
+}
+
+/* nav link underline draw */
+.nav nav a {
+  position: relative;
+}
+
+.nav nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 1px;
+  width: 100%;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.nav nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* CTA arrow nudge */
+.cta-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.beat-cta:hover .cta-arrow {
+  transform: translateX(6px);
+}
+
+/* asset map marker hover */
+.asset-dot {
+  transition: transform 0.2s ease;
+}
+
+.asset-marker:hover .asset-dot {
+  transform: scale(1.35);
+}
+
+.asset-marker:hover .asset-label {
+  color: var(--amber);
+}
+
+/* video scale room (scroll-linked zoom-settle) */
+.beat video.bg,
+.hero video.bg {
+  will-change: transform;
+}
+
+/* rhythm: right-anchored beat */
+.beat-content--right {
+  left: auto;
+  right: 0;
+  max-width: 760px;
+}
+
+/* manifesto */
+.manifesto {
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 6vw;
+  background: radial-gradient(90% 70% at 50% 50%, #0b2036 0%, var(--navy) 78%);
+}
+
+.manifesto h2 {
+  font-size: clamp(2.4rem, 5.4vw, 4.8rem);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  max-width: none;
+}
+
+/* closing */
+.closing {
+  padding: 24vh 6vw;
+  text-align: center;
+  background: var(--navy);
+}
+
+.closing h2 {
+  margin: 0 auto;
+  max-width: none;
+}
+
+.closing .eyebrow {
+  margin-bottom: 24px;
+}
+
+.closing-cta {
+  display: inline-block;
+  margin-top: 38px;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  padding: 15px 44px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  transition: background 0.25s, color 0.25s, transform 0.2s;
+}
+
+.closing-cta:hover {
+  background: var(--amber);
+  color: #0b1520;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
+  .intro-veil { display: none; }
+}

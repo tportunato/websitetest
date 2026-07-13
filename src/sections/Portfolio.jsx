@@ -546,7 +546,7 @@ export default function Portfolio() {
             A consolidation strategy in a fragmented market: aggregating urban logistics assets
             across Western Europe&rsquo;s main corridors into an institutional portfolio.
           </p>
-          <a className="beat-cta" data-reveal href="#/portfolio">Explore the portfolio &rarr;</a>
+          <a className="beat-cta" data-reveal href="#/portfolio">Explore the portfolio <span className="cta-arrow">&rarr;</span></a>
         </div>
         <div className="caption">Illustrative visual</div>
       </div>
