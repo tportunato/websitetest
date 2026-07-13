@@ -80,13 +80,14 @@ export default function Portfolio() {
     let cancelled = false
     let raf = 0
     let started = false
+    let rafOn = false
     let startPending = false
     let scene = null
     let vt = 0
     let last = 0
     const g = canvas.getContext('2d')
 
-    ;(async () => {
+    const initSection = async () => {
       let land = null
       try {
         const r = await fetch('/data/europe-land.json')
@@ -127,7 +128,7 @@ export default function Portfolio() {
           const build = () => {
             const W = section.offsetWidth
             const H = section.offsetHeight
-            const dpr = Math.min(2, window.devicePixelRatio || 1)
+            const dpr = Math.min(1.5, window.devicePixelRatio || 1)
             canvas.width = W * dpr
             canvas.height = H * dpr
             canvas.style.width = W + 'px'
@@ -369,7 +370,7 @@ export default function Portfolio() {
           }
 
           const tick = (now) => {
-            if (cancelled || !scene) return
+            if (cancelled || !scene || !rafOn) return
             if (!last) last = now
             vt += Math.min(now - last, 50)
             last = now
@@ -463,15 +464,44 @@ export default function Portfolio() {
           }
 
           const startAnim = () => {
-            if (started) return
+            if (started) {
+              if (!rafOn) {
+                rafOn = true
+                last = 0
+                raf = requestAnimationFrame(tick)
+              }
+              return
+            }
             started = true
+            rafOn = true
             raf = requestAnimationFrame(tick)
+          }
+          const pauseAnim = () => {
+            if (!rafOn) return
+            rafOn = false
+            cancelAnimationFrame(raf)
           }
           if (startPending) startAnim()
           section.__startAnim5 = startAnim
+          section.__pauseAnim5 = pauseAnim
         })
       })
-    })()
+    }
+
+    let inited = false
+    const ioInit = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !inited) {
+            inited = true
+            initSection()
+            ioInit.disconnect()
+          }
+        })
+      },
+      { rootMargin: '600px' }
+    )
+    ioInit.observe(section)
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -479,6 +509,9 @@ export default function Portfolio() {
           if (entry.isIntersecting) {
             if (section.__startAnim5) section.__startAnim5()
             else startPending = true
+          } else {
+            if (section.__pauseAnim5) section.__pauseAnim5()
+            else startPending = false
           }
         })
       },

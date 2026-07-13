@@ -18,7 +18,13 @@ Replace the files in `public/videos/` keeping the SAME filenames:
 - `beat02-warehouse-timelapse.mp4` (market section)
 - `beat04-facade-dolly.mp4` (asset management section)
 
-Current files are 720p Veo Fast drafts. Final = 1080p Veo Quality renders.
+Current files are 720p Veo Fast drafts, re-encoded to ~2MB each (crf 27) with
+poster frames for instant paint. When the final 1080p Quality renders arrive,
+give them to Claude for the same compression + poster treatment before committing.
+
+Performance architecture: canvas sections pause their animation loops when
+off-screen and resume on re-entry; MapLibre maps initialize only when their
+section comes within 600px of the viewport; canvas DPR is capped at 1.5.
 
 ## Where things live
 - Copy: `src/sections/*.jsx` (each section is one story beat)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function BgVideo({ src }) {
+export default function BgVideo({ src, poster, eager }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -22,5 +22,5 @@ export default function BgVideo({ src }) {
     return () => io.disconnect()
   }, [])
 
-  return <video ref={ref} className="bg" src={src} muted playsInline loop preload="metadata" />
+  return <video ref={ref} className="bg" src={src} poster={poster} muted playsInline loop preload={eager ? 'auto' : 'none'} />
 }

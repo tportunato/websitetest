@@ -4,7 +4,7 @@ export default function Squeeze() {
   return (
     <section className="beat" id="market">
       <div className="stage">
-        <BgVideo src="/videos/beat02-warehouse-timelapse.mp4" />
+        <BgVideo src="/videos/beat02-warehouse-timelapse.mp4" poster="/videos/beat02-warehouse-timelapse-poster.jpg" />
         <div className="scrim" />
         <div className="beat-content">
           <p className="eyebrow" data-reveal>The market</p>

@@ -4,7 +4,7 @@ export default function Work() {
   return (
     <section className="beat" id="assets">
       <div className="stage">
-        <BgVideo src="/videos/beat04-facade-dolly.mp4" />
+        <BgVideo src="/videos/beat04-facade-dolly.mp4" poster="/videos/beat04-facade-dolly-poster.jpg" />
         <div className="scrim" />
         <div className="beat-content">
           <p className="eyebrow" data-reveal>Asset management</p>

@@ -3,7 +3,7 @@ import BgVideo from './BgVideo.jsx'
 export default function Hero() {
   return (
     <section className="hero" id="top">
-      <BgVideo src="/videos/beat01-city-vans.mp4" />
+      <BgVideo src="/videos/beat01-city-vans.mp4" poster="/videos/beat01-city-vans-poster.jpg" eager />
       <div className="scrim" />
       <div className="hero-content">
         <p className="eyebrow" data-reveal>European urban logistics real estate</p>
