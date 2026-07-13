@@ -12,6 +12,7 @@ export default function Footer() {
             +41 22 344 22 00<br />
             <a href="mailto:info@daacap.com">info@daacap.com</a>
           </p>
+          <p className="coords">46.2044&deg; N &middot; 6.1489&deg; E</p>
         </div>
         <div data-reveal>
           <h3>Luxembourg</h3>

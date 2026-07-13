@@ -39,6 +39,18 @@ export default function Landing() {
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.12 })
     lenis.on('scroll', ScrollTrigger.update)
+
+    /* nav: hide when scrolling down, return when scrolling up */
+    const navEl = document.querySelector('.nav')
+    let lastY = 0
+    lenis.on('scroll', (e) => {
+      if (!navEl) return
+      const y = e.scroll || 0
+      if (y < 80) navEl.classList.remove('nav--hidden')
+      else if (y > lastY + 4) navEl.classList.add('nav--hidden')
+      else if (y < lastY - 4) navEl.classList.remove('nav--hidden')
+      lastY = y
+    })
     const raf = (time) => {
       lenis.raf(time * 1000)
     }
