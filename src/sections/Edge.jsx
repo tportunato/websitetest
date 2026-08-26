@@ -477,14 +477,10 @@ export default function Edge() {
           <h2 data-reveal>Most of what we buy is never on the market.</h2>
           <p className="body" data-reveal>
             Off-market and corporate-sourced opportunities in the &euro;5m to &euro;50m
-            segment, surfaced by proprietary sourcing technology, where competition
-            is structurally thinner.
+            segment, surfaced through a mix of a wide broker network across Western
+            Europe&rsquo;s main corridors and proprietary sourcing technology &mdash;
+            a segment where competition is structurally thinner.
           </p>
-          <div className="stat" data-reveal>
-            <span className="stat-num">XX%</span>
-            <span className="stat-label">of acquisitions sourced off-market</span>
-            <span className="badge">Placeholder &middot; pending sign-off</span>
-          </div>
         </div>
         <div className="caption">Illustrative visual</div>
       </div>

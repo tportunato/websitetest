@@ -10,6 +10,7 @@ export default function Nav() {
         <a href="#assets">Assets</a>
         <a href="#/portfolio">Portfolio</a>
         <a href="#/leadership">Leadership</a>
+        <a href="#news">News</a>
         <a href="#contact">Contact</a>
       </nav>
       <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">

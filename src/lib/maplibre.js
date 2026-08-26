@@ -1,0 +1,51 @@
+/* Lazy MapLibre loader. The library and its stylesheet are pulled from jsDelivr
+   the first time a map section comes into range, then shared by every caller.
+   cb(err) is invoked once; err is set if the CDN did not deliver. */
+const JS_ID = 'mljs'
+const CSS_ID = 'mlcss'
+const VERSION = '4.7.1'
+
+export function ensureMaplibre(cb) {
+  if (window.maplibregl) { cb(); return }
+
+  if (!document.getElementById(CSS_ID)) {
+    const c = document.createElement('link')
+    c.id = CSS_ID
+    c.rel = 'stylesheet'
+    c.href = `https://cdn.jsdelivr.net/npm/maplibre-gl@${VERSION}/dist/maplibre-gl.css`
+    document.head.appendChild(c)
+  }
+
+  let s = document.getElementById(JS_ID)
+  if (s) {
+    if (window.maplibregl) cb()
+    else {
+      s.addEventListener('load', () => cb())
+      s.addEventListener('error', () => cb(new Error('maplibre')))
+    }
+    return
+  }
+
+  s = document.createElement('script')
+  s.id = JS_ID
+  s.src = `https://cdn.jsdelivr.net/npm/maplibre-gl@${VERSION}/dist/maplibre-gl.js`
+  s.onload = () => cb()
+  s.onerror = () => cb(new Error('maplibre'))
+  document.head.appendChild(s)
+}
+
+/* Carto dark raster basemap on a near-black ground: the house map style. */
+export const DARK_STYLE = {
+  version: 8,
+  sources: {
+    carto: {
+      type: 'raster',
+      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
+      tileSize: 256
+    }
+  },
+  layers: [
+    { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
+    { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
+  ]
+}

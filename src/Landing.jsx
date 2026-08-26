@@ -4,12 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import Nav from './sections/Nav.jsx'
 import Hero from './sections/Hero.jsx'
+import Firm from './sections/Firm.jsx'
 import Squeeze from './sections/Squeeze.jsx'
 import Edge from './sections/Edge.jsx'
 import Work from './sections/Work.jsx'
 import Manifesto from './sections/Manifesto.jsx'
 import Portfolio from './sections/Portfolio.jsx'
-import Proof from './sections/Proof.jsx'
+import News from './sections/News.jsx'
 import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
 
@@ -123,12 +124,13 @@ export default function Landing() {
       <Nav />
       <main>
         <Hero />
+        <Firm />
         <Squeeze />
         <Edge />
         <Work />
         <Manifesto />
         <Portfolio />
-        <Proof />
+        <News />
         <Closing />
       </main>
       <Footer />
