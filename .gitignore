@@ -1,2 +1,9 @@
 node_modules/
 dist/
+
+# Local env files. VITE_* values are baked into the browser bundle at build
+# time, so a key here is not a server secret — but it is still a credential
+# tied to an account, and it belongs in Vercel's env vars, never in git.
+.env
+.env.*
+!.env.example
