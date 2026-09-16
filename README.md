@@ -139,3 +139,31 @@ was inflating every screen-space radius.
 - New `#/contact` page (`src/pages/Contact.jsx`); the nav Contact link points
   there instead of scrolling to the footer. The form opens a pre-filled mail
   draft — wire a real endpoint when one exists.
+
+
+## Pass 6 notes
+
+### Why the maps looked lighter than the Sonar app
+Not a scrim — a different supplier. Sonar runs CARTO `dark_all`, which is very
+nearly black. Without a key this repo falls back to Esri's canvas, which is
+called Dark **Gray** and means it: land comes back around rgb(58,58,58), and at
+the same opacity it lifts the whole frame to a blue-grey wash.
+
+`src/lib/basemap.js` now gives each rung its own paint. The Esri rung is knocked
+back with MapLibre's `raster-brightness-max`, `raster-saturation` and
+`raster-contrast` (not a CSS filter, which would hit the markers and the canvas
+overlay too) and ramps to a lower opacity. Measured against a stub tile at
+Esri's own land value, the ground lands at rgb(6,12,20) vs Sonar's #060d16.
+
+**To match the app exactly, set `VITE_CARTO_KEY` in Vercel** — the same free key
+Sonar already uses. CARTO then leads automatically and nothing else changes.
+
+### Portfolio beat
+Reverted to the original corridor-network canvas (coastlines, braided corridor
+bundles, scribble mesh, asset markers igniting along the axes). Its amber
+markers were recoloured white to match the current palette, and it takes its
+tiles from `basemap.js` like everything else. The five real assets still live on
+the `#/portfolio` page.
+
+Because that canvas is back, the firm section's `corridors` background now
+repeats it on the same page, so the default there moved to `hold`.

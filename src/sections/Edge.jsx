@@ -11,7 +11,7 @@
    Fallback: /data/showcase-lyon.json (salvaged snapshot, synthetic roads). */
 import { useEffect, useRef } from 'react'
 import { ensureMaplibre } from '../lib/maplibre.js'
-import { DARK } from '../lib/basemap.js'
+import { DARK, DARK_OPACITY, darkRasterPaint } from '../lib/basemap.js'
 
 const MAP_MS = 800
 const ROADS_START = 250
@@ -197,7 +197,7 @@ export default function Edge() {
             },
             layers: [
               { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-              { id: 'base', type: 'raster', source: 'base', paint: { 'raster-opacity': 0, 'raster-fade-duration': 0 } }
+              { id: 'base', type: 'raster', source: 'base', paint: darkRasterPaint(0, 0) }
             ]
           }
         })
@@ -296,7 +296,7 @@ export default function Edge() {
             last = now
             const t = vt
             const { W, H, center, roads, dots, tops, isos, maxR } = scene
-            map.setPaintProperty('base', 'raster-opacity', Math.min(0.34, (t / MAP_MS) * 0.34))
+            map.setPaintProperty('base', 'raster-opacity', Math.min(DARK_OPACITY, (t / MAP_MS) * DARK_OPACITY))
             g.clearRect(0, 0, W, H)
 
             const ringsK = Math.min(1, Math.max(0, (t - ROADS_START) / ROADS_MS))

@@ -1,4 +1,4 @@
-import { DARK } from './basemap.js'
+import { DARK, darkRasterPaint } from './basemap.js'
 
 /* Lazy MapLibre loader. The library and its stylesheet are pulled from jsDelivr
    the first time a map section comes into range, then shared by every caller.
@@ -46,6 +46,8 @@ export const DARK_STYLE = {
   },
   layers: [
     { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-    { id: 'base', type: 'raster', source: 'base', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
+    /* the standalone map page shows the basemap properly rather than fading it
+       in behind an animation, so it runs well above the section ramp */
+    { id: 'base', type: 'raster', source: 'base', paint: darkRasterPaint(0.78, 300) }
   ]
 }

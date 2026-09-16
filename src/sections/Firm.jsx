@@ -8,15 +8,17 @@
 
    THREE BACKGROUNDS ARE BUILT. Pick one and the other two come out:
      corridors - the European coastline and the logistics corridors drawn as
-                 hairlines (public/data/europe-land.json, already in the repo).
-                 Draws the sentence it sits behind.
+                 hairlines (public/data/europe-land.json). NOTE: the portfolio
+                 beat has gone back to its own corridor-network canvas, so this
+                 one now repeats it further up the same page. That is why the
+                 default moved to `hold`.
      hold      - near-black, one rule, grain. The type carries it.
      frame     - the hero's own poster frame, held and darkened, so the section
                  reads as the opening shot settling into stillness.
    Override at runtime with ?bg=hold while reviewing. */
 import { useEffect, useRef, useState } from 'react'
 
-const DEFAULT_BG = 'corridors'
+const DEFAULT_BG = 'hold'
 
 /* Western Europe's main logistics axes, as drawn in the earlier corridor
    canvas: Randstad-Antwerp-Lille-Paris-Lyon-Marseille, the Rhine, the Po
