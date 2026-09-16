@@ -8,7 +8,7 @@ export default function Work() {
         <div className="scrim" />
         <div className="beat-content beat-content--right">
           <p className="eyebrow" data-reveal>Asset management</p>
-          <h2 data-reveal>We buy well. Then we make assets better.</h2>
+          <h2 data-reveal>We underwrite the building it becomes.</h2>
           <p className="body" data-reveal>
             Refurbishment, repositioning and ESG-led upgrades: modern docks, solar roofs,
             BREEAM certification and stronger tenant relationships, compounding into resilient income.

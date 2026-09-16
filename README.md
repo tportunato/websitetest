@@ -51,12 +51,12 @@ salvaged snapshot (`public/data/showcase-lyon.json`: real industrial points and
 candidates, but synthesized roads and no isochrones).
 The basemap loads MapLibre from jsDelivr and dark tiles from Carto's public CDN.
 
-## Placeholders requiring sign-off (marked with dashed amber badges on the page)
-- "-35% completions (CBRE)" stat — verify source and figure
-
-That is now the only one. The "XX% off-market" stat, the track-record counters
-and the placeholder quote were removed in pass 4 rather than carried forward;
-see `NOTES-data-honesty.md` for what replaced them.
+## Placeholders requiring sign-off
+None. The "-35% completions (CBRE)" stat was removed in pass 5, joining the
+"XX% off-market" stat, the track-record counters and the placeholder quote,
+which went in pass 4. The dashed-amber badge component has been deleted with
+them — bring it back rather than shipping an unverified figure bare. See
+`NOTES-data-honesty.md`.
 
 ## Known limitations of Pass 1 (deliberate)
 - Videos play on scroll-enter and hold their last frame (no scroll-scrubbing yet)
@@ -97,3 +97,45 @@ new site hotlinks its media.
 - **News & insights** replaces the Track record section: three real articles from
   daacap.com plus an "All articles" link. Hand-maintained in `src/data/news.js`
   until the WordPress REST feed is wired.
+
+
+## Pass 5 edits
+
+### The "API KEY REQUIRED" watermark
+CARTO began stamping unauthenticated tiles on 2026-08-24, so every map on the
+site carried a watermark. `src/lib/basemap.js` (ported from the Sonar repo,
+which hit this first) now owns the tile URL for all three maps. It leads with
+Esri's dark canvas, which needs no key. Set `VITE_CARTO_KEY` in Vercel and
+CARTO takes the lead automatically, no code change — the key is free from
+carto.com/basemaps/apikey and must never be committed, since Vite exposes
+anything named `VITE_*` to the browser.
+
+Caveat worth recording: the Esri tile could not be fetched from the build
+sandbox (egress-blocked), so that rung rests on the Sonar repo's own note of a
+browser test on 2026-08-24, not on a check made here. Confirm it renders on the
+Vercel deploy.
+
+### Origination
+The Lyon data files were refreshed from the Sonar repo, so the section draws
+the same geography as the app's cold-open: 5,624 real road segments, real
+isochrones, and the engine's real industrial points as the orange dots. The red
+candidates stay synthetic on purpose — real candidate locations are
+confidential. Camera now matches Sonar's intro (zoom 10.35, pitch 40,
+bearing -10) and the radar radius is measured from the city rather than the
+viewport. The canvas is sized to the map's box, not the 165vh section, which
+was inflating every screen-space radius.
+
+### Everything else
+- Accent colour is now white (`--accent`). The amber `--flag` and the `.badge`
+  component are deleted.
+- Eyebrows are white and larger (`clamp(0.8rem, 1vw, 0.92rem)`), applied
+  globally so the hero, Origination, Asset management, Portfolio and Closing
+  all match.
+- Header is 80px on the landing page AND on the subpages, which previously ran
+  a shorter bar of their own. The back arrow beside the wordmark is gone.
+- Market section: the -35% stat is removed.
+- Asset management headline: "We underwrite the building it becomes."
+- Closing section now names City Logistics Industrial Capital Fund I (CLIC).
+- New `#/contact` page (`src/pages/Contact.jsx`); the nav Contact link points
+  there instead of scrolling to the footer. The form opens a pre-filled mail
+  draft — wire a real endpoint when one exists.

@@ -13,11 +13,6 @@ export default function Squeeze() {
             Last-mile demand compounds while first-ring industrial land is absorbed by housing.
             The result is a structural supply shortfall across Western Europe&rsquo;s main corridors.
           </p>
-          <div className="stat" data-reveal>
-            <span className="stat-num">&minus;35%</span>
-            <span className="stat-label">logistics completions, 2022&ndash;2025 (CBRE)</span>
-            <span className="badge">Placeholder &middot; verify before publication</span>
-          </div>
         </div>
       </div>
     </section>

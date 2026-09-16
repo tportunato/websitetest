@@ -1,14 +1,16 @@
-/* Hash-based routing: #/ (landing), #/portfolio (asset map), #/leadership.
+/* Hash-based routing: #/ (landing), #/portfolio (asset map), #/leadership, #/contact.
    Hash routing works on Vercel with zero rewrite configuration. */
 import { useEffect, useState } from 'react'
 import Landing from './Landing.jsx'
 import PortfolioMap from './pages/PortfolioMap.jsx'
 import Leadership from './pages/Leadership.jsx'
+import Contact from './pages/Contact.jsx'
 
 function getRoute() {
   const h = window.location.hash
   if (h.startsWith('#/portfolio')) return 'portfolio'
   if (h.startsWith('#/leadership')) return 'leadership'
+  if (h.startsWith('#/contact')) return 'contact'
   return 'landing'
 }
 
@@ -26,5 +28,6 @@ export default function App() {
 
   if (route === 'portfolio') return <PortfolioMap />
   if (route === 'leadership') return <Leadership />
+  if (route === 'contact') return <Contact />
   return <Landing />
 }

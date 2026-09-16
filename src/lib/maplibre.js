@@ -1,3 +1,5 @@
+import { DARK } from './basemap.js'
+
 /* Lazy MapLibre loader. The library and its stylesheet are pulled from jsDelivr
    the first time a map section comes into range, then shared by every caller.
    cb(err) is invoked once; err is set if the CDN did not deliver. */
@@ -34,18 +36,16 @@ export function ensureMaplibre(cb) {
   document.head.appendChild(s)
 }
 
-/* Carto dark raster basemap on a near-black ground: the house map style. */
+/* The house map style: a dark raster basemap on a near-black ground. The tile
+   URL comes from basemap.js rather than being pasted here, so the watermark
+   fix and the key fallback live in exactly one place. */
 export const DARK_STYLE = {
   version: 8,
   sources: {
-    carto: {
-      type: 'raster',
-      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
-      tileSize: 256
-    }
+    base: { type: 'raster', tiles: [DARK], tileSize: 256 }
   },
   layers: [
     { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-    { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
+    { id: 'base', type: 'raster', source: 'base', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
   ]
 }

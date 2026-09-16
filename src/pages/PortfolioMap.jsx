@@ -3,32 +3,7 @@
    All asset data from public press releases (src/data/assets.js). */
 import { useEffect, useRef, useState } from 'react'
 import { ASSETS } from '../data/assets.js'
-
-function ensureMaplibre(cb) {
-  if (window.maplibregl) { cb(); return }
-  if (!document.getElementById('mlcss')) {
-    const c = document.createElement('link')
-    c.id = 'mlcss'
-    c.rel = 'stylesheet'
-    c.href = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css'
-    document.head.appendChild(c)
-  }
-  let s = document.getElementById('mljs')
-  if (s) {
-    if (window.maplibregl) cb()
-    else {
-      s.addEventListener('load', () => cb())
-      s.addEventListener('error', () => cb(new Error('ml')))
-    }
-    return
-  }
-  s = document.createElement('script')
-  s.id = 'mljs'
-  s.src = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js'
-  s.onload = () => cb()
-  s.onerror = () => cb(new Error('ml'))
-  document.head.appendChild(s)
-}
+import { ensureMaplibre, DARK_STYLE } from '../lib/maplibre.js'
 
 export default function PortfolioMap() {
   const mapDiv = useRef(null)
@@ -45,20 +20,7 @@ export default function PortfolioMap() {
         zoom: 4.6,
         interactive: true,
         attributionControl: false,
-        style: {
-          version: 8,
-          sources: {
-            carto: {
-              type: 'raster',
-              tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
-              tileSize: 256
-            }
-          },
-          layers: [
-            { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-            { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.78, 'raster-fade-duration': 300 } }
-          ]
-        }
+        style: DARK_STYLE
       })
       map.addControl(new window.maplibregl.NavigationControl({ showCompass: false }), 'bottom-right')
       mapRef.current = map
@@ -95,7 +57,7 @@ export default function PortfolioMap() {
   return (
     <div className="page-map">
       <header className="page-bar">
-        <a className="page-home" href="#/"><span className="back-arrow">&larr;</span><img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" /></a>
+        <a className="page-home" href="#/"><img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" /></a>
         <div className="page-title">Portfolio</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
       </header>

@@ -10,38 +10,14 @@
    - /data/metro/lyon.json     (real motorway isochrones)
    Fallback: /data/showcase-lyon.json (salvaged snapshot, synthetic roads). */
 import { useEffect, useRef } from 'react'
+import { ensureMaplibre } from '../lib/maplibre.js'
+import { DARK } from '../lib/basemap.js'
 
 const MAP_MS = 800
 const ROADS_START = 250
 const ROADS_MS = 1550
 const SWEEP_START = 1800
 const SWEEP_MS = 5600
-
-function ensureMaplibre(cb) {
-  if (window.maplibregl) { cb(); return }
-  if (!document.getElementById('mlcss')) {
-    const c = document.createElement('link')
-    c.id = 'mlcss'
-    c.rel = 'stylesheet'
-    c.href = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css'
-    document.head.appendChild(c)
-  }
-  let s = document.getElementById('mljs')
-  if (s) {
-    if (window.maplibregl) cb()
-    else {
-      s.addEventListener('load', () => cb())
-      s.addEventListener('error', () => cb(new Error('ml')))
-    }
-    return
-  }
-  s = document.createElement('script')
-  s.id = 'mljs'
-  s.src = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js'
-  s.onload = () => cb()
-  s.onerror = () => cb(new Error('ml'))
-  document.head.appendChild(s)
-}
 
 function mulberry32(s) {
   return function () {
@@ -208,8 +184,8 @@ export default function Edge() {
         const ctr = show.center
         const map = new window.maplibregl.Map({
           container: mapDiv.current,
-          center: [ctr[0], ctr[1] - 0.008],
-          zoom: 11.05,
+          center: [ctr[0], ctr[1] - 0.012],
+          zoom: 10.35,
           pitch: 40,
           bearing: -10,
           interactive: false,
@@ -217,15 +193,11 @@ export default function Edge() {
           style: {
             version: 8,
             sources: {
-              carto: {
-                type: 'raster',
-                tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
-                tileSize: 256
-              }
+              base: { type: 'raster', tiles: [DARK], tileSize: 256 }
             },
             layers: [
               { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
-              { id: 'base', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0, 'raster-fade-duration': 0 } }
+              { id: 'base', type: 'raster', source: 'base', paint: { 'raster-opacity': 0, 'raster-fade-duration': 0 } }
             ]
           }
         })
@@ -235,14 +207,19 @@ export default function Edge() {
           if (cancelled) return
 
           const build = () => {
-            const W = section.offsetWidth
-            const H = section.offsetHeight
+            /* The canvas must match the MAP's box, not the section's. The
+               section is 165vh (it scrolls past a sticky 100vh stage), so
+               sizing the backing store to it drew into 65vh of clipped space
+               and inflated every screen-space radius below. */
+            const W = mapDiv.current.offsetWidth
+            const H = mapDiv.current.offsetHeight
             const P = (ll) => {
               const p = map.project(ll)
               return [p.x, p.y]
             }
             const center = P(ctr)
-            const maxR = Math.hypot(W, H) * 0.42
+            const brg = (c) =>
+              ((Math.atan2(c[0] - ctr[0], c[1] - ctr[1]) * 180) / Math.PI + 360) % 360
             let roads = (show.roads || []).map((r) => ({ d: r.d, m: r.m, pts: r.pts.map(P) }))
             const isos = metro && metro.iso_junctions
               ? metro.iso_junctions.polys.map((gm) =>
@@ -251,6 +228,26 @@ export default function Edge() {
                     .map(P)
                 )
               : []
+
+            /* The orange dots are now the engine's REAL industrial points
+               (show.inds, public land-use data), not a seeded scatter. The red
+               candidates stay synthetic: the engine's real candidate locations
+               are commercially confidential and are deliberately not shown. */
+            const inds = (show.inds || []).map((c) => ({ a: brg(c), p: P(c) }))
+
+            /* Radar radius from the CITY, not the screen: reach the furthest
+               thing actually drawn, plus air, corrected for the 0.72 vertical
+               squash, capped at half the diagonal. Screen-derived radii swept
+               empty space on wide windows. */
+            let far = 0
+            const reach = (pt) => {
+              const d = Math.hypot(pt[0] - center[0], (pt[1] - center[1]) / 0.72)
+              if (isFinite(d) && d > far) far = d
+            }
+            for (const r of roads) for (const pt of r.pts) reach(pt)
+            for (const d of inds) reach(d.p)
+            const vpR = Math.hypot(W, H)
+            const maxR = far > 40 ? Math.min(far * 1.06, vpR * 0.5) : vpR * 0.42
 
             if (!roads.length) {
               const rand = mulberry32(11)
@@ -272,7 +269,8 @@ export default function Edge() {
               }
             }
 
-            const { dots, tops } = genScatter(roads, center, maxR, mulberry32(23))
+            const dots = inds.length ? inds : genScatter(roads, center, maxR, mulberry32(23)).dots
+            const { tops } = genScatter(roads, center, maxR, mulberry32(23))
 
             const dpr = Math.min(1.5, window.devicePixelRatio || 1)
             canvas.width = W * dpr
@@ -477,12 +475,14 @@ export default function Edge() {
           <h2 data-reveal>Most of what we buy is never on the market.</h2>
           <p className="body" data-reveal>
             Off-market and corporate-sourced opportunities in the &euro;5m to &euro;50m
-            segment, surfaced through a mix of a wide broker network across Western
-            Europe&rsquo;s main corridors and proprietary sourcing technology &mdash;
-            a segment where competition is structurally thinner.
+            segment, where competition is structurally thinner. We originate through a
+            deep and granular network of national and local brokers across Western
+            Europe&rsquo;s main corridors, through direct corporate and owner
+            relationships, and &mdash; alongside them &mdash; through proprietary
+            sourcing technology.
           </p>
         </div>
-        <div className="caption">Illustrative visual</div>
+        <div className="caption">Sonar engine &middot; Lyon corridor</div>
       </div>
     </section>
   )
