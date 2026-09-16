@@ -349,13 +349,28 @@ h2 {
   margin-top: 2px;
 }
 
+/* Bottom-weighted only. The previous version laid 35% navy over the top of the
+   stage as well, which lifted the empty ground from Sonar's #060d16 to about
+   rgb(9,16,26) and read as a blue tint over the whole animation. The copy sits
+   bottom-left, so that is the only place a scrim earns its keep. */
 .scrim-light {
   background: linear-gradient(
     180deg,
-    rgba(7, 17, 31, 0.35) 0%,
-    rgba(7, 17, 31, 0.05) 45%,
-    rgba(7, 17, 31, 0.72) 100%
+    rgba(6, 13, 22, 0) 0%,
+    rgba(6, 13, 22, 0) 40%,
+    rgba(6, 13, 22, 0.55) 72%,
+    rgba(6, 13, 22, 0.88) 100%
   );
+}
+
+/* Film grain uses mix-blend-mode: overlay, which LIGHTENS near-black. Over
+   footage that is the point; over a dark instrument it is just a veil. */
+.stage--instrument::after {
+  display: none;
+}
+
+.stage--instrument .canvas-wrap {
+  opacity: 1;
 }
 
 @media (max-width: 880px) {
@@ -959,69 +974,64 @@ main {
 .firm {
   position: relative;
   overflow: hidden;
-  padding: 13vh 6vw;
-  background: linear-gradient(180deg, #081726 0%, var(--navy2) 48%, #08192b 100%);
+  padding: 14vh 6vw;
+  background: #060d16;
 }
 
+/* the three backgrounds */
 .firm-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-/* hairline grid: a faint sense of a plan drawing, faded out at the edges */
-.firm-grid {
+.firm-bg canvas,
+.firm-bg img {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(143, 191, 224, 0.09) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(143, 191, 224, 0.07) 1px, transparent 1px);
-  background-size: 88px 88px;
-  mask-image: radial-gradient(115% 90% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.35) 55%, transparent 88%);
-  -webkit-mask-image: radial-gradient(115% 90% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.35) 55%, transparent 88%);
+  width: 100%;
+  height: 100%;
 }
 
-.firm-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(10px);
+.firm-bg img {
+  object-fit: cover;
+  opacity: 0.22;
+  filter: grayscale(0.4) contrast(1.05);
+  transform: scale(1.06);
+  animation: firmDrift 26s ease-out forwards;
 }
 
-.firm-glow--a {
-  top: -22%;
-  left: -8%;
-  width: 62vw;
-  height: 62vw;
-  background: radial-gradient(circle, rgba(143, 191, 224, 0.28) 0%, rgba(143, 191, 224, 0) 64%);
+@keyframes firmDrift {
+  to { transform: scale(1); }
 }
 
-.firm-glow--b {
-  right: -14%;
-  bottom: -30%;
-  width: 54vw;
-  height: 54vw;
-  background: radial-gradient(circle, rgba(79, 184, 201, 0.22) 0%, rgba(79, 184, 201, 0) 66%);
-}
-
-/* very slow sheen: keeps the panel from reading as a flat block */
-.firm-sheen {
+.firm-vignette {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    104deg,
-    rgba(143, 191, 224, 0) 38%,
-    rgba(143, 191, 224, 0.07) 50%,
-    rgba(143, 191, 224, 0) 62%
-  );
-  background-size: 260% 100%;
-  animation: firmSheen 22s linear infinite;
+  background:
+    linear-gradient(90deg, rgba(6, 13, 22, 0.96) 0%, rgba(6, 13, 22, 0.94) 42%, rgba(6, 13, 22, 0.45) 64%, rgba(6, 13, 22, 0) 80%),
+    radial-gradient(150% 120% at 50% 50%, rgba(6, 13, 22, 0) 38%, rgba(6, 13, 22, 0.55) 78%, #060d16 100%);
 }
 
-@keyframes firmSheen {
-  from { background-position: 130% 0; }
-  to { background-position: -130% 0; }
+.firm-bg--frame .firm-vignette {
+  background:
+    linear-gradient(90deg, rgba(6, 13, 22, 0.94) 0%, rgba(6, 13, 22, 0.72) 48%, rgba(6, 13, 22, 0.55) 100%),
+    linear-gradient(180deg, rgba(6, 13, 22, 0.8) 0%, rgba(6, 13, 22, 0.35) 40%, rgba(6, 13, 22, 0.9) 100%);
 }
 
+.firm-bg--hold {
+  background: radial-gradient(130% 100% at 22% 34%, #0b1a2b 0%, #081321 46%, #060d16 100%);
+}
+
+.firm-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* hairline top and bottom, so the band is deliberate rather than a gap */
 .firm::before,
 .firm::after {
   content: '';
@@ -1029,11 +1039,12 @@ main {
   left: 0;
   right: 0;
   height: 1px;
+  z-index: 1;
   background: linear-gradient(
     90deg,
     rgba(247, 245, 240, 0) 0%,
-    rgba(247, 245, 240, 0.32) 28%,
-    rgba(247, 245, 240, 0.08) 70%,
+    rgba(247, 245, 240, 0.22) 24%,
+    rgba(247, 245, 240, 0.06) 68%,
     rgba(247, 245, 240, 0) 100%
   );
 }
@@ -1043,44 +1054,67 @@ main {
 
 .firm-inner {
   position: relative;
-  z-index: 1;
-  max-width: 1180px;
+  z-index: 2;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
-.firm-cols {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 60px;
-  /* the second paragraph is much shorter than the lead; sitting it on the
-     lead's last line reads deliberate where top-aligning leaves a hole */
-  align-items: end;
-}
-
-.firm-lead {
-  font-size: clamp(1.25rem, 2.3vw, 1.9rem);
-  line-height: 1.4;
-  font-weight: 300;
-  letter-spacing: -0.01em;
+/* THE STATEMENT. One claim, at display size, with the rest demoted under it. */
+.firm-statement {
+  max-width: 23ch;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.022em;
   color: var(--paper);
+  text-wrap: balance;
 }
 
-.firm-body {
-  position: relative;
-  padding-left: 24px;
+.firm-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 44px;
+  max-width: 780px;
+  margin-top: 46px;
+}
+
+.firm-notes p {
   color: var(--muted);
-  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
   line-height: 1.65;
 }
 
-.firm-body::before {
+/* the instrument rail: the page's own mono vocabulary */
+.firm-spec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 34px;
+  margin-top: 52px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  padding-left: 0;
+}
+
+.firm-spec li {
+  position: relative;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.55);
+}
+
+.firm-spec li + li::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 1px;
-  background: linear-gradient(180deg, var(--accent) 0%, rgba(247, 245, 240, 0) 100%);
+  left: -18px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(247, 245, 240, 0.3);
+  transform: translateY(-50%);
 }
 
 @media (max-width: 880px) {
@@ -1088,58 +1122,30 @@ main {
     padding: 12vh 6vw;
   }
 
-  .firm-cols {
-    grid-template-columns: 1fr;
-    gap: 30px;
+  .firm-statement {
+    max-width: none;
   }
 
-  .firm-body {
-    padding-left: 18px;
+  .firm-notes {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 36px;
+  }
+
+  .firm-spec {
+    margin-top: 44px;
+    gap: 10px 26px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .firm-sheen {
+  .firm-bg img {
     animation: none;
+    transform: none;
   }
 }
 
 /* ---------- Portfolio beat: real-asset map ---------- */
-.portfolio-stats {
-  position: absolute;
-  right: 4vw;
-  bottom: 12vh;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  text-align: right;
-}
-
-.portfolio-stat {
-  display: flex;
-  flex-direction: column;
-}
-
-.portfolio-stat-num {
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  font-weight: 500;
-  color: var(--paper);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.1;
-}
-
-.portfolio-stat-label {
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(247, 245, 240, 0.45);
-  margin-top: 4px;
-  max-width: 22ch;
-}
-
 /* Markers fade up in sequence as the map settles. MapLibre positions each
    marker with its own `transform` on the root element, so nothing here may
    animate the root's transform - the rise is applied to the children instead,
@@ -1167,12 +1173,6 @@ main {
 @keyframes markerRise {
   from { transform: translateY(9px); }
   to { transform: translateY(0); }
-}
-
-@media (max-width: 880px) {
-  .portfolio-stats {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1479,4 +1479,70 @@ main {
   color: rgba(247, 245, 240, 0.45);
   font-size: 0.8rem;
   line-height: 1.5;
+}
+
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 80;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(247, 245, 240, 0.28);
+  background: rgba(7, 17, 31, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--paper);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.25s, background 0.25s;
+}
+
+.to-top--on {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.to-top:hover {
+  border-color: var(--paper);
+  background: rgba(7, 17, 31, 0.92);
+}
+
+.to-top svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.25s ease;
+}
+
+.to-top:hover svg {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 880px) {
+  .to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .to-top,
+  .to-top svg {
+    transition: opacity 0.2s ease;
+  }
 }

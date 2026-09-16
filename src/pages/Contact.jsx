@@ -3,6 +3,7 @@
    no backend on this deploy, so it opens a pre-filled mail draft to
    info@daacap.com instead of silently swallowing the message. Swap in a form
    endpoint (Formspree, Vercel function, HubSpot) when one exists. */
+import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 
 const OFFICES = [
@@ -157,6 +158,7 @@ export default function Contact() {
           <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
         </div>
       </div>
+      <BackToTop />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 /* Leadership page. Content and photos from the existing daacap.com/leadership. */
+import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 import { PRINCIPALS, ADVISORS } from '../data/team.js'
 
@@ -41,6 +42,7 @@ export default function Leadership() {
       <footer className="page-foot">
         <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
       </footer>
+      <BackToTop />
     </div>
   )
 }

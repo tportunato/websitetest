@@ -13,6 +13,8 @@ import Portfolio from './sections/Portfolio.jsx'
 import News from './sections/News.jsx'
 import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
+import BackToTop from './sections/BackToTop.jsx'
+import { setLenis } from './lib/scroll.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -39,6 +41,7 @@ export default function Landing() {
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.12 })
+    setLenis(lenis)
     lenis.on('scroll', ScrollTrigger.update)
 
     /* nav: hide when scrolling down, return when scrolling up */
@@ -109,6 +112,7 @@ export default function Landing() {
 
     return () => {
       gsap.ticker.remove(raf)
+      setLenis(null)
       lenis.destroy()
       ScrollTrigger.getAll().forEach((st) => st.kill())
     }
@@ -134,6 +138,7 @@ export default function Landing() {
         <Closing />
       </main>
       <Footer />
+      <BackToTop />
     </>
   )
 }

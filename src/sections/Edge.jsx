@@ -464,7 +464,7 @@ export default function Edge() {
 
   return (
     <section className="beat" id="origination" ref={sectionRef}>
-      <div className="stage" style={{ background: '#060d16' }}>
+      <div className="stage stage--instrument" style={{ background: '#060d16' }}>
         <div ref={mapDiv} style={{ position: 'absolute', inset: 0 }} />
         <div className="canvas-wrap">
           <canvas ref={cvs} />
@@ -482,7 +482,6 @@ export default function Edge() {
             sourcing technology.
           </p>
         </div>
-        <div className="caption">Sonar engine &middot; Lyon corridor</div>
       </div>
     </section>
   )
