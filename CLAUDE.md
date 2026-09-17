@@ -46,8 +46,20 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
   engine's own data semantics.
 - **Eyebrows** (`.eyebrow`) are white, uppercase, mono, and set once globally so
   every section matches the hero. Change them in one place.
-- **Headers** are 80px on the landing page and the subpages, both using the same
-  three-column grid so the bar does not resize between routes.
+- **Headers** are `--nav-h` (104px) on the landing page and the subpages, both
+  using the same three-column grid so the bar does not resize between routes.
+  Raised from 80px and the logo from 38px to 50px against axis-re.nl, which was
+  finally reachable — see below.
+- **One container system.** `--nav-h`, `--gutter`, `--maxw` and `--band` in
+  `:root` own every band's rhythm and measure. Sections used to carry their own
+  numbers (firm 14vh/1240px, news 16vh, closing 24vh, beats flush-left at
+  900px), so copy started at a different x depending where you were on the page.
+  A new section resolves through the tokens; it does not invent a padding.
+- **The nav groups.** Two dropdowns (`DAA`, `Strategy`) plus three flat links,
+  following axis-re.nl's grouping. Below 980px they collapse into a full-screen
+  panel — before that there was no mobile navigation at all and every subpage
+  was unreachable on a phone. There is deliberately no `#track-record` link:
+  that section was deleted in pass 5.
 - **Maps** take their tiles from `src/lib/basemap.js` and nowhere else. See
   below.
 - Comments explain *why*, not what. Several in this repo record a bug that was
@@ -64,7 +76,22 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
 - **Projection units.** Mercator y is radians; longitude is degrees. Mixing them
   puts the axes on scales ~57x apart.
 - **`window.scrollTo` fights Lenis** on the landing page. Go through
-  `src/lib/scroll.js`.
+  `src/lib/scroll.js`. App did exactly this until it was fixed: it reset scroll
+  on EVERY hashchange, so in-page anchors (`#market`, `#news`) threw you to the
+  top of the page instead of to the section. Scroll is now only reset when the
+  ROUTE changes; anchors go through `scrollToHash`.
+- **Static canvas layers.** Both instrument beats used to re-stroke their entire
+  finished composition every frame forever — ~5,600 Lyon polylines, the whole
+  scribble mesh — which is what made scrolling stutter. Once the build-in
+  closes, they bake to an offscreen canvas and blit. Edge bakes TWO layers
+  (ground, markers) because the beam draws between them; baking one would tint
+  the markers. Any resize invalidates the bake.
+- **`scrub: true` reads as stutter** against Lenis's eased scroll, because the
+  tween is tied to scroll position on the same frame. Use a scrub duration
+  (0.6) so GSAP catches up over time instead.
+- **Reduced motion means the whole page settles**, not just the veil and the
+  scroll cue: Lenis is not constructed at all (it is smooth-scroll hijacking),
+  and the scrub tweens are skipped. `src/lib/motion.js` is the one check.
 - **Film grain uses `mix-blend-mode: overlay`**, which *lightens* near-black.
   Fine over footage, a veil over a dark instrument — hence `.stage--instrument`.
 
@@ -95,12 +122,20 @@ site are deliberately synthetic. The industrial points are real.
 - **Firm section background.** Three are built (`corridors`, `hold`, `frame`),
   switchable at runtime with `?bg=`. Default is `hold`. Once one is chosen,
   delete the other two and the query-param hatch.
+- **The manifesto rail.** The serif line now carries a sans sub-line and a mono
+  rail beneath it, because the claim alone gave a sceptical reader nothing. It
+  is still the page's ONE serif moment; the support is deliberately in the
+  page's other voices. If a graphic plate is ever made for this section, it goes
+  behind the type, not beside it.
 - **Contact form has no backend.** It opens a pre-filled mail draft rather than
   appearing to send and dropping the message. Wire a real endpoint when one
   exists.
-- **Header size and the contact page** were built against `axis-re.nl` as a
-  reference, which could not be loaded from the build environment. They may need
-  refining against the real thing.
+- ~~**Header size and the contact page** were built against `axis-re.nl` as a
+  reference, which could not be loaded from the build environment.~~ RESOLVED:
+  axis-re.nl was reachable on 2026-09-17. Its header is a fixed bar with a wide
+  logo and one grouped dropdown (`Axis` → About us / Vision & Mission / Team)
+  alongside flat items. The bar height, the 50px logo and the two nav groups
+  here follow it.
 - Copy says "specializing"; `index.html`'s meta says "specialising". Supplied
   copy was left as given.
 

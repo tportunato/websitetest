@@ -14,7 +14,8 @@ import News from './sections/News.jsx'
 import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
 import BackToTop from './sections/BackToTop.jsx'
-import { setLenis } from './lib/scroll.js'
+import { setLenis, scrollToHash } from './lib/scroll.js'
+import { prefersReducedMotion } from './lib/motion.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -40,38 +41,68 @@ export default function Landing() {
   }, [intro])
 
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.12 })
-    setLenis(lenis)
-    lenis.on('scroll', ScrollTrigger.update)
+    const reduced = prefersReducedMotion()
+
+    /* Reduced motion gets the native scroller: Lenis is smooth-scroll
+       hijacking, which is exactly what the preference asks us not to do. */
+    const lenis = reduced ? null : new Lenis({ lerp: 0.12 })
+    if (lenis) {
+      setLenis(lenis)
+      lenis.on('scroll', ScrollTrigger.update)
+    }
 
     /* nav: hide when scrolling down, return when scrolling up */
     const navEl = document.querySelector('.nav')
     let lastY = 0
-    lenis.on('scroll', (e) => {
+    const onScrollY = (y) => {
       if (!navEl) return
-      const y = e.scroll || 0
+      /* Never hide the bar while the mobile panel is open. */
+      if (navEl.querySelector('.nav-panel.open')) {
+        navEl.classList.remove('nav--hidden')
+        return
+      }
       if (y < 80) navEl.classList.remove('nav--hidden')
       else if (y > lastY + 4) navEl.classList.add('nav--hidden')
       else if (y < lastY - 4) navEl.classList.remove('nav--hidden')
       lastY = y
-    })
-    const raf = (time) => {
-      lenis.raf(time * 1000)
     }
-    gsap.ticker.add(raf)
-    gsap.ticker.lagSmoothing(0)
+
+    let raf = null
+    let onNative = null
+    if (lenis) {
+      lenis.on('scroll', (e) => onScrollY(e.scroll || 0))
+      raf = (time) => { lenis.raf(time * 1000) }
+      gsap.ticker.add(raf)
+      gsap.ticker.lagSmoothing(0)
+    } else {
+      onNative = () => onScrollY(window.pageYOffset)
+      window.addEventListener('scroll', onNative, { passive: true })
+    }
+
+    /* In-page anchors. App only resets scroll when the route changes, so these
+       are ours to handle — through Lenis, never window.scrollTo. */
+    const onHash = () => scrollToHash(window.location.hash)
+    window.addEventListener('hashchange', onHash)
+    /* Deep link straight to a section: wait a frame so layout has settled. */
+    const deepLink = requestAnimationFrame(() => scrollToHash(window.location.hash))
 
     const reveals = gsap.utils.toArray('[data-reveal]')
     reveals.forEach((el) => {
+      /* Hero copy plays on load. It sits at the bottom of the first screen, so
+         a `top 80%` trigger can start out BELOW its own start line and leave
+         the sub-line invisible until the visitor scrolls — on the one screen
+         that has to land. Everything below the fold keeps the scroll trigger. */
+      const inHero = !!el.closest('.hero')
       gsap.fromTo(
         el,
-        { autoAlpha: 0, y: 42 },
+        { autoAlpha: 0, y: reduced ? 0 : 42 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 1,
+          duration: reduced ? 0.01 : 1,
           ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 80%' }
+          delay: inHero && !reduced ? 0.12 : 0,
+          ...(inHero ? {} : { scrollTrigger: { trigger: el, start: 'top 80%' } })
         }
       )
     })
@@ -92,28 +123,40 @@ export default function Landing() {
       })
     })
 
-    /* Scroll-linked motion: the page responds to the hand, not just to time. */
-    gsap.to('.hero-content', {
-      y: 110,
-      ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-    })
-    gsap.utils.toArray('.beat video.bg').forEach((v) => {
-      gsap.fromTo(
-        v,
-        { scale: 1.06 },
-        {
-          scale: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: v.closest('.beat'), start: 'top bottom', end: 'top top', scrub: true }
-        }
-      )
-    })
+    /* Scroll-linked motion: the page responds to the hand, not just to time.
+
+       scrub: true ties the tween to the scroll position on the same frame, so
+       every wheel tick lands as a discrete step and the parallax reads as
+       stutter against Lenis's eased scroll. A scrub DURATION lets GSAP catch up
+       over ~0.6s instead, which is what makes it feel continuous. */
+    if (!reduced) {
+      gsap.to('.hero-content', {
+        y: 110,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
+      })
+      gsap.utils.toArray('.beat video.bg').forEach((v) => {
+        gsap.fromTo(
+          v,
+          { scale: 1.06 },
+          {
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: v.closest('.beat'), start: 'top bottom', end: 'top top', scrub: 0.6 }
+          }
+        )
+      })
+    }
 
     return () => {
-      gsap.ticker.remove(raf)
-      setLenis(null)
-      lenis.destroy()
+      cancelAnimationFrame(deepLink)
+      window.removeEventListener('hashchange', onHash)
+      if (onNative) window.removeEventListener('scroll', onNative)
+      if (raf) gsap.ticker.remove(raf)
+      if (lenis) {
+        setLenis(null)
+        lenis.destroy()
+      }
       ScrollTrigger.getAll().forEach((st) => st.kill())
     }
   }, [])

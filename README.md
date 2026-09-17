@@ -66,6 +66,55 @@ them — bring it back rather than shipping an unverified figure bare. See
 - Wordmark is styled text; drop in the real DAA logo SVG when ready
 
 
+## Pass 6 — Axis-informed layout, nav groups, scroll smoothness
+
+Reference: `axis-re.nl`, which earlier passes could not load. Its header is a
+fixed bar with a wide logo and one grouped dropdown alongside flat items; its
+scroll bands are all the same size. Both were adopted.
+
+- **One container system.** `--nav-h` / `--gutter` / `--maxw` / `--band` in
+  `:root` own every band's rhythm and measure. Sections previously carried their
+  own numbers (firm 14vh/1240px, news 16vh, closing 24vh, beats flush-left with
+  a 900px cap), so body copy started at a different x depending on where you
+  were. Beat copy and the hero now sit on the same centred column as the flat
+  bands.
+- **Header** is 104px with a 50px logo, and carries two dropdown groups —
+  `DAA` (About us, Vision & Mission, Leadership, Sustainability) and `Strategy`
+  (the three landing beats) — plus Portfolio, News and Contact.
+- **Mobile navigation now exists.** Below 980px the links collapse into a
+  full-screen panel. Previously they were `display: none` with no replacement,
+  which made every subpage unreachable on a phone.
+- **New `#/about` route** with three sections, reachable directly as
+  `#/about`, `#/about/vision` and `#/about/sustainability`.
+- **The manifesto** carries a sub-line and a mono rail under the serif claim.
+- **Scrolling.** Four separate causes, all fixed: `App` reset scroll on every
+  hashchange through `window.scrollTo` (the one call that fights Lenis), so
+  in-page anchors jumped to the top; `scrub: true` tied the parallax to scroll
+  position on the same frame and read as stutter; both instrument canvases
+  re-stroked their entire finished composition every frame forever; and both
+  called `setPaintProperty` on the basemap every frame. The canvases now bake to
+  an offscreen layer once their build-in closes.
+- **Reduced motion** is honoured properly — Lenis is not constructed at all and
+  the scrub tweens are skipped, rather than only hiding the veil and scroll cue.
+- **Captions restored.** Both instrument beats had lost the on-page labels that
+  `NOTES-data-honesty.md` relies on, and the notes described the portfolio beat
+  as a real asset map when the abstract canvas had been restored under it. Code
+  and record now agree. The Sonar engine counters are rendered for the first
+  time; `.scan-stats` had been styled since pass 1 with nothing using it.
+
+## Swapping the hero video
+
+Keep the filename `public/videos/beat01-city-vans.mp4` — `Hero.jsx` and the
+firm section's `frame` background both reference it, as does the poster.
+Re-encode before committing (the drafts are 720p, crf 27, ~2MB) and regenerate
+the poster frame, otherwise the first paint of the page regresses:
+
+    ffmpeg -i incoming.mp4 -vf scale=-2:720 -c:v libx264 -crf 27 -preset slow \
+           -an -movflags +faststart public/videos/beat01-city-vans.mp4
+    ffmpeg -i public/videos/beat01-city-vans.mp4 -vf "select=eq(n\,0)" -q:v 3 \
+           public/videos/beat01-city-vans-poster.jpg
+
+
 ## Pages (added in pass 3)
 Hash-routed pages, no server config needed:
 - `#/portfolio` — interactive asset map (MapLibre), data in `src/data/assets.js`

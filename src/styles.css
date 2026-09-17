@@ -1,4 +1,17 @@
 :root {
+  /* One container system. Every band on the page resolves its vertical rhythm
+     and its measure through these, so sections stop each carrying their own
+     numbers (the firm section was 14vh/1240px, news 16vh, closing 24vh, the
+     beats 900px — four rhythms and four measures on one page). */
+  /* Film grain strength. mix-blend-mode: overlay LIGHTENS near-black, so this
+     is the dial that decides how much the footage gets greyed. */
+  --grain: 0.04;
+
+  --nav-h: 104px;
+  --gutter: 6vw;
+  --maxw: 1240px;
+  --band: 16vh;
+
   --navy: #07111f;
   --navy2: #0a1e33;
   --paper: #f7f5f0;
@@ -41,8 +54,8 @@ main {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: 80px;
-  padding: 13px 40px;
+  min-height: var(--nav-h);
+  padding: 16px 40px;
   background: rgba(7, 17, 31, 0.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -70,24 +83,194 @@ main {
   margin-top: 4px;
 }
 
-.nav nav {
+.nav-main {
   justify-self: center;
   display: flex;
   align-items: center;
   gap: 30px;
 }
 
-.nav nav a {
+/* One type treatment for a flat link and a group trigger, so the bar reads as
+   a single row rather than links plus buttons. */
+.nav-link,
+.nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: var(--paper);
   text-decoration: none;
+  font-family: inherit;
   font-size: 0.98rem;
   font-weight: 500;
   letter-spacing: 0.02em;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   transition: color 0.25s;
 }
 
-.nav nav a:hover {
+.nav-link:hover,
+.nav-trigger:hover,
+.nav-group.open .nav-trigger {
   color: var(--accent);
+}
+
+.nav-caret {
+  width: 9px;
+  height: 6px;
+  opacity: 0.75;
+  transition: transform 0.25s ease;
+}
+
+.nav-group.open .nav-caret {
+  transform: rotate(180deg);
+}
+
+.nav-group {
+  position: relative;
+}
+
+/* The pad keeps the pointer inside the group while it travels from the trigger
+   down into the menu, so hover-open does not flicker shut in the gap. */
+.nav-group::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 22px;
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  translate: -50% 0;
+  min-width: 232px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  background: rgba(9, 20, 35, 0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(247, 245, 240, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+}
+
+.nav-group.open .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-menu a {
+  padding: 10px 22px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.93rem;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-menu a:hover {
+  color: var(--paper);
+  background: rgba(247, 245, 240, 0.06);
+}
+
+.nav-end {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Burger: hidden until the links collapse. */
+.nav-burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 11px 9px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-burger span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: var(--paper);
+  transition: transform 0.28s ease, opacity 0.2s ease;
+}
+
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Full-screen panel. Before this there was no mobile navigation at all: the
+   links were simply display:none below 880px and every subpage was
+   unreachable on a phone. */
+.nav-panel {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Under the bar (50) but over the page. */
+  z-index: 45;
+  display: none;
+  background: rgba(7, 17, 31, 0.985);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.26s ease;
+}
+
+.nav-panel.open {
+  opacity: 1;
+}
+
+.nav-panel-inner {
+  padding: 8vh var(--gutter) 12vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.panel-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panel-group-label {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.42);
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-group a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 1.32rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding: 11px 0;
 }
 
 .login {
@@ -105,11 +288,14 @@ main {
   border-color: var(--accent);
 }
 
-@media (max-width: 880px) {
+/* Links collapse into the panel here. 980px, not 880px: the bar now carries
+   two group triggers and three flat links, and they crowd the logo before the
+   old breakpoint is reached. */
+@media (max-width: 980px) {
   .nav,
   .page-bar {
-    grid-template-columns: auto 1fr;
-    min-height: 66px;
+    grid-template-columns: 1fr auto;
+    min-height: 76px;
     padding: 12px 22px;
   }
 
@@ -117,12 +303,29 @@ main {
     display: none;
   }
 
-  .nav nav {
+  .nav-main {
+    display: none;
+  }
+
+  .nav-burger {
+    display: flex;
+  }
+
+  .nav-panel {
+    display: block;
+  }
+
+  /* The login pill lives in the panel at this size; the burger takes the slot. */
+  .nav-end .login {
     display: none;
   }
 
   .logo-img {
-    height: 34px;
+    height: 38px;
+  }
+
+  .nav-panel {
+    top: 76px;
   }
 }
 
@@ -190,10 +393,12 @@ h2 {
 
 .hero-content {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 100%;
   bottom: 13vh;
-  padding: 0 6vw;
+  padding: 0 var(--gutter);
+  max-width: calc(var(--maxw) + 2 * var(--gutter));
 }
 
 .scroll-cue {
@@ -232,10 +437,16 @@ h2 {
 
 .beat-content {
   position: absolute;
-  left: 0;
+  /* Centred on the same box as .firm-inner and the flat bands, so the copy on a
+     cinematic beat starts at the same x as the copy above and below it. It used
+     to be flush left at 6vw with its own 900px cap, which on a wide screen put
+     it a long way outside the 1240px column everything else sits in. */
+  left: 50%;
+  translate: -50% 0;
+  width: 100%;
   bottom: 11vh;
-  padding: 0 6vw;
-  max-width: 900px;
+  padding: 0 var(--gutter);
+  max-width: calc(var(--maxw) + 2 * var(--gutter));
 }
 
 .canvas-wrap {
@@ -263,7 +474,7 @@ h2 {
 
 /* ---------- Footer ---------- */
 .footer {
-  padding: 12vh 6vw 6vh;
+  padding: var(--band) var(--gutter) 6vh;
   border-top: 1px solid var(--line);
   background: var(--navy);
 }
@@ -391,8 +602,8 @@ h2 {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: 80px;
-  padding: 13px 40px;
+  min-height: var(--nav-h);
+  padding: 16px 40px;
   background: rgba(7, 17, 31, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -513,8 +724,12 @@ h2 {
   line-height: 1;
 }
 
+/* Every asset and team photo is hotlinked from the daacap.com WordPress media
+   library, so it can 404 the day that site is decommissioned. The tone behind
+   it means a missing image reads as a placeholder plate rather than a hole. */
 .panel-img {
   height: 220px;
+  background-color: #0e2438;
   background-size: cover;
   background-position: center;
 }
@@ -599,7 +814,7 @@ h2 {
 .page-team {
   min-height: 100vh;
   background: var(--navy);
-  padding: 130px 6vw 0;
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
 }
 
 .team-wrap {
@@ -633,6 +848,7 @@ h2 {
   width: 108px;
   height: 108px;
   border-radius: 50%;
+  background-color: #0e2438;
   background-size: cover;
   background-position: center top;
   border: 1px solid rgba(247, 245, 240, 0.2);
@@ -696,7 +912,7 @@ h2 {
 
 /* ---------- Logo ---------- */
 .logo-img {
-  height: 38px;
+  height: 50px;
   display: block;
 }
 
@@ -754,11 +970,13 @@ button:focus-visible {
 }
 
 /* nav link underline draw */
-.nav nav a {
+.nav-link,
+.nav-trigger {
   position: relative;
 }
 
-.nav nav a::after {
+.nav-link::after,
+.nav-trigger::after {
   content: '';
   position: absolute;
   left: 0;
@@ -771,7 +989,9 @@ button:focus-visible {
   transition: transform 0.3s ease;
 }
 
-.nav nav a:hover::after {
+.nav-link:hover::after,
+.nav-trigger:hover::after,
+.nav-group.open .nav-trigger::after {
   transform: scaleX(1);
 }
 
@@ -804,11 +1024,11 @@ button:focus-visible {
   will-change: transform;
 }
 
-/* rhythm: right-anchored beat */
-.beat-content--right {
-  left: auto;
-  right: 0;
-  max-width: 760px;
+/* rhythm: right-anchored beat. Stays inside the shared container and pushes
+   its blocks to the right edge of it, rather than leaving the column
+   altogether — the text itself stays left-aligned. */
+.beat-content--right > * {
+  margin-left: auto;
 }
 
 /* manifesto */
@@ -818,7 +1038,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 6vw;
+  padding: var(--band) var(--gutter);
   background: radial-gradient(90% 70% at 50% 50%, #0b2036 0%, var(--navy) 78%);
 }
 
@@ -832,7 +1052,7 @@ button:focus-visible {
 
 /* closing */
 .closing {
-  padding: 24vh 6vw;
+  padding: var(--band) var(--gutter);
   text-align: center;
   background: var(--navy);
 }
@@ -890,6 +1110,19 @@ button:focus-visible {
   font-size: clamp(2.4rem, 5vw, 4.4rem);
 }
 
+/* The hero scrim used the shared gradient, whose 0.55 top band sat straight
+   over the sky — the most saturated part of the shot — and greyed it. The bar
+   has its own opaque background with a backdrop blur, so nothing up there needs
+   protecting. Strength is kept at the bottom, where the headline sits. */
+.hero .scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 17, 31, 0.22) 0%,
+    rgba(7, 17, 31, 0.04) 38%,
+    rgba(7, 17, 31, 0.86) 100%
+  );
+}
+
 /* light arc: the page warms as the day breaks, cools to close */
 #market .scrim {
   background: linear-gradient(180deg, rgba(7, 17, 31, 0.55) 0%, rgba(9, 18, 30, 0.12) 42%, rgba(14, 21, 30, 0.85) 100%);
@@ -928,7 +1161,7 @@ button:focus-visible {
   inset: 0;
   pointer-events: none;
   z-index: 3;
-  opacity: 0.07;
+  opacity: var(--grain);
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
@@ -974,7 +1207,7 @@ main {
 .firm {
   position: relative;
   overflow: hidden;
-  padding: 14vh 6vw;
+  padding: var(--band) var(--gutter);
   background: #060d16;
 }
 
@@ -1055,7 +1288,7 @@ main {
 .firm-inner {
   position: relative;
   z-index: 2;
-  max-width: 1240px;
+  max-width: var(--maxw);
   margin: 0 auto;
 }
 
@@ -1191,7 +1424,7 @@ main {
 /* ---------- News & insights ---------- */
 .news {
   position: relative;
-  padding: 16vh 6vw;
+  padding: var(--band) var(--gutter);
   background: var(--navy2);
 }
 
@@ -1303,7 +1536,7 @@ main {
 .page-contact {
   min-height: 100vh;
   background: var(--navy);
-  padding: 130px 6vw 0;
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
 }
 
 .contact-wrap {
@@ -1544,5 +1777,167 @@ main {
   .to-top,
   .to-top svg {
     transition: opacity 0.2s ease;
+  }
+}
+
+
+/* ---------- Manifesto substance ---------- */
+/* The claim is still the moment. Everything under it is deliberately in the
+   page's OTHER voices — one sans sub-line, then the mono rail — so no second
+   serif appears and the statement keeps its weight. */
+.manifesto-inner {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.manifesto-sub {
+  margin: 34px auto 0;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.35vw, 1.16rem);
+  line-height: 1.6;
+}
+
+.manifesto-rail {
+  list-style: none;
+  padding: 40px 0 0;
+  margin: 56px auto 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  text-align: left;
+}
+
+.manifesto-rail li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.manifesto-rail-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.manifesto-rail-d {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 880px) {
+  .manifesto-rail {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 44px;
+    padding-top: 32px;
+  }
+}
+
+/* ---------- About page ---------- */
+.page-about {
+  min-height: 100vh;
+  background: var(--navy);
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
+}
+
+.about-wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* Same rhythm between blocks as between the landing page's bands. */
+.about-block + .about-block {
+  margin-top: var(--band);
+  padding-top: var(--band);
+  border-top: 1px solid var(--line);
+}
+
+.about-statement {
+  max-width: 23ch;
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.about-notes {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 780px;
+}
+
+.about-notes p {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  line-height: 1.62;
+}
+
+.about-spec {
+  margin-top: 40px;
+}
+
+.about-pillars {
+  margin-top: 46px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 38px;
+}
+
+.about-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-pillar-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.about-pillar-d {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.about-onward {
+  margin-top: var(--band);
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 34px;
+}
+
+.about-onward a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 1.02rem;
+  border-bottom: 1px solid rgba(247, 245, 240, 0.28);
+  padding-bottom: 3px;
+  transition: border-color 0.25s;
+}
+
+.about-onward a:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 880px) {
+  .about-pillars {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 }
