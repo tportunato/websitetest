@@ -15,7 +15,7 @@ export const ABOUT = {
   statement:
     'A FINMA regulated Swiss investment firm, specializing in logistics real estate across key European corridors.',
   body: [
-    'DAA Capital Partners invests in last-mile and light-industrial assets in the €5m to €50m segment — a band that sits below the threshold of the large institutional buyers and above the reach of most private capital, and where competition is therefore structurally thinner.',
+    'DAA Capital Partners invests in last-mile and light-industrial assets in the €5m to €50m segment: a band that sits below the threshold of the large institutional buyers and above the reach of most private capital, and where competition is therefore structurally thinner.',
     'Acquisitions are predominantly off-market and corporate-sourced, originated through a wide broker network and proprietary sourcing technology. Assets are held through the Logistics Opportunities Fund series and managed actively: refurbishment, repositioning and ESG-led upgrades that meet evolving tenant requirements.'
   ],
   spec: ['Geneva · FINMA regulated', 'Last-mile & urban logistics', 'Western European corridors']
@@ -47,7 +47,7 @@ export const VISION = {
 export const SUSTAINABILITY = {
   eyebrow: 'Sustainability',
   statement:
-    'ESG is underwritten as a driver of valuation, resilience and lettability — not as a reporting exercise.',
+    'ESG is underwritten as a driver of valuation, resilience and lettability, not as a reporting exercise.',
   body: [
     'Older urban logistics stock carries the location advantage but rarely the building specification. That gap is the value-add: refurbishment to modern dock, floor-loading and energy standards converts a constrained legacy asset into institutional-grade product without leaving the catchment.'
   ],
@@ -66,7 +66,7 @@ export const SUSTAINABILITY = {
     },
     {
       t: 'Tenant alignment',
-      d: 'Upgrades are specified around occupier requirements — dock configuration, clear height, power — so that environmental performance and lettability improve together.'
+      d: 'Upgrades are specified around occupier requirements (dock configuration, clear height, power) so that environmental performance and lettability improve together.'
     }
   ]
 }

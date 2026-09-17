@@ -78,7 +78,7 @@ export default function Contact() {
         <h1 className="contact-h1">Talk to us.</h1>
         <p className="contact-intro">
           For investor enquiries, off-market opportunities in the &euro;5m to &euro;50m
-          segment, or anything else &mdash; reach the Geneva office directly, or send a
+          segment, or anything else, reach the Geneva office directly, or send a
           note and the right person will come back to you.
         </p>
 

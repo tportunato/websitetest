@@ -11,7 +11,7 @@ export const NEWS = [
     id: 'sept-2025-update',
     kind: 'Insight',
     period: 'September 2025',
-    title: 'European Logistics Real Estate — September 2025 Update',
+    title: 'European Logistics Real Estate: September 2025 Update',
     standfirst:
       'Completions back to 2017 levels, speculative development down to ~40%, and ~3.1% annualised prime rental growth in Q2 (CBRE).',
     link: 'https://www.daacap.com/european-logistics-real-estate-september-2025-update/'

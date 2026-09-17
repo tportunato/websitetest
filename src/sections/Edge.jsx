@@ -549,7 +549,7 @@ export default function Edge() {
             segment, where competition is structurally thinner. We originate through a
             deep and granular network of national and local brokers across Western
             Europe&rsquo;s main corridors, through direct corporate and owner
-            relationships, and &mdash; alongside them &mdash; through proprietary
+            relationships, and, alongside them, through proprietary
             sourcing technology.
           </p>
         </div>
