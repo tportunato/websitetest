@@ -100,7 +100,7 @@ main {
   color: var(--paper);
   text-decoration: none;
   font-family: inherit;
-  font-size: 1.1rem;
+  font-size: 1.22rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   background: none;
@@ -288,10 +288,11 @@ main {
   border-color: var(--accent);
 }
 
-/* Links collapse into the panel here. 980px, not 880px: the bar now carries
-   two group triggers and three flat links, and they crowd the logo before the
-   old breakpoint is reached. */
-@media (max-width: 980px) {
+/* Links collapse into the panel here. The breakpoint has moved out twice as the
+   bar grew: 880 -> 980 when the dropdowns arrived, then 980 -> 1150 when the
+   link text went up to 1.22rem. Below this the row runs flush into the logo on
+   one side and the Get in touch button on the other. */
+@media (max-width: 1150px) {
   .nav,
   .page-bar {
     grid-template-columns: 1fr auto;
