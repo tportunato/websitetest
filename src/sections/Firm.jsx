@@ -233,9 +233,12 @@ export default function Firm() {
       <div className="firm-inner">
         <p className="eyebrow" data-reveal>The firm</p>
 
+        {/* Regulatory status is NOT a marketing argument and must not appear
+            here as a badge or credential. It is stated once, quietly, in the
+            footer, with the full wording on #/legal. */}
         <h2 className="firm-statement" data-reveal>
-          A FINMA&nbsp;regulated Swiss investment firm, specializing in logistics
-          real estate across key European corridors.
+          A Swiss investment firm, specializing in logistics real estate across
+          key European corridors.
         </h2>
 
         <div className="firm-notes">

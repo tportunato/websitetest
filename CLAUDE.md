@@ -53,6 +53,24 @@ it), `SplitFeature` (the firm section's layout, reusable), `NewsStrip`,
 
 Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
+## Regulatory status is not a marketing argument
+
+The firm is not allowed to use its regulatory status as a selling point, and the
+homepage carried exactly that: "A FINMA regulated Swiss investment firm..." set
+at display size as the firm statement. It is gone.
+
+FINMA now appears in two places only, and nowhere else:
+- one quiet line in the footer, `.regstatus`, at the same weight as the
+  copyright, never larger and never styled as a badge;
+- the full wording on `#/legal` (`src/pages/Legal.jsx`).
+
+Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or a hero.
+`#/legal` is NOT the full investor disclaimer, which is a separate document;
+folding that in here would make the page read as defensive.
+
+The About page still says the firm is "regulated in Switzerland" in body copy.
+That is deliberate and pending a decision from the partners; leave it.
+
 ## Conventions
 
 - **Palette** lives in `:root` in `src/styles.css`. `--accent` is white. There

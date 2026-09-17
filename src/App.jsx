@@ -17,6 +17,7 @@ import InvestmentProfile from './pages/InvestmentProfile.jsx'
 import News from './pages/News.jsx'
 import Article from './pages/Article.jsx'
 import Strategy from './pages/Strategy.jsx'
+import Legal from './pages/Legal.jsx'
 import { scrollToTop } from './lib/scroll.js'
 
 /* Order matters: '#/news/<id>' has to be tested before the bare '#/news'. */
@@ -30,7 +31,8 @@ const ROUTES = [
   ['#/investment-profile', 'investment', InvestmentProfile],
   ['#/news/', 'article', Article],
   ['#/news', 'news', News],
-  ['#/strategy', 'strategy', Strategy]
+  ['#/strategy', 'strategy', Strategy],
+  ['#/legal', 'legal', Legal]
 ]
 
 function getRoute() {
