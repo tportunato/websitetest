@@ -123,6 +123,18 @@ That is deliberate and pending a decision from the partners; leave it.
 - **`scrub: true` reads as stutter** against Lenis's eased scroll, because the
   tween is tied to scroll position on the same frame. Use a scrub duration
   (0.6) so GSAP catches up over time instead.
+- **Lenis is for a mouse, not a finger.** It drives scroll position from a rAF
+  loop, which fights the browser's own momentum and rubber-banding on a phone:
+  the page stalls, overshoots, or will not move. It is not constructed at all
+  when `(hover: none) and (pointer: coarse)` matches. `src/lib/motion.js` owns
+  that check alongside the reduced-motion one. Lenis also ships a stylesheet
+  from 1.1 onwards, `lenis/dist/lenis.css`, imported in `main.jsx`; it was
+  missing for several passes.
+- **`100vh` is wrong on a phone.** It counts the collapsing URL bar, so every
+  full-screen stage is taller than the visible viewport and the page jumps as
+  the bar hides and shows. Every `100vh` carries a `100svh` line after it;
+  browsers without `svh` ignore the second and keep the first. A new
+  full-height rule needs both.
 - **Reduced motion means the whole page settles**, not just the veil and the
   scroll cue: Lenis is not constructed at all (it is smooth-scroll hijacking),
   and the scrub tweens are skipped. `src/lib/motion.js` is the one check.

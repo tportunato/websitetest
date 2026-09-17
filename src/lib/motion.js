@@ -8,3 +8,15 @@ export function prefersReducedMotion() {
     return false
   }
 }
+
+/* Touch devices scroll natively and smoothly already. Lenis drives the scroll
+   position from a rAF loop, and on a phone that fights the browser's own
+   momentum and rubber-banding: the page stalls, overshoots, or refuses to move.
+   It is a wheel-smoothing tool, so it is only constructed for a mouse. */
+export function isTouchDevice() {
+  try {
+    return window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  } catch (e) {
+    return false
+  }
+}

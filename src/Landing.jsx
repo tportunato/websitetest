@@ -13,7 +13,7 @@ import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
 import BackToTop from './sections/BackToTop.jsx'
 import { setLenis, scrollToHash } from './lib/scroll.js'
-import { prefersReducedMotion } from './lib/motion.js'
+import { prefersReducedMotion, isTouchDevice } from './lib/motion.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -42,8 +42,11 @@ export default function Landing() {
     const reduced = prefersReducedMotion()
 
     /* Reduced motion gets the native scroller: Lenis is smooth-scroll
-       hijacking, which is exactly what the preference asks us not to do. */
-    const lenis = reduced ? null : new Lenis({ lerp: 0.12 })
+       hijacking, which is exactly what the preference asks us not to do. So do
+       touch devices, where Lenis fights the browser's own momentum scrolling
+       and the page stalls or overshoots under a finger. */
+    const nativeScroll = reduced || isTouchDevice()
+    const lenis = nativeScroll ? null : new Lenis({ lerp: 0.12 })
     if (lenis) {
       setLenis(lenis)
       lenis.on('scroll', ScrollTrigger.update)
