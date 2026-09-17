@@ -123,6 +123,21 @@ That is deliberate and pending a decision from the partners; leave it.
 - **`scrub: true` reads as stutter** against Lenis's eased scroll, because the
   tween is tied to scroll position on the same frame. Use a scrub duration
   (0.6) so GSAP catches up over time instead.
+- **`opacity: 0` does not make an overlay inert.** The mobile nav panel is
+  `display: block` at all times below the breakpoint and only fades, so with
+  opacity alone it stayed a full-screen, `overflow-y: auto`, pointer-accepting
+  layer sitting over the page. Every touch landed in it, a drag scrolled the
+  panel instead of the document, and the site was unscrollable on a phone from
+  the moment it loaded. It needs `visibility: hidden` AND
+  `pointer-events: none` when closed. Any full-screen overlay added later needs
+  the same three, not just the one.
+- **Do not centre a GSAP-animated element with `left:50%` + `translate:-50%`.**
+  GSAP takes ownership of transforms and folds the standalone `translate`
+  property into its own matrix. Chromium survives it, Safari does not: on iOS
+  the -50% was dropped and `.hero-content` sat at `left:50%`, shoved half a
+  screen right and running off the edge. Use `left:0; right:0; margin-inline:
+  auto` — pure layout, nothing for GSAP to consume. `.nav-menu` still uses
+  translate centring and is fine, because nothing animates it.
 - **Lenis is for a mouse, not a finger.** It drives scroll position from a rAF
   loop, which fights the browser's own momentum and rubber-banding on a phone:
   the page stalls, overshoots, or will not move. It is not constructed at all

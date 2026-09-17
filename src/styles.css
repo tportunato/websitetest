@@ -232,12 +232,22 @@ main {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   overflow-y: auto;
+  /* MUST be inert when closed. Below 1150px the panel is display:block at all
+     times and only fades out, so with opacity alone it stayed a full-screen
+     scrollable overlay sitting over the page with pointer-events:auto. Every
+     touch landed in it, dragging scrolled the panel rather than the document,
+     and the site was simply unscrollable on a phone until something forced it
+     to re-render. opacity does not make an element inert; these two do. */
   opacity: 0;
-  transition: opacity 0.26s ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.26s ease, visibility 0.26s;
 }
 
 .nav-panel.open {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .nav-panel-inner {
@@ -395,10 +405,18 @@ h2 {
   overflow: hidden;
 }
 
+/* Centred with auto margins, NOT with left:50% + translate:-50%.
+
+   GSAP animates this element, and it takes ownership of transforms: it folds
+   the standalone `translate` property into its own matrix. Chromium survives
+   that consolidation, Safari does not — on iOS the -50% was dropped and the
+   copy sat at left:50%, shoved half a screen right and running off the edge.
+   Auto margins are pure layout, so GSAP can own `transform` outright. */
 .hero-content {
   position: absolute;
-  left: 50%;
-  translate: -50% 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: 100%;
   bottom: 13vh;
   padding: 0 var(--gutter);
@@ -447,8 +465,11 @@ h2 {
      cinematic beat starts at the same x as the copy above and below it. It used
      to be flush left at 6vw with its own 900px cap, which on a wide screen put
      it a long way outside the 1240px column everything else sits in. */
-  left: 50%;
-  translate: -50% 0;
+  /* Auto margins, not translate: see .hero-content. The beat videos inside
+     these stages are GSAP-scrubbed too. */
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: 100%;
   bottom: 11vh;
   padding: 0 var(--gutter);
