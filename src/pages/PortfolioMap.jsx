@@ -80,7 +80,7 @@ export default function PortfolioMap() {
                 <div><span className="spec-label">Highlights</span><span>{active.highlight}</span></div>
               </div>
               <p className="panel-blurb">{active.blurb}</p>
-              <a className="panel-link" href={active.link} target="_blank" rel="noreferrer">
+              <a className="panel-link" href={'#/news/' + active.article}>
                 Read the announcement &rarr;
               </a>
             </div>

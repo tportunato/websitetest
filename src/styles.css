@@ -2776,3 +2776,37 @@ main {
 @media (max-width: 880px) {
   .art-more-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- News archive (the full list, 22 and counting) ---------- */
+.newsstrip-count {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.45);
+}
+
+.newsstrip-lead {
+  max-width: var(--maxw);
+  margin: 0 auto 26px;
+}
+
+.newsstrip-lead .ncard--lead { grid-row: auto; }
+
+.newsstrip-lead .ncard--lead .ncard-media { aspect-ratio: 21 / 9; }
+
+.newsstrip-archive {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+@media (max-width: 980px) {
+  .newsstrip-archive { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .newsstrip-archive { grid-template-columns: 1fr; }
+}

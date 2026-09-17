@@ -65,7 +65,9 @@ export default function Article({ id }) {
         </header>
 
         <div className="art-body">
-          <p className="art-stand">{a.standfirst}</p>
+          {/* Skipped when the WP excerpt is just a truncation of the opening
+              paragraph, which would otherwise print the same sentence twice. */}
+          {!a.standDupe && <p className="art-stand">{a.standfirst}</p>}
           {a.author && <p className="art-byline">By {a.author}</p>}
           {a.body.map((b, i) => <Block b={b} key={i} />)}
 
