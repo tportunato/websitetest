@@ -130,6 +130,18 @@ That is deliberate and pending a decision from the partners; leave it.
   that check alongside the reduced-motion one. Lenis also ships a stylesheet
   from 1.1 onwards, `lenis/dist/lenis.css`, imported in `main.jsx`; it was
   missing for several passes.
+- **A sticky beat is a dead zone under a thumb.** A `.beat` is 165svh around a
+  sticky 100svh stage, so ~430px of scrolling happens with the stage pinned and
+  nothing on screen changing. With a mouse that reads as a deliberate hold; on a
+  phone it reads as the page having stopped responding. Below 880px a beat is
+  the height of its stage, so there is no pin at all.
+- **Full-screen centred sections clip their own copy on a phone.** `.firm` and
+  `.split` are `min-height:100svh` with `align-items:center` and
+  `overflow:hidden` (the latter to contain the photo panel). Narrow screens make
+  the copy taller than a viewport, centring pushes it out of both ends, and the
+  overflow rule cuts it off — 42px of the firm section's text was simply not
+  rendered. Below 880px these sections grow with their content and the photo
+  moves behind the copy. Any new full-height centred section needs the same.
 - **`100vh` is wrong on a phone.** It counts the collapsing URL bar, so every
   full-screen stage is taller than the visible viewport and the page jumps as
   the bar hides and shows. Every `100vh` carries a `100svh` line after it;

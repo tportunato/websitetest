@@ -2873,3 +2873,71 @@ main {
   border-bottom: 1px solid rgba(247, 245, 240, 0.25);
   padding-bottom: 3px;
 }
+
+/* ============================================================
+   Phone layout corrections.
+
+   Two faults the desktop layout hides:
+
+   1. .firm and .split are min-height:100svh, vertically centred, with
+      overflow:hidden to contain the photo panel. On a narrow screen the copy is
+      taller than one viewport, so centring pushed it out of both ends and
+      overflow:hidden cut it off — 42px of the firm section's text was simply
+      not rendered. Sections grow with their content here instead.
+
+   2. A .beat is 165svh around a sticky 100svh stage, which leaves ~430px of
+      scrolling where the stage is pinned and NOTHING on screen changes. With a
+      mouse that reads as a deliberate hold; under a thumb it reads as the page
+      having stopped responding. On a phone the section is the height of its
+      stage, so there is no dead pin.
+   ============================================================ */
+@media (max-width: 880px) {
+  .firm,
+  .split {
+    min-height: 0;
+    overflow: visible;
+    align-items: flex-start;
+    padding-top: calc(var(--nav-h) + 6vh);
+    padding-bottom: 10vh;
+  }
+
+  .firm-photo,
+  .manifesto-photo {
+    /* Behind the copy rather than beside it, and it must not clip either. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.22;
+    overflow: hidden;
+  }
+
+  .firm-inner,
+  .manifesto-inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .beat {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .manifesto {
+    min-height: 0;
+    padding-top: calc(var(--nav-h) + 6vh);
+    padding-bottom: 10vh;
+  }
+
+  /* The display statement's clamp floor is 2rem, which on a 390px screen runs
+     a single sentence to five lines and dominates the section. */
+  .firm-statement,
+  .about-statement {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+    max-width: none;
+  }
+
+  .phero-title {
+    font-size: clamp(2.4rem, 13vw, 4rem);
+  }
+}
