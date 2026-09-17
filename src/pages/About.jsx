@@ -1,6 +1,7 @@
 /* About us. Two parts, following axis-re.nl: a large title over an image, then
    a team section that alternates copy and photograph and hands off to the
    leadership page. No results section by request. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import PageHero from '../sections/PageHero.jsx'
 import GetInTouch from '../sections/GetInTouch.jsx'
@@ -44,6 +45,7 @@ export default function About() {
       </section>
 
       <GetInTouch />
+      <Footer />
       <BackToTop />
     </div>
   )

@@ -1,5 +1,6 @@
 /* Asset management. Moved off the landing page onto its own route, paired with
    the future-proofing argument that the home page only gestures at. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import Work from '../sections/Work.jsx'
 import SplitFeature from '../sections/SplitFeature.jsx'
@@ -25,6 +26,7 @@ export default function AssetManagement() {
         </a>
       </SplitFeature>
       <GetInTouch />
+      <Footer />
       <BackToTop />
     </div>
   )

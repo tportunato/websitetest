@@ -1,5 +1,6 @@
 /* Origination. Moved off the landing page onto its own route: the Sonar beat
    is the argument, so it gets the whole page rather than one slot in a scroll. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import Edge from '../sections/Edge.jsx'
 import GetInTouch from '../sections/GetInTouch.jsx'
@@ -26,6 +27,7 @@ export default function Origination() {
         </div>
       </section>
       <GetInTouch />
+      <Footer />
       <BackToTop />
     </div>
   )

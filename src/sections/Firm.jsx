@@ -33,8 +33,6 @@ const CORRIDORS = [
   [[2.35, 48.85], [1.45, 47.08], [-0.55, 44.84]]
 ]
 
-const SPEC = ['Geneva · FINMA regulated', 'Last-mile & urban logistics', 'Western European corridors']
-
 /* Web-Mercator, BOTH AXES IN RADIANS. Projecting y through Mercator while
    leaving x in degrees puts the two axes on scales that differ by ~57x, so a
    fit computed across them lands about 40x too far in and you see a couple of
@@ -252,11 +250,6 @@ export default function Firm() {
           </p>
         </div>
 
-        <ul className="firm-spec" data-reveal>
-          {SPEC.map((sp) => (
-            <li key={sp}>{sp}</li>
-          ))}
-        </ul>
       </div>
     </section>
   )

@@ -1,5 +1,6 @@
 /* Vision & Mission. Boxed hero (image stops short, solid panel carries the
    copy), then the investment-profile hand-off and a news strip, then contact. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import PageHero from '../sections/PageHero.jsx'
 import GetInTouch from '../sections/GetInTouch.jsx'
@@ -24,31 +25,27 @@ export default function Vision() {
         </div>
       </PageHero>
 
-      <section className="pillars">
-        <div className="pillars-inner">
-          {VISION.pillars.map((p) => (
-            <div className="pillar" key={p.t} data-reveal>
-              <p className="pillar-t">{p.t}</p>
-              <p className="pillar-d">{p.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="cta-band">
+      <section className="cta-band cta-band--media">
         <div className="cta-band-inner">
-          <p className="eyebrow" data-reveal>{VISION.investment.eyebrow}</p>
-          <h2 className="firm-statement" data-reveal>{VISION.investment.statement}</h2>
-          <p className="cta-band-note" data-reveal>{VISION.investment.note}</p>
-          <a className="btn btn--lg btn--solid" href="#/investment-profile">
-            <span>Let&rsquo;s work together</span>
-            <span className="btn-arrow">&rarr;</span>
-          </a>
+          <div className="cta-band-copy">
+            <p className="eyebrow" data-reveal>{VISION.investment.eyebrow}</p>
+            <h2 className="firm-statement" data-reveal>{VISION.investment.statement}</h2>
+            <p className="cta-band-note" data-reveal>{VISION.investment.note}</p>
+            <a className="btn btn--lg btn--solid" href="#/investment-profile">
+              <span>Let&rsquo;s work together</span>
+              <span className="btn-arrow">&rarr;</span>
+            </a>
+          </div>
+          <div className="cta-band-media" aria-hidden="true">
+            <img src="/images/investment-side.jpg" alt="" />
+          </div>
         </div>
       </section>
 
       <NewsStrip />
       <GetInTouch />
+      <Footer />
       <BackToTop />
     </div>
   )

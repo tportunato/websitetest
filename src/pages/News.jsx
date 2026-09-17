@@ -1,5 +1,6 @@
 /* News & press releases. Bolder than the strip: a full-bleed title over the
    dock photograph, then every article at card size. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import PageHero from '../sections/PageHero.jsx'
 import NewsStrip from '../sections/NewsStrip.jsx'
@@ -22,6 +23,7 @@ export default function News() {
 
       <NewsStrip limit={NEWS.length} heading="Latest" />
       <GetInTouch />
+      <Footer />
       <BackToTop />
     </div>
   )

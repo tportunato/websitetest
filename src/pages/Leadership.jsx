@@ -1,4 +1,5 @@
 /* Leadership page. Content and photos from the existing daacap.com/leadership. */
+import Footer from '../sections/Footer.jsx'
 import PageBar from '../sections/PageBar.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
@@ -36,9 +37,7 @@ export default function Leadership() {
           {ADVISORS.map((p) => <Card key={p.name} person={p} />)}
         </div>
       </div>
-      <footer className="page-foot">
-        <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
-      </footer>
+      <Footer />
       <BackToTop />
     </div>
   )

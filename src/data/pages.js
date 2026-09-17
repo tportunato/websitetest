@@ -10,17 +10,15 @@
 export const ABOUT = {
   title: 'About us',
   lead:
-    'DAA Capital Partners is a Geneva-based investment manager specialising in European urban logistics real estate. We acquire last-mile and light-industrial assets in the EUR 5m to EUR 50m segment, a band that sits below the threshold of the large institutional buyers and above the reach of most private capital, and where competition is therefore structurally thinner.',
+    'DAA Capital Partners builds portfolios of small- and mid-box last-mile urban logistics real estate.',
   body: [
-    'Acquisitions are predominantly off-market and corporate-sourced, originated through a deep broker network, direct owner relationships and proprietary sourcing technology. Assets are held through the Logistics Opportunities Fund series and managed actively rather than passively: refurbishment, repositioning and ESG-led upgrades that meet evolving tenant requirements.',
-    'The firm is regulated in Switzerland and invests across Western Europe’s main logistics corridors.'
+    'The firm is regulated in Switzerland and invests across Western Europe\u2019s main logistics corridors, with selective geography on a fund-by-fund basis.'
   ],
   team: {
     eyebrow: 'Our team',
     statement: 'A small team, close to every asset.',
     notes: [
-      'Investment, asset management and finance sit in one office in Geneva. The people who underwrite a building are the people who reposition it and the people who answer to investors for it.',
-      'That is deliberate. In the sub-institutional band, returns come from execution on individual assets rather than from portfolio beta, and execution does not survive being handed between desks.'
+      'Investment, asset management and finance sit in one office in Geneva. The people who underwrite a building are the people who reposition it, and the people who answer to investors for it.'
     ],
     cta: 'Get to know us'
   }
@@ -29,21 +27,17 @@ export const ABOUT = {
 export const VISION = {
   title: 'Vision & Mission',
   lead:
-    'Urban logistics is the infrastructure layer of European consumption. Our mission is to aggregate a fragmented segment of it into an institutional portfolio.',
+    'We think the future of logistics is about proximity, not scale.',
   body: [
-    'E-commerce penetration and same-day delivery expectations have moved inventory from regional hubs to the edge of the city. At the same time, first-ring industrial land is being absorbed by residential conversion. Demand compounds; the land it needs does not. That imbalance is the thesis, and low vacancy and sustained rental growth across the main corridors are what it looks like in the numbers.',
-    'We see these buildings as critical infrastructure rather than as a property type. They are what allows a city to expect goods the same day, and there is no substitute for being inside the ring.'
-  ],
-  pillars: [
-    { t: 'Mission', d: 'Aggregate a fragmented segment into an institutional portfolio: disciplined entry pricing, active asset management and a clear exit at portfolio scale.' },
-    { t: 'Method', d: 'Proprietary origination in the sub-institutional band, underwriting to in-place NOI rather than to projected rental growth, and ESG-led repositioning that protects valuation and lettability together.' },
-    { t: 'Measure', d: 'Performance reported against the INREV asset-level index, net, over full market cycles, without selection.' }
+    'Cities have changed what they ask of a warehouse. Speed and flexibility now matter more than floor area, and the buildings that can deliver them sit inside the ring rather than out on the motorway. Urban logistics has quietly become infrastructure: most of what a city expects to arrive the same day passes through a building somebody stopped noticing years ago.',
+    'We back small- and mid-box assets because that is where we think the resilience sits. Real occupier demand, very little replacement supply, and locations that cannot be recreated once the land goes to housing.',
+    'What we are building is a portfolio that still works in ten years. Well located, properly specified, and responsible enough to stay lettable as standards tighten. In practice that means making buildings cleaner and more adaptable rather than simply holding them and hoping.'
   ],
   investment: {
     eyebrow: 'Investment profile',
     statement: 'We are actively looking to expand the portfolio.',
     note:
-      'Last-mile and light-industrial assets in the EUR 5m to EUR 50m segment, across Western Europe’s main corridors. If you are selling, advising on a sale, or placing capital, our detailed investment profile sets out exactly what we buy.'
+      'If you are selling, advising on a sale, or placing capital, our investment profile sets out what we buy and how we transact.'
   }
 }
 
@@ -60,32 +54,19 @@ export const SUSTAINABILITY = {
     { t: 'Green leases', d: 'Data-sharing and efficiency provisions introduced at renewal and on new lettings.' },
     { t: 'On-site generation', d: 'Roofs surveyed for photovoltaic capacity at acquisition, with solar installed where the structure and the tenant profile support it.' },
     { t: 'Fabric before offset', d: 'Envelope, lighting and dock specification first. An asset that needs less is worth more than one that buys its way level.' }
-  ],
-  thesis: {
-    eyebrow: 'The thesis',
-    statement: 'We buy the buildings cities cannot live without.',
-    notes: [
-      'Last-mile logistics is not a property type. It is the physical condition of everything a city expects to arrive the same day.'
-    ],
-    rail: [
-      { t: 'Proximity', d: 'The value sits in the distance to the consumer, not in the square metres.' },
-      { t: 'Scarcity', d: 'First-ring industrial land converts to housing, and it does not convert back.' },
-      { t: 'Necessity', d: 'Rent is a small share of supply chain cost, and the last link is the least substitutable.' }
-    ]
-  }
+  ]
 }
 
 export const INVESTMENT = {
   title: 'Investment profile',
-  lead:
-    'What we buy, where we buy it, and the shape of a transaction we can execute quickly.',
-  criteria: [
-    { t: 'Lot size', d: 'EUR 5m to EUR 50m. Single assets and small portfolios.' },
-    { t: 'Asset type', d: 'Last-mile, urban logistics and light-industrial. Multi-let and single-let both considered.' },
-    { t: 'Geography', d: 'Western Europe’s main logistics corridors, with a bias to first-ring locations around established consumption centres.' },
-    { t: 'Condition', d: 'Standing stock, including assets needing refurbishment, reconfiguration or an energy upgrade. Vacancy is not a disqualifier where the location is right.' },
-    { t: 'Structure', d: 'Asset deals, share deals and sale-and-leaseback. We can work with a seller’s timetable and confidentiality requirements.' },
-    { t: 'Process', d: 'Off-market and bilateral preferred. Decisions are taken in-house, so an indicative view comes back quickly.' }
+  lead: 'What we buy, where we buy it, and how we transact.',
+  points: [
+    'Small- and mid-box last-mile and light-industrial assets, single or in small portfolios.',
+    'Western Europe\u2019s main logistics corridors, with geography selected fund by fund.',
+    'Standing stock, including buildings that need work. Vacancy is not a problem where the location is right.',
+    'Asset deals, share deals and sale-and-leasebacks, worked around the seller\u2019s timetable.',
+    'Off-market and bilateral conversations preferred to broad processes.',
+    'Decisions taken in-house, so you get a real answer quickly rather than a holding one.'
   ],
   closing: {
     statement: 'If it fits, we will tell you quickly.',

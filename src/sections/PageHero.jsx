@@ -8,7 +8,7 @@
 
    The title is set big and flat. It is the one place on the site where type is
    allowed to be the whole composition. */
-export default function PageHero({ variant = 'full', eyebrow, title, lead, image, children }) {
+export default function PageHero({ variant = 'full', eyebrow, title, lead, image, action, children }) {
   return (
     <header className={'phero phero--' + variant}>
       <div className="phero-head">
@@ -25,10 +25,15 @@ export default function PageHero({ variant = 'full', eyebrow, title, lead, image
         </div>
       </div>
 
-      {(lead || children) && (
+      {(lead || children || action) && (
         <div className="phero-panel">
           <div className="phero-panel-inner">
-            {lead && <p className="phero-lead">{lead}</p>}
+            {(lead || action) && (
+              <div className={'phero-leadrow' + (action ? ' phero-leadrow--split' : '')}>
+                {lead && <p className="phero-lead">{lead}</p>}
+                {action}
+              </div>
+            )}
             {children}
           </div>
         </div>

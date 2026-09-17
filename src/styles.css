@@ -1372,12 +1372,14 @@ main {
   text-wrap: balance;
 }
 
+/* One column. Two equal columns read as a body-copy band, which is the exact
+   failure mode CLAUDE.md warns about for this section. */
 .firm-notes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 44px;
-  max-width: 780px;
-  margin-top: 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 62ch;
+  margin-top: 40px;
 }
 
 .firm-notes p {
@@ -2519,3 +2521,85 @@ main {
 
 /* Beat pages carry the fixed bar over a sticky stage. */
 .page--beat { padding-top: 0; }
+
+/* ---------- Hero lead row (lead + optional action button) ---------- */
+.phero-leadrow--split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.phero-leadrow--split .phero-lead { flex: 1 1 32ch; }
+.phero-leadrow--split .btn { flex: none; margin-top: 6px; }
+
+/* ---------- Investment profile points ---------- */
+.points {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.points-list {
+  list-style: none;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Reading size, not card size: six statements a broker can scan. */
+.points-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.15rem, 2vw, 1.62rem);
+  line-height: 1.38;
+  font-weight: 400;
+  letter-spacing: -0.014em;
+  max-width: 52ch;
+}
+
+.points-list li:first-child { border-top: 1px solid var(--line); }
+
+.bullet-arrow {
+  width: clamp(22px, 2.4vw, 30px);
+  height: clamp(22px, 2.4vw, 30px);
+  flex: none;
+  margin-top: 0.22em;
+  opacity: 0.7;
+}
+
+@media (max-width: 880px) {
+  .points-list li { max-width: none; gap: 16px; }
+}
+
+/* ---------- CTA band with a photo beside it ---------- */
+.cta-band--media .cta-band-inner {
+  display: grid;
+  grid-template-columns: 1fr 0.78fr;
+  gap: 5vw;
+  align-items: center;
+}
+
+.cta-band-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.cta-band-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 880px) {
+  .cta-band--media .cta-band-inner { grid-template-columns: 1fr; gap: 40px; }
+  .cta-band-media { aspect-ratio: 16 / 10; }
+}
+
+/* Pages carry the shared footer, which already owns its own top rule. */
+.page .footer { border-top: 1px solid var(--line); }
