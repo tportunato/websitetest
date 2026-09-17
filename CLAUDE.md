@@ -29,13 +29,29 @@ a specific language:
   network over Western Europe. Mono captions, hairlines, tabular figures.
 - **Swiss restraint.** White on near-black, one accent (white), no colour
   system to speak of. Claims are stated flatly and let to stand.
-- **One serif moment**: the Manifesto, centred Cormorant Garamond italic. Do not
-  add a second — it stops being a moment.
+- **One serif moment**: now the Closing line only. The Manifesto was restyled to
+  mirror the firm section and then moved off the landing page onto
+  Sustainability, so Cormorant appears once. Do not add a second.
 
 When a section starts to read like a generic marketing band, that is the bug.
 The firm section was rebuilt once for exactly this reason: two supplied
 paragraphs set at equal weight in two columns. The fix was hierarchy — one claim
 at display size, notes demoted under it, a mono spec rail on a hairline.
+
+## Structure (pass 7)
+
+The one-pager became a site. Home is hero, firm, market, portfolio and a
+future-proof section that mirrors the firm section; origination, asset
+management, the thesis and news all moved to their own routes. Every nav
+destination is a real route in `src/App.jsx`'s ROUTES table.
+
+Shared page furniture lives in `src/sections/`: `PageHero` (variants `full` and
+`boxed` — boxed stops the image short and puts the copy on a solid panel under
+it), `SplitFeature` (the firm section's layout, reusable), `NewsStrip`,
+`GetInTouch`, and `PageBar`, which is just the shared `Nav`. Page copy is in
+`src/data/pages.js`.
+
+Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
 ## Conventions
 

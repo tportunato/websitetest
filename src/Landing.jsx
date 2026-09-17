@@ -6,11 +6,9 @@ import Nav from './sections/Nav.jsx'
 import Hero from './sections/Hero.jsx'
 import Firm from './sections/Firm.jsx'
 import Squeeze from './sections/Squeeze.jsx'
-import Edge from './sections/Edge.jsx'
-import Work from './sections/Work.jsx'
-import Manifesto from './sections/Manifesto.jsx'
 import Portfolio from './sections/Portfolio.jsx'
-import News from './sections/News.jsx'
+import SplitFeature from './sections/SplitFeature.jsx'
+import { FUTUREPROOF } from './data/pages.js'
 import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
 import BackToTop from './sections/BackToTop.jsx'
@@ -194,11 +192,21 @@ export default function Landing() {
         <Hero />
         <Firm />
         <Squeeze />
-        <Edge />
-        <Work />
-        <Manifesto />
         <Portfolio />
-        <News />
+        {/* Mirrors the firm section above: same layout, same photo treatment,
+            opposite end of the page. */}
+        <SplitFeature
+          id="future-proof"
+          eyebrow={FUTUREPROOF.eyebrow}
+          statement={FUTUREPROOF.statement}
+          notes={FUTUREPROOF.notes}
+          image="/images/futureproof.jpg"
+        >
+          <a className="btn btn--lg btn--solid btn--spaced" href="#/asset-management">
+            <span>How we do it</span>
+            <span className="btn-arrow">&rarr;</span>
+          </a>
+        </SplitFeature>
         <Closing />
       </main>
       <Footer />

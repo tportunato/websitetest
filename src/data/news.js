@@ -1,5 +1,7 @@
 /* Latest articles, mirrored from daacap.com. REAL: titles and links are the
-   firm's own published pieces. Publication dates are deliberately omitted —
+   firm's own published pieces. The `img` on each entry is a PLACEHOLDER from
+   public/images and has nothing to do with the article; swap them for real
+   artwork before this goes live. Publication dates are deliberately omitted —
    they are not carried here to avoid guessing; the `period` field is only used
    where the article itself names the period it covers.
 
@@ -9,6 +11,7 @@
 export const NEWS = [
   {
     id: 'sept-2025-update',
+    img: '/images/news-hero.jpg',
     kind: 'Insight',
     period: 'September 2025',
     title: 'European Logistics Real Estate: September 2025 Update',
@@ -18,6 +21,7 @@ export const NEWS = [
   },
   {
     id: 'q2-2025-outlook',
+    img: '/images/investment-hero.jpg',
     kind: 'Insight',
     period: 'Q2 2025',
     title: 'European Logistics Real Estate: Q2 2025 Update and Outlook',
@@ -27,6 +31,7 @@ export const NEWS = [
   },
   {
     id: 'defense-infrastructure',
+    img: '/images/futureproof.jpg',
     kind: 'Insight',
     period: null,
     title: 'Europe’s Defense and Infrastructure Spending',

@@ -1,102 +1,49 @@
-/* About route. One page, three sections, reached as #/about, #/about/vision and
-   #/about/sustainability so the DAA nav group can point at each one directly
-   without three near-empty routes.
-
-   The sections borrow the firm section's language rather than inventing a new
-   one: eyebrow, a single claim at display size, supporting notes demoted under
-   it, and a mono spec rail on a hairline. See CLAUDE.md on why this page must
-   not read as a generic "about us" band. */
-import { useEffect } from 'react'
+/* About us. Two parts, following axis-re.nl: a large title over an image, then
+   a team section that alternates copy and photograph and hands off to the
+   leadership page. No results section by request. */
+import PageBar from '../sections/PageBar.jsx'
+import PageHero from '../sections/PageHero.jsx'
+import GetInTouch from '../sections/GetInTouch.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
-import { ABOUT, VISION, SUSTAINABILITY } from '../data/about.js'
-
-/* #/about/<section> scrolls to that block. The nav group links straight here,
-   so this runs on arrival and on every hash change while the page is mounted. */
-function useSectionScroll() {
-  useEffect(() => {
-    const go = () => {
-      const part = window.location.hash.replace(/^#\/about\/?/, '')
-      const el = part ? document.getElementById('about-' + part) : null
-      if (!el) {
-        window.scrollTo(0, 0)
-        return
-      }
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
-    }
-    go()
-    window.addEventListener('hashchange', go)
-    return () => window.removeEventListener('hashchange', go)
-  }, [])
-}
-
-function Block({ id, data, children }) {
-  return (
-    <section className="about-block" id={id}>
-      <p className="eyebrow">{data.eyebrow}</p>
-      <h2 className="about-statement">{data.statement}</h2>
-      <div className="about-notes">
-        {data.body.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
-      </div>
-      {children}
-    </section>
-  )
-}
+import { ABOUT } from '../data/pages.js'
 
 export default function About() {
-  useSectionScroll()
-
   return (
-    <div className="page-about">
-      <header className="page-bar">
-        <a className="page-home" href="#/">
-          <img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" />
-        </a>
-        <div className="page-title">About</div>
-        <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">
-          Investor Login
-        </a>
-      </header>
+    <div className="page">
+      <PageBar title="About us" />
 
-      <div className="about-wrap">
-        <Block id="about-us" data={ABOUT}>
-          <ul className="firm-spec about-spec">
-            {ABOUT.spec.map((s) => <li key={s}>{s}</li>)}
-          </ul>
-        </Block>
-
-        <Block id="about-vision" data={VISION}>
-          <div className="about-pillars">
-            {VISION.pillars.map((p) => (
-              <div className="about-pillar" key={p.t}>
-                <p className="about-pillar-t">{p.t}</p>
-                <p className="about-pillar-d">{p.d}</p>
-              </div>
-            ))}
-          </div>
-        </Block>
-
-        <Block id="about-sustainability" data={SUSTAINABILITY}>
-          <div className="about-pillars">
-            {SUSTAINABILITY.commitments.map((c) => (
-              <div className="about-pillar" key={c.t}>
-                <p className="about-pillar-t">{c.t}</p>
-                <p className="about-pillar-d">{c.d}</p>
-              </div>
-            ))}
-          </div>
-        </Block>
-
-        <div className="about-onward">
-          <a href="#/leadership">Leadership &rarr;</a>
-          <a href="#/portfolio">Portfolio &rarr;</a>
-          <a href="#/contact">Contact &rarr;</a>
+      <PageHero
+        variant="full"
+        eyebrow="DAA Capital Partners"
+        title="About us"
+        image="/images/about-hero.jpg"
+        lead={ABOUT.lead}
+      >
+        <div className="phero-body">
+          {ABOUT.body.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
         </div>
-      </div>
+      </PageHero>
 
-      <footer className="page-foot">
-        <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
-      </footer>
+      <section className="alt" id="our-team">
+        <div className="alt-inner">
+          <div className="alt-copy">
+            <p className="eyebrow" data-reveal>{ABOUT.team.eyebrow}</p>
+            <h2 className="firm-statement" data-reveal>{ABOUT.team.statement}</h2>
+            <div className="firm-notes">
+              {ABOUT.team.notes.map((n) => <p key={n.slice(0, 20)} data-reveal>{n}</p>)}
+            </div>
+            <a className="btn btn--lg btn--outline" href="#/leadership">
+              <span>{ABOUT.team.cta}</span>
+              <span className="btn-arrow">&rarr;</span>
+            </a>
+          </div>
+          <div className="alt-media">
+            <img src="/images/team-photo.jpg" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <GetInTouch />
       <BackToTop />
     </div>
   )

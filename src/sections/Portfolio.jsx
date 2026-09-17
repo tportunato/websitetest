@@ -562,7 +562,10 @@ export default function Portfolio() {
             A consolidation strategy in a fragmented market: aggregating urban logistics assets
             across Western Europe&rsquo;s main corridors into an institutional portfolio.
           </p>
-          <a className="beat-cta" data-reveal href="#/portfolio">Explore the portfolio <span className="cta-arrow">&rarr;</span></a>
+          <a className="btn btn--lg btn--solid btn--spaced" data-reveal href="#/portfolio">
+            <span>Explore the portfolio</span>
+            <span className="btn-arrow">&rarr;</span>
+          </a>
         </div>
 
         {/* This canvas draws an ABSTRACT corridor network with representative

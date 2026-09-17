@@ -315,8 +315,10 @@ main {
     display: block;
   }
 
-  /* The login pill lives in the panel at this size; the burger takes the slot. */
-  .nav-end .login {
+  /* The Get in touch button lives in the panel at this size; the burger takes
+     the slot. */
+  .nav-end .login,
+  .nav-end .btn--nav {
     display: none;
   }
 
@@ -2015,3 +2017,505 @@ main {
 .firm--photo .firm-spec li + li::before {
   margin: 0 10px;
 }
+
+/* ============================================================
+   Buttons. One component, three sizes/weights. Everything that
+   was a bare underlined link is now an actual button, because the
+   old .beat-cta read as body copy with a rule under it.
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn--solid {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: #0b1520;
+}
+
+.btn--solid:hover { background: #fff; border-color: #fff; }
+
+.btn--outline:hover { border-color: var(--paper); }
+
+.btn--lg {
+  padding: 18px 36px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.btn--nav { padding: 11px 22px; font-size: 0.92rem; }
+.btn--spaced { margin-top: 34px; }
+
+.btn-ico { width: 18px; height: 18px; flex: none; }
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.btn:hover .btn-arrow { transform: translateX(5px); }
+
+.sr-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Content pages
+   ============================================================ */
+.page {
+  background: var(--navy);
+  min-height: 100vh;
+}
+
+/* ---------- Page hero ---------- */
+.phero {
+  position: relative;
+  isolation: isolate;
+}
+
+.phero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.phero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.82) 0%, rgba(7, 17, 31, 0.32) 42%, rgba(7, 17, 31, 0.78) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.1) 62%);
+}
+
+.phero-head {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 78vh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 8vh) var(--gutter) 7vh;
+}
+
+.phero-head-inner {
+  /* Must be positioned: .phero-media is a z-index:0 positioned element, which
+     paints above a static sibling, so the title was hidden behind the photo. */
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* The one place type is the whole composition. */
+.phero-title {
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  line-height: 0.94;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+.phero-panel {
+  position: relative;
+  z-index: 1;
+  padding: 8vh var(--gutter);
+  background: var(--navy);
+}
+
+.phero-panel-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.phero-lead {
+  font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+  line-height: 1.5;
+  max-width: 62ch;
+  font-weight: 400;
+}
+
+.phero-body,
+.phero-cols {
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.phero-body p + p,
+.phero-cols p + p { margin-top: 18px; }
+
+.phero-cols {
+  columns: 2;
+  column-gap: 5vw;
+  max-width: 1100px;
+}
+
+.phero-cols p { break-inside: avoid; }
+
+/* boxed: the image stops short and a solid panel carries the copy under it */
+.phero--boxed .phero-veil {
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.25) 40%, rgba(7, 17, 31, 0.92) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.6) 0%, rgba(7, 17, 31, 0.06) 66%);
+}
+
+.phero--boxed .phero-head {
+  min-height: 62vh;
+  padding-bottom: 5vh;
+}
+
+.phero--boxed .phero-panel {
+  background: var(--navy2);
+  border-top: 1px solid var(--line);
+  padding: 7vh var(--gutter);
+}
+
+@media (max-width: 880px) {
+  .phero-cols { columns: 1; }
+  .phero--boxed .phero-head { min-height: 48vh; }
+}
+
+/* ---------- Alternating copy / photo (About > Our team) ---------- */
+.alt {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.alt-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+  align-items: center;
+}
+
+.alt-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.alt-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.alt-copy .btn { margin-top: 34px; }
+
+@media (max-width: 880px) {
+  .alt-inner { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ---------- Pillars ---------- */
+.pillars {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.pillars-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px;
+}
+
+.pillars-inner--four { grid-template-columns: repeat(4, 1fr); gap: 34px; }
+
+.pillar {
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.pillar-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pillar-d { color: var(--muted); font-size: 0.95rem; line-height: 1.62; }
+
+@media (max-width: 980px) {
+  .pillars-inner,
+  .pillars-inner--four { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 680px) {
+  .pillars-inner,
+  .pillars-inner--four { grid-template-columns: 1fr; }
+}
+
+/* ---------- CTA band ---------- */
+.cta-band {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+  background: var(--navy2);
+}
+
+.cta-band-inner { max-width: var(--maxw); margin: 0 auto; }
+
+.cta-band-note {
+  margin-top: 22px;
+  margin-bottom: 36px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.62;
+  max-width: 62ch;
+}
+
+/* ---------- Investment criteria ---------- */
+.criteria {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.criteria-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 5vw;
+}
+
+.crit {
+  display: flex;
+  gap: 22px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.crit-n {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(247, 245, 240, 0.4);
+  padding-top: 5px;
+  flex: none;
+}
+
+.crit-t { font-size: 1.22rem; font-weight: 500; letter-spacing: -0.01em; }
+
+.crit-d {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.97rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 880px) {
+  .criteria-inner { grid-template-columns: 1fr; }
+}
+
+/* ---------- News strip ---------- */
+.newsstrip {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.newsstrip-head {
+  max-width: var(--maxw);
+  margin: 0 auto 46px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+
+.newsstrip-head h2 { max-width: none; }
+
+/* The lead card is tall and the rest are wide, so the row reads as an edit
+   rather than three identical tiles. */
+.newsstrip-grid {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 26px;
+}
+
+.ncard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(10, 30, 51, 0.4);
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.ncard:hover { border-color: rgba(247, 245, 240, 0.4); transform: translateY(-3px); }
+
+.ncard--lead { grid-row: span 2; }
+
+.ncard-media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.ncard--lead .ncard-media { aspect-ratio: 4 / 5; }
+
+.ncard-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ncard:hover .ncard-media img { transform: scale(1.05); }
+
+.ncard-body { display: block; padding: 24px 26px 28px; }
+
+.ncard-meta {
+  display: block;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.45);
+}
+
+.ncard-title {
+  display: block;
+  margin-top: 12px;
+  font-size: 1.24rem;
+  font-weight: 500;
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+}
+
+.ncard--lead .ncard-title { font-size: 1.7rem; }
+
+.ncard-stand {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.newsstrip-src {
+  display: block;
+  max-width: var(--maxw);
+  margin: 30px auto 0;
+  color: rgba(247, 245, 240, 0.45);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+@media (max-width: 880px) {
+  .newsstrip-grid { grid-template-columns: 1fr; }
+  .ncard--lead { grid-row: auto; }
+  .ncard--lead .ncard-media { aspect-ratio: 16 / 9; }
+}
+
+/* ---------- Get in touch ---------- */
+.git {
+  padding: var(--band) var(--gutter) calc(var(--band) + 2vh);
+  border-top: 1px solid var(--line);
+}
+
+.git-plate {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 8vh 6% 8vh;
+  border-radius: 6px;
+  background: var(--navy2);
+}
+
+.git-plate-bg { position: absolute; inset: 0; z-index: -1; }
+
+.git-plate-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+}
+
+.git-plate-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 30, 51, 0.96) 0%, rgba(10, 30, 51, 0.7) 55%, rgba(10, 30, 51, 0.4) 100%);
+}
+
+.git-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+  flex-wrap: wrap;
+}
+
+.git-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  max-width: none;
+}
+
+.git-note {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 0.97rem;
+  max-width: 60ch;
+}
+
+/* ---------- Split feature (mirror of the firm section) ---------- */
+.split--flip .firm-photo { right: auto; left: 0; }
+
+.split--flip .firm-photo::after {
+  transform: scaleX(-1);
+}
+
+.split--flip .firm-inner { padding-right: 0; padding-left: 46%; }
+
+@media (max-width: 980px) {
+  .split--flip .firm-inner { padding-left: 0; }
+}
+
+/* Beat pages carry the fixed bar over a sticky stage. */
+.page--beat { padding-top: 0; }

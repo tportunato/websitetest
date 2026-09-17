@@ -1,6 +1,7 @@
 /* Portfolio map page: dark MapLibre map of Western Europe, one marker per
    asset, click opens a slide-in sidebar with photo, specs and press link.
    All asset data from public press releases (src/data/assets.js). */
+import PageBar from '../sections/PageBar.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { ASSETS } from '../data/assets.js'
 import { ensureMaplibre, DARK_STYLE } from '../lib/maplibre.js'
@@ -56,11 +57,7 @@ export default function PortfolioMap() {
 
   return (
     <div className="page-map">
-      <header className="page-bar">
-        <a className="page-home" href="#/"><img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" /></a>
-        <div className="page-title">Portfolio</div>
-        <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
-      </header>
+      <PageBar title="Portfolio" />
       <div ref={mapDiv} className="map-full" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }} />
       <div className="map-hint">Select an asset</div>
 
