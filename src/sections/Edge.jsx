@@ -9,7 +9,7 @@
    - /data/showcase/lyon.json  (real road network)
    - /data/metro/lyon.json     (real motorway isochrones)
    Fallback: /data/showcase-lyon.json (salvaged snapshot, synthetic roads). */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { ensureMaplibre } from '../lib/maplibre.js'
 import { DARK, DARK_OPACITY, darkRasterPaint } from '../lib/basemap.js'
 
@@ -149,11 +149,6 @@ export default function Edge() {
   const mapDiv = useRef(null)
   const cvs = useRef(null)
   const mapRef = useRef(null)
-  /* The engine snapshot's own counters. .scan-stats has been styled since the
-     first pass but nothing ever rendered it, so the figures the honesty notes
-     describe as on-page were not actually on the page. */
-  const [stats, setStats] = useState(null)
-
   useEffect(() => {
     const section = sectionRef.current
     const canvas = cvs.current
@@ -190,7 +185,6 @@ export default function Edge() {
         if (r.ok) metro = await r.json()
       } catch (e) {}
       if (!show || cancelled) return
-      if (show.stats) setStats(show.stats)
 
       ensureMaplibre((err) => {
         if (cancelled || err || !window.maplibregl) return
@@ -554,28 +548,6 @@ export default function Edge() {
           </p>
         </div>
 
-        {stats && (
-          <div className="scan-stats" aria-hidden="true">
-            <div>
-              <div className="scan-stat-num">{stats.parcels.toLocaleString('en-GB')}</div>
-              <div className="scan-stat-label">parcels scanned</div>
-            </div>
-            <div>
-              <div className="scan-stat-num">{stats.industrial.toLocaleString('en-GB')}</div>
-              <div className="scan-stat-label">industrial sites</div>
-            </div>
-            <div>
-              <div className="scan-stat-num">{stats.owners_named.toLocaleString('en-GB')}</div>
-              <div className="scan-stat-label">owners named</div>
-            </div>
-            <div>
-              <div className="scan-stat-num">{stats.communes.toLocaleString('en-GB')}</div>
-              <div className="scan-stat-label">communes</div>
-            </div>
-          </div>
-        )}
-
-        <div className="caption">Sonar engine &middot; Lyon corridor</div>
       </div>
     </section>
   )

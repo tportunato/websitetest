@@ -79,6 +79,26 @@ export default function Landing() {
       window.addEventListener('scroll', onNative, { passive: true })
     }
 
+    /* Axis-style reveal: when a full-height section comes to rest filling the
+       screen, the bar comes back even though the visitor is still scrolling
+       down. Without this the header stays hidden for the whole run of beats,
+       because nothing scrolls UP until they reach the footer. */
+    const fullScreens = document.querySelectorAll('.hero, .firm, .manifesto, .beat .stage')
+    const ioNav = new IntersectionObserver(
+      (entries) => {
+        if (!navEl) return
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          navEl.classList.remove('nav--hidden')
+          /* Reset the reference point, otherwise the very next scroll event
+             reads as "still going down" and hides it again immediately. */
+          lastY = lenis ? lenis.scroll || 0 : window.pageYOffset
+        })
+      },
+      { threshold: 0.92 }
+    )
+    fullScreens.forEach((el) => ioNav.observe(el))
+
     /* In-page anchors. App only resets scroll when the route changes, so these
        are ours to handle — through Lenis, never window.scrollTo. */
     const onHash = () => scrollToHash(window.location.hash)
@@ -102,7 +122,7 @@ export default function Landing() {
           duration: reduced ? 0.01 : 1,
           ease: 'power3.out',
           delay: inHero && !reduced ? 0.12 : 0,
-          ...(inHero ? {} : { scrollTrigger: { trigger: el, start: 'top 80%' } })
+          ...(inHero ? {} : { scrollTrigger: { trigger: el, start: 'top 97%' } })
         }
       )
     })
@@ -150,6 +170,7 @@ export default function Landing() {
 
     return () => {
       cancelAnimationFrame(deepLink)
+      ioNav.disconnect()
       window.removeEventListener('hashchange', onHash)
       if (onNative) window.removeEventListener('scroll', onNative)
       if (raf) gsap.ticker.remove(raf)

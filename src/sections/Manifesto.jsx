@@ -1,12 +1,10 @@
-/* The manifesto. This is the page's ONE serif moment (see CLAUDE.md) — the
-   claim is the whole point and nothing here may compete with it.
+/* The manifesto. Built to mirror the firm section: same type, same left-hand
+   positioning, same photo panel on the right.
 
-   It used to be the line alone, which read as a pull quote with nothing behind
-   it: a reader who did not already agree was given no reason to. The substance
-   is therefore added in the page's OTHER voice, not a second display voice —
-   one sans sub-line carrying the argument, then a mono rail on a hairline in
-   the same idiom as the firm section's spec rail. No second serif, no numbers
-   (NOTES-data-honesty.md: nothing unverified goes on the page). */
+   NOTE: this used to be the page's one centred serif moment. It is now sans and
+   left-aligned at the client's request, so the Cormorant italic no longer
+   appears anywhere on the landing page. If the serif is ever wanted back, it is
+   .manifesto .firm-statement that carries it. */
 
 const RAIL = [
   {
@@ -25,16 +23,24 @@ const RAIL = [
 
 export default function Manifesto() {
   return (
-    <section className="manifesto">
-      <div className="manifesto-inner">
-        <h2 data-reveal>
-          We buy the buildings<br />cities cannot live without.
+    <section className="manifesto manifesto--photo">
+      <div className="manifesto-photo" aria-hidden="true">
+        <img src="/images/warehouse-trucks.jpg" alt="" />
+      </div>
+
+      <div className="firm-inner manifesto-inner">
+        <p className="eyebrow" data-reveal>The thesis</p>
+
+        <h2 className="firm-statement" data-reveal>
+          We buy the buildings cities cannot live without.
         </h2>
 
-        <p className="manifesto-sub" data-reveal>
-          Last-mile logistics is not a property type. It is the physical condition of
-          everything a city expects to arrive the same day.
-        </p>
+        <div className="firm-notes">
+          <p data-reveal>
+            Last-mile logistics is not a property type. It is the physical condition of
+            everything a city expects to arrive the same day.
+          </p>
+        </div>
 
         <ul className="manifesto-rail" data-reveal>
           {RAIL.map((r) => (

@@ -87,7 +87,7 @@ main {
   justify-self: center;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 34px;
 }
 
 /* One type treatment for a flat link and a group trigger, so the bar reads as
@@ -100,7 +100,7 @@ main {
   color: var(--paper);
   text-decoration: none;
   font-family: inherit;
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   background: none;
@@ -173,7 +173,7 @@ main {
   padding: 10px 22px;
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.93rem;
+  font-size: 1rem;
   white-space: nowrap;
   transition: color 0.2s, background 0.2s;
 }
@@ -1033,22 +1033,17 @@ button:focus-visible {
 
 /* manifesto */
 .manifesto {
-  min-height: 92vh;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  text-align: left;
   padding: var(--band) var(--gutter);
   background: radial-gradient(90% 70% at 50% 50%, #0b2036 0%, var(--navy) 78%);
 }
 
-.manifesto h2 {
-  font-size: clamp(2.4rem, 5.4vw, 4.8rem);
-  line-height: 1.08;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  max-width: none;
-}
+
 
 /* closing */
 .closing {
@@ -1093,8 +1088,8 @@ button:focus-visible {
 
 /* ---------- Atmosphere pass ---------- */
 
-/* second voice: the two statement moments speak serif */
-.manifesto h2,
+/* Second voice. The manifesto used to speak serif here too; it now mirrors the
+   firm section instead, so only the closing keeps it. */
 .closing h2 {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
@@ -1102,9 +1097,7 @@ button:focus-visible {
   letter-spacing: 0;
 }
 
-.manifesto h2 {
-  font-size: clamp(2.8rem, 6.4vw, 5.6rem);
-}
+
 
 .closing h2 {
   font-size: clamp(2.4rem, 5vw, 4.4rem);
@@ -1124,12 +1117,15 @@ button:focus-visible {
 }
 
 /* light arc: the page warms as the day breaks, cools to close */
+/* Was 0.55 across the top, which greyed the footage the same way the hero's
+   scrim did. Strength is kept low where the image is and high at the bottom,
+   under the copy. */
 #market .scrim {
-  background: linear-gradient(180deg, rgba(7, 17, 31, 0.55) 0%, rgba(9, 18, 30, 0.12) 42%, rgba(14, 21, 30, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.20) 0%, rgba(9, 18, 30, 0.04) 40%, rgba(14, 21, 30, 0.86) 100%);
 }
 
 #assets .scrim {
-  background: linear-gradient(180deg, rgba(10, 18, 30, 0.5) 0%, rgba(13, 20, 28, 0.1) 42%, rgba(24, 22, 20, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(10, 18, 30, 0.20) 0%, rgba(13, 20, 28, 0.04) 40%, rgba(24, 22, 20, 0.84) 100%);
 }
 
 .manifesto {
@@ -1171,18 +1167,7 @@ main {
   counter-reset: beat;
 }
 
-.beat .stage::before {
-  counter-increment: beat;
-  content: '0' counter(beat);
-  position: absolute;
-  top: 96px;
-  right: 32px;
-  z-index: 4;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.3em;
-  color: rgba(247, 245, 240, 0.35);
-}
+/* The 01/02 beat numbers were removed at the client's request. */
 
 /* footer colophon */
 .coords {
@@ -1207,8 +1192,90 @@ main {
 .firm {
   position: relative;
   overflow: hidden;
+  /* Full screen, like the cinematic beats either side of it. It used to be a
+     padded band that came up well short of the viewport, which is why it read
+     as smaller than everything around it. */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
   padding: var(--band) var(--gutter);
   background: #060d16;
+}
+
+/* Photo panel: full height, hard against the right edge, feathered into the
+   ground on its left so it reads as part of the section rather than a pasted
+   rectangle. object-fit does the cropping at every width. */
+.firm-photo,
+.manifesto-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.firm-photo img,
+.manifesto-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* The fade has to reach the section's OWN ground colour, or the panel's left
+   edge shows as a tonal step. .firm sits on #060d16, .manifesto on a gradient
+   that lands near --navy, so each sets --photo-bg for itself. */
+.firm-photo,
+.manifesto-photo {
+  --photo-bg: 6, 13, 22;
+}
+
+.manifesto-photo {
+  --photo-bg: 7, 17, 31;
+}
+
+.firm-photo::after,
+.manifesto-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--photo-bg), 1) 0%,
+      rgba(var(--photo-bg), 0.92) 14%,
+      rgba(var(--photo-bg), 0.6) 34%,
+      rgba(var(--photo-bg), 0.24) 54%,
+      rgba(var(--photo-bg), 0) 74%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(var(--photo-bg), 0.6) 0%,
+      rgba(var(--photo-bg), 0) 26%,
+      rgba(var(--photo-bg), 0) 74%,
+      rgba(var(--photo-bg), 0.6) 100%
+    );
+}
+
+/* Keep the copy clear of the photo at every width. */
+.firm--photo .firm-inner,
+.manifesto--photo .manifesto-inner {
+  padding-right: 46%;
+}
+
+@media (max-width: 980px) {
+  .firm-photo,
+  .manifesto-photo {
+    width: 100%;
+    opacity: 0.3;
+  }
+
+  .firm--photo .firm-inner,
+  .manifesto--photo .manifesto-inner {
+    padding-right: 0;
+  }
 }
 
 /* the three backgrounds */
@@ -1786,34 +1853,31 @@ main {
    page's OTHER voices — one sans sub-line, then the mono rail — so no second
    serif appears and the statement keeps its weight. */
 .manifesto-inner {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
 }
 
-.manifesto-sub {
-  margin: 34px auto 0;
-  max-width: 62ch;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.35vw, 1.16rem);
-  line-height: 1.6;
-}
-
+/* Stacked in the left column rather than three across, because that column is
+   now half the width it was. */
 .manifesto-rail {
   list-style: none;
-  padding: 40px 0 0;
-  margin: 56px auto 0;
+  padding: 30px 0 0;
+  margin: 40px 0 0;
   border-top: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   text-align: left;
 }
 
 .manifesto-rail li {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 18px;
+  align-items: baseline;
 }
 
 .manifesto-rail-t {
@@ -1831,11 +1895,9 @@ main {
 }
 
 @media (max-width: 880px) {
-  .manifesto-rail {
+  .manifesto-rail li {
     grid-template-columns: 1fr;
-    gap: 28px;
-    margin-top: 44px;
-    padding-top: 32px;
+    gap: 6px;
   }
 }
 
@@ -1940,4 +2002,16 @@ main {
     grid-template-columns: 1fr;
     gap: 28px;
   }
+}
+
+
+/* The spec rail now sits in a half-width column, where it wrapped and left a
+   separator dot orphaned at the start of the second line. */
+.firm--photo .firm-spec {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+}
+
+.firm--photo .firm-spec li + li::before {
+  margin: 0 10px;
 }

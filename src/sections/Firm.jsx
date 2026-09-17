@@ -223,10 +223,14 @@ export default function Firm() {
   })
 
   return (
-    <section className={'firm firm--' + bg} id="firm">
+    <section className={'firm firm--photo firm--' + bg} id="firm">
       {bg === 'corridors' && <Corridors />}
       {bg === 'hold' && <Hold />}
       {bg === 'frame' && <Frame />}
+
+      <div className="firm-photo" aria-hidden="true">
+        <img src="/images/geneva.jpg" alt="" />
+      </div>
 
       <div className="firm-inner">
         <p className="eyebrow" data-reveal>The firm</p>
