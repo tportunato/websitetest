@@ -560,7 +560,7 @@ export default function Portfolio() {
           <h2 data-reveal>Asset by asset, corridor by corridor.</h2>
           <p className="body" data-reveal>
             A consolidation strategy in a fragmented market: aggregating urban logistics assets
-            across Western Europe&rsquo;s main corridors into an institutional portfolio.
+            across Western Europe&rsquo;s main corridors into institutional portfolios.
           </p>
           <a className="btn btn--lg btn--solid btn--spaced" data-reveal href="#/portfolio">
             <span>Explore the portfolio</span>

@@ -6,7 +6,7 @@ Plain-language notes on how exact everything on this site is.
 |---|---|---|
 | Hero video (Paris vans) | REPRESENTATIVE | AI-generated (Veo 3.1) mood footage. Not owned assets. Never present as portfolio. |
 | Market video (warehouse time-lapse) | REPRESENTATIVE | AI-generated. Depicts a typical first-ring urban logistics asset, not a DAA property. |
-| Asset mgmt video (facade) | REPRESENTATIVE | AI-generated. Illustrates the refurbishment thesis, not a specific asset. |
+| Asset mgmt video (facade) | REPRESENTATIVE | AI-generated. Illustrates the refurbishment thesis, not a specific asset. Replaced 2026-09-17 with a 15s extended cut. |
 | Origination canvas (Sonar scan) | REAL (snapshot), candidates withheld | The Lyon data files were refreshed from the Sonar repo on 2026-09-16, so the section now draws the same geography the app's own cold-open draws: 5,624 real road segments, real motorway isochrones from the metro file, and the engine's REAL industrial points (6,675, public land-use data) as the orange dots. The RED CANDIDATES REMAIN SYNTHETIC — a seeded scatter anchored to the road network — because the engine's real candidate locations are commercially confidential. That is a deliberate choice, not a data gap. Caption reads "Sonar engine · Lyon corridor" — it had gone missing from the markup and has been restored. The engine counters (parcels, industrial sites, owners named, communes) are now actually rendered from the snapshot file; .scan-stats had been styled since pass 1 with nothing using it. |
 | Portfolio beat (corridor network) | REPRESENTATIVE | An ABSTRACT canvas: real European logistics axes drawn as braided corridors, with 14 asset markers at invented positions. It is not a map of holdings and never was — the asset-map version described here previously was reverted in 1921682 ("restore the original portfolio canvas") but this row was not updated with it, so the record certified a representative visual as REAL. The on-page caption "Illustrative visual" was also missing and has been restored. The five real assets live on the #/portfolio page. |
 | -35% completions (CBRE) | REMOVED | The stat and its placeholder badge have been taken off the Market section. Nothing on the page now quotes a market figure, so the dashed-amber badge system is gone with it. Reinstate with a verified CBRE citation if the number is wanted back. |
@@ -34,3 +34,11 @@ watermarking unauthenticated tiles with "API KEY REQUIRED" on 2026-08-24. Set
 VITE_CARTO_KEY in Vercel and CARTO takes the lead again automatically — see
 src/lib/basemap.js, ported from the Sonar repo, which hit this first.
 AI footage is mood, not inventory: real assets get real photography.
+
+All three background videos carried a visible "Veo" watermark in the bottom
+right of every frame, which is the generator's own mark and would have gone out
+on an investor-facing page. They are cropped 1184x666 off the top-left and
+rescaled to 1280x720, which removes it; the framing shifts by under 8% and the
+videos are full-bleed behind a scrim, so the crop is not visible. Uncropped
+originals are recoverable from git history. If a future clip is generated on a
+tier that does not watermark, drop the crop rather than carrying it forward.
