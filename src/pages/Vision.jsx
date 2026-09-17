@@ -17,7 +17,7 @@ export default function Vision() {
         variant="boxed"
         eyebrow="DAA Capital Partners"
         title={<>Vision &amp;<br />Mission</>}
-        image="/images/vision-hero.jpg"
+        image="/images/depot-aerial.jpg"
         lead={VISION.lead}
       >
         <div className="phero-cols">

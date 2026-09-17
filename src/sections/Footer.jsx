@@ -40,6 +40,15 @@ export default function Footer() {
           <a href="https://www.daacap.com/privacypolicy/" target="_blank" rel="noreferrer">Privacy Policy</a>
         </span>
       </div>
+      {/* The two interface icons are Noun Project downloads, which carry the
+          credit inside the file as 5px <text>. That is unreadable at icon size,
+          so it lives here instead. Under the free CC BY licence the credit has
+          to appear somewhere; a paid Noun Project plan removes the requirement,
+          at which point this line can go. */}
+      <p className="credits">
+        Paper plane icon by Yosua Bungaran and forward arrow by Rainbow Designs,
+        both from Noun Project.
+      </p>
     </footer>
   )
 }

@@ -2603,3 +2603,12 @@ main {
 
 /* Pages carry the shared footer, which already owns its own top rule. */
 .page .footer { border-top: 1px solid var(--line); }
+
+/* Icon licence credit. Quiet by design: it is a legal requirement, not copy. */
+.credits {
+  margin-top: 16px;
+  color: rgba(247, 245, 240, 0.32);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  max-width: 60ch;
+}

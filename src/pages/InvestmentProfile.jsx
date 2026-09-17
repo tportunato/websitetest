@@ -1,23 +1,15 @@
 /* Investment profile. Set out plainly enough that a broker can qualify a
    building against it in under a minute: six statements at reading size with an
-   arrow against each, rather than a grid of labelled cards. The arrow is inline
-   SVG — the PNG supplied for it, like the paper plane, exported as a blank
-   white square. */
+   arrow against each, rather than a grid of labelled cards. The arrow comes
+   from ../sections/Icons.jsx. */
 import PageBar from '../sections/PageBar.jsx'
 import PageHero from '../sections/PageHero.jsx'
 import GetInTouch from '../sections/GetInTouch.jsx'
 import Footer from '../sections/Footer.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { INVESTMENT } from '../data/pages.js'
+import { Arrow } from '../sections/Icons.jsx'
 
-function Arrow() {
-  return (
-    <svg className="bullet-arrow" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 12h15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
 
 export default function InvestmentProfile() {
   return (

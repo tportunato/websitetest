@@ -3,11 +3,10 @@
    one-pager. The same bar is used on the landing page and on every content
    page (via PageBar), so it never resizes between routes.
 
-   The Investor Login pill was replaced by a Get in touch button at the client's
-   request. The paper plane is inline SVG: the PNG supplied for it was a blank
-   white square, and an inline icon inherits currentColor and stays sharp at any
-   size anyway. */
+   The Investor Login pill replaced the Investor Login link at the client's
+   request. Its paper plane comes from ./Icons.jsx. */
 import { useEffect, useRef, useState } from 'react'
+import { Plane } from './Icons.jsx'
 
 const GROUPS = [
   {
@@ -37,15 +36,6 @@ const FLAT = [
   { label: 'News', href: '#/news' }
 ]
 
-function Plane() {
-  return (
-    <svg className="btn-ico" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21.5 2.5L2.8 10.2a.5.5 0 00.02.93l5.9 2.05 2.05 5.9a.5.5 0 00.93.02L21.5 2.5z"
-            fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-      <path d="M21.5 2.5L8.72 13.18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  )
-}
 
 export default function Nav({ pageTitle }) {
   const [open, setOpen] = useState(null)
