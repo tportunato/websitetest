@@ -87,7 +87,7 @@ main {
   justify-self: center;
   display: flex;
   align-items: center;
-  gap: 34px;
+  gap: 46px;
 }
 
 /* One type treatment for a flat link and a group trigger, so the bar reads as
@@ -2174,15 +2174,13 @@ main {
 }
 
 .phero-body p + p,
-.phero-cols p + p { margin-top: 18px; }
+.phero-cols p + p { margin-top: 22px; }
 
+/* One column. Two columns left a ragged, uneven pair of blocks under the lead
+   and made the reader jump back up the page to start the second one. */
 .phero-cols {
-  columns: 2;
-  column-gap: 5vw;
-  max-width: 1100px;
+  max-width: 68ch;
 }
-
-.phero-cols p { break-inside: avoid; }
 
 /* boxed: the image stops short and a solid panel carries the copy under it */
 .phero--boxed .phero-veil {
@@ -2203,7 +2201,6 @@ main {
 }
 
 @media (max-width: 880px) {
-  .phero-cols { columns: 1; }
   .phero--boxed .phero-head { min-height: 48vh; }
 }
 
@@ -2604,11 +2601,172 @@ main {
 /* Pages carry the shared footer, which already owns its own top rule. */
 .page .footer { border-top: 1px solid var(--line); }
 
-/* Icon licence credit. Quiet by design: it is a legal requirement, not copy. */
-.credits {
-  margin-top: 16px;
-  color: rgba(247, 245, 240, 0.32);
-  font-size: 0.72rem;
+
+/* ============================================================
+   Article template. One set of rules for every article, so they
+   all come out looking like the same publication.
+   ============================================================ */
+.art-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 66vh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 8vh) var(--gutter) 6vh;
+}
+
+.art-hero-media { position: absolute; inset: 0; z-index: 0; }
+
+.art-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.art-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.78) 0%, rgba(7, 17, 31, 0.34) 40%, rgba(7, 17, 31, 0.9) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.7) 0%, rgba(7, 17, 31, 0.12) 64%);
+}
+
+.art-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.art-meta {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.6);
+  margin-bottom: 20px;
+}
+
+.art-title {
+  font-size: clamp(2.1rem, 4.6vw, 3.9rem);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  max-width: 22ch;
+}
+
+/* One measure for the whole body, so every article reads the same. */
+.art-body {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 9vh var(--gutter) 4vh;
+}
+
+.art-stand {
+  font-size: clamp(1.1rem, 1.7vw, 1.38rem);
   line-height: 1.5;
-  max-width: 60ch;
+  font-weight: 400;
+  padding-bottom: 30px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.art-byline {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.5);
+  margin-bottom: 12px;
+}
+
+.art-h2 {
+  font-size: clamp(1.4rem, 2.3vw, 1.85rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  max-width: none;
+  margin-top: 54px;
+  margin-bottom: 18px;
+}
+
+.art-h3 {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.72);
+  margin-top: 38px;
+  margin-bottom: 14px;
+}
+
+.art-p {
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.72;
+  margin-bottom: 20px;
+}
+
+.art-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.art-ul li {
+  position: relative;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.68;
+  padding-left: 26px;
+  margin-bottom: 14px;
+}
+
+.art-ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 10px;
+  height: 1px;
+  background: rgba(247, 245, 240, 0.5);
+}
+
+.art-source {
+  margin-top: 46px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  color: rgba(247, 245, 240, 0.45);
+  font-size: 0.86rem;
+}
+
+.art-source a { color: var(--paper); }
+
+.art-more {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.art-more-inner { max-width: var(--maxw); margin: 0 auto; }
+
+.art-more-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.art-more-grid .ncard-media { aspect-ratio: 16 / 9; }
+
+.art-missing {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: calc(var(--nav-h) + 10vh) var(--gutter) 10vh;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+@media (max-width: 880px) {
+  .art-more-grid { grid-template-columns: 1fr; }
 }

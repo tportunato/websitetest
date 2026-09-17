@@ -1,11 +1,11 @@
 /* News strip. Cards are image-led with the crop doing the work: the first card
    is tall and the rest are wide, so the row reads as an edit rather than a grid
-   of equal tiles. Links go out to daacap.com, which is still where the
-   articles live. */
-import { NEWS, NEWS_INDEX } from '../data/news.js'
+   of equal tiles. Cards link to the article page on this site; they used to
+   bounce the reader out to the old WordPress. */
+import { ARTICLES, ARTICLE_INDEX } from '../data/articles.js'
 
 export default function NewsStrip({ limit = 3, heading = 'News & press releases' }) {
-  const items = NEWS.slice(0, limit)
+  const items = ARTICLES.slice(0, limit)
   return (
     <section className="newsstrip" id="news">
       <div className="newsstrip-head">
@@ -21,9 +21,7 @@ export default function NewsStrip({ limit = 3, heading = 'News & press releases'
           <a
             className={'ncard' + (i === 0 ? ' ncard--lead' : '')}
             key={n.id}
-            href={n.link}
-            target="_blank"
-            rel="noreferrer"
+            href={'#/news/' + n.id}
             data-reveal
           >
             <span className="ncard-media">
@@ -41,7 +39,7 @@ export default function NewsStrip({ limit = 3, heading = 'News & press releases'
         ))}
       </div>
 
-      <a className="newsstrip-src" href={NEWS_INDEX} target="_blank" rel="noreferrer">
+      <a className="newsstrip-src" href={ARTICLE_INDEX} target="_blank" rel="noreferrer">
         daacap.com/news &rarr;
       </a>
     </section>

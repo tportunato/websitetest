@@ -7,14 +7,13 @@
       Get in touch button. They take `currentColor` here instead, so an icon is
       the colour of the text beside it wherever it is used.
    2. Both carried the Noun Project attribution as <text> inside the artwork,
-      which would have rendered as unreadable 5px type inside the glyph. The
-      credit is in the site footer instead, where the licence expects it.
+      which would have rendered as unreadable 5px type inside the glyph. It is
+      dropped: these are licensed under the client's paid Noun Project plan, so
+      no on-page credit is required.
    3. The arrow was an INVERTED icon: a filled 100x100 square with the chevron
       knocked out of it. That is why its PNG looked like a blank white square.
       Only the chevron sub-path is kept.
-
-   Credits: paper plane by Yosua Bungaran, forward arrow by Rainbow Designs,
-   both from Noun Project. */
+ */
 
 export function Plane({ className = 'btn-ico' }) {
   return (

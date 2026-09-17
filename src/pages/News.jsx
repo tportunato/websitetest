@@ -6,7 +6,7 @@ import PageHero from '../sections/PageHero.jsx'
 import NewsStrip from '../sections/NewsStrip.jsx'
 import GetInTouch from '../sections/GetInTouch.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
-import { NEWS } from '../data/news.js'
+import { ARTICLES } from '../data/articles.js'
 
 export default function News() {
   return (
@@ -21,7 +21,7 @@ export default function News() {
         lead="Market commentary and transaction announcements from the firm."
       />
 
-      <NewsStrip limit={NEWS.length} heading="Latest" />
+      <NewsStrip limit={ARTICLES.length} heading="Latest" />
       <GetInTouch />
       <Footer />
       <BackToTop />
