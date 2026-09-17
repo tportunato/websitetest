@@ -202,7 +202,7 @@ export default function Landing() {
           notes={FUTUREPROOF.notes}
           image="/images/futureproof.jpg"
         >
-          <a className="btn btn--lg btn--solid btn--spaced" href="#/asset-management">
+          <a className="btn btn--lg btn--solid btn--spaced" href="#/strategy">
             <span>How we do it</span>
             <span className="btn-arrow">&rarr;</span>
           </a>

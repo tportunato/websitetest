@@ -16,8 +16,7 @@ import Sustainability from './pages/Sustainability.jsx'
 import InvestmentProfile from './pages/InvestmentProfile.jsx'
 import News from './pages/News.jsx'
 import Article from './pages/Article.jsx'
-import Origination from './pages/Origination.jsx'
-import AssetManagement from './pages/AssetManagement.jsx'
+import Strategy from './pages/Strategy.jsx'
 import { scrollToTop } from './lib/scroll.js'
 
 /* Order matters: '#/news/<id>' has to be tested before the bare '#/news'. */
@@ -31,8 +30,7 @@ const ROUTES = [
   ['#/investment-profile', 'investment', InvestmentProfile],
   ['#/news/', 'article', Article],
   ['#/news', 'news', News],
-  ['#/origination', 'origination', Origination],
-  ['#/asset-management', 'assets', AssetManagement]
+  ['#/strategy', 'strategy', Strategy]
 ]
 
 function getRoute() {

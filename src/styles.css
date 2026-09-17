@@ -2179,7 +2179,7 @@ main {
 /* One column. Two columns left a ragged, uneven pair of blocks under the lead
    and made the reader jump back up the page to start the second one. */
 .phero-cols {
-  max-width: 68ch;
+  max-width: 880px;
 }
 
 /* boxed: the image stops short and a solid panel carries the copy under it */
@@ -2653,15 +2653,21 @@ main {
   max-width: 22ch;
 }
 
-/* One measure for the whole body, so every article reads the same. */
+/* One measure for the whole body, so every article reads the same.
+   In px, not ch: `ch` resolves against the element's own font-size, which put
+   this at roughly 540px and made the column read as a thin ribbon on a wide
+   monitor. 880px is around 72 characters at the body size below. */
 .art-body {
-  max-width: 68ch;
+  /* The gutter padding sits INSIDE max-width under border-box, so a flat 880px
+     was leaving only ~650px of actual text on a 1920 monitor. Add the gutters
+     back so the measure is 880px of type, not 880px of box. */
+  max-width: calc(880px + 2 * var(--gutter));
   margin: 0 auto;
   padding: 9vh var(--gutter) 4vh;
 }
 
 .art-stand {
-  font-size: clamp(1.1rem, 1.7vw, 1.38rem);
+  font-size: clamp(1.18rem, 1.8vw, 1.48rem);
   line-height: 1.5;
   font-weight: 400;
   padding-bottom: 30px;
@@ -2700,9 +2706,9 @@ main {
 
 .art-p {
   color: var(--muted);
-  font-size: 1.04rem;
-  line-height: 1.72;
-  margin-bottom: 20px;
+  font-size: 1.12rem;
+  line-height: 1.7;
+  margin-bottom: 22px;
 }
 
 .art-ul {
@@ -2714,7 +2720,7 @@ main {
 .art-ul li {
   position: relative;
   color: var(--muted);
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   line-height: 1.68;
   padding-left: 26px;
   margin-bottom: 14px;

@@ -1,4 +1,5 @@
-/* Header. Grouped dropdowns following axis-re.nl's information architecture,
+/* Header. One grouped dropdown (DAA) following axis-re.nl's information
+   architecture; Strategy was a second group until it became a single page,
    and every dropdown item is its own route rather than an anchor on a
    one-pager. The same bar is used on the landing page and on every content
    page (via PageBar), so it never resizes between routes.
@@ -18,19 +19,12 @@ const GROUPS = [
       { label: 'Sustainability', href: '#/sustainability' },
       { label: 'Leadership', href: '#/leadership' }
     ]
-  },
-  {
-    id: 'strategy',
-    label: 'Strategy',
-    items: [
-      { label: 'Origination', href: '#/origination' },
-      { label: 'Asset management', href: '#/asset-management' }
-    ]
   }
 ]
 
 const FLAT = [
   { label: 'Home', href: '#/', first: true },
+  { label: 'Strategy', href: '#/strategy' },
   { label: 'Portfolio', href: '#/portfolio' },
   { label: 'Investment profile', href: '#/investment-profile' },
   { label: 'News', href: '#/news' }
