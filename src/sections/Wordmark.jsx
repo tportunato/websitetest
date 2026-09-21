@@ -14,7 +14,7 @@
    not content, so there is nothing to lose by holding still. */
 import { useEffect, useId, useRef, useState } from 'react'
 import {
-  PATH_LEFT, PATH_RIGHT, BRUSH, CAP, MAP_LEFT, MAP_RIGHT, dashFor, split
+  PATH_LEFT, PATH_RIGHT, FILL_A, FILL_B, BRUSH, CAP, MAP_LEFT, MAP_RIGHT, dashFor, split
 } from '../lib/wordmark.js'
 
 /* gentle ease either side of a constant middle: a pen starts and stops, but
@@ -53,8 +53,8 @@ export default function Wordmark({
     const R = rightRef.current
     if (!L || !R) return
     const p = split(t)
-    const dl = dashFor(MAP_LEFT, p.left, L.getTotalLength(), true)
-    const dr = dashFor(MAP_RIGHT, p.right, R.getTotalLength(), false)
+    const dl = dashFor(MAP_LEFT, p.left, L.getTotalLength())
+    const dr = dashFor(MAP_RIGHT, p.right, R.getTotalLength())
     L.style.strokeDasharray = dl.dasharray
     L.style.strokeDashoffset = dl.dashoffset
     R.style.strokeDasharray = dr.dasharray
@@ -105,8 +105,8 @@ export default function Wordmark({
     >
       <defs>
         <mask id={`wm${uid}`} maskUnits="userSpaceOnUse" x="0" y="0" width="127" height="52">
-          <path d={PATH_RIGHT} fill="#fff" />
-          <path d={PATH_LEFT} fill="#fff" />
+          <path d={FILL_A} fill="#fff" />
+          <path d={FILL_B} fill="#fff" />
         </mask>
       </defs>
       <g mask={`url(#wm${uid})`} fill="none" stroke="currentColor"
