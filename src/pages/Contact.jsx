@@ -1,9 +1,12 @@
 /* Contact page. Offices, phones and email are the real ones already carried in
-   the site footer (taken from daacap.com). The form posts nowhere yet: there is
+   the site footer (taken from daacap.com). The Geneva coordinates are the
+   office's own, supplied by the client (46.202311, 6.145920), rounded to four
+   decimals; they were previously a rough placeholder for the city. The form posts nowhere yet: there is
    no backend on this deploy, so it opens a pre-filled mail draft to
    info@daacap.com instead of silently swallowing the message. Swap in a form
    endpoint (Formspree, Vercel function, HubSpot) when one exists. */
-import Wordmark from '../sections/Wordmark.jsx'
+import Footer from '../sections/Footer.jsx'
+import PageBar from '../sections/PageBar.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 
@@ -16,7 +19,7 @@ const OFFICES = [
     lines: ['Rue de la Pélisserie 16', 'CH-1204 Geneva, Switzerland'],
     phone: '+41 22 344 22 00',
     tel: '+41223442200',
-    coords: '46.2044° N · 6.1489° E'
+    coords: '46.2023° N · 6.1459° E'
   },
   {
     id: 'luxembourg',
@@ -64,22 +67,14 @@ export default function Contact() {
 
   return (
     <div className="page-contact">
-      <header className="page-bar">
-        <a className="page-home" href="#/">
-          <Wordmark mode="none" />
-        </a>
-        <div className="page-title">Contact</div>
-        <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">
-          Investor Login
-        </a>
-      </header>
+      <PageBar title="Contact" />
 
       <div className="contact-wrap">
         <p className="eyebrow">Contact</p>
         <h1 className="contact-h1">Talk to us.</h1>
         <p className="contact-intro">
           For investor enquiries, off-market opportunities in the &euro;5m to &euro;50m
-          segment, or anything else &mdash; reach the Geneva office directly, or send a
+          segment, or anything else, reach the Geneva office directly, or send a
           note and the right person will come back to you.
         </p>
 
@@ -159,6 +154,7 @@ export default function Contact() {
           <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
         </div>
       </div>
+      <Footer />
       <BackToTop />
     </div>
   )

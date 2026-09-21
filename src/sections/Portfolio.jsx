@@ -62,6 +62,13 @@ export default function Portfolio() {
     let scene = null
     let vt = 0
     let last = 0
+    /* Once the build-in finishes, the shores, corridor bundles and the whole
+       scribble mesh never change again — but they were being re-stroked on
+       every frame forever, several thousand paths at 60fps, which is what made
+       the page stutter while this beat was on screen. They get baked into an
+       offscreen canvas once and blitted after that. */
+    let staticLayer = null
+    let mapFaded = false
     const g = canvas.getContext('2d')
 
     const initSection = async () => {
@@ -107,6 +114,9 @@ export default function Portfolio() {
             canvas.style.width = W + 'px'
             canvas.style.height = H + 'px'
             g.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+            /* Geometry is reprojected below, so any bake is now stale. */
+            staticLayer = null
 
             const P = (ll) => {
               const p = map.project(ll)
@@ -323,23 +333,81 @@ export default function Portfolio() {
           window.addEventListener('resize', resize)
           section.__cleanupResize = () => window.removeEventListener('resize', resize)
 
-          const drawCorridorPath = (c, f) => {
+          const drawCorridorPath = (ctx, c, f) => {
             const target = c.len * f
             let acc = 0
-            g.beginPath()
-            g.moveTo(c.pts[0][0], c.pts[0][1])
+            ctx.beginPath()
+            ctx.moveTo(c.pts[0][0], c.pts[0][1])
             for (let i = 1; i < c.pts.length; i++) {
               const d = c.segs[i-1]
               if (acc + d <= target) {
-                g.lineTo(c.pts[i][0], c.pts[i][1])
+                ctx.lineTo(c.pts[i][0], c.pts[i][1])
                 acc += d
               } else {
                 const r = (target - acc) / d
-                g.lineTo(c.pts[i-1][0] + (c.pts[i][0] - c.pts[i-1][0]) * r,
-                         c.pts[i-1][1] + (c.pts[i][1] - c.pts[i-1][1]) * r)
+                ctx.lineTo(c.pts[i-1][0] + (c.pts[i][0] - c.pts[i-1][0]) * r,
+                           c.pts[i-1][1] + (c.pts[i][1] - c.pts[i-1][1]) * r)
                 break
               }
             }
+          }
+
+          /* Everything that is finished and frozen once `ease` reaches 1. */
+          const drawStatic = (ctx, sf, ease) => {
+            const { shores, corridors, scribbles } = scene
+
+            if (sf > 0 && shores.length) {
+              ctx.strokeStyle = `rgba(126,168,199,${(0.5 * sf).toFixed(3)})`
+              ctx.lineWidth = 1.1
+              shores.forEach((line) => {
+                ctx.beginPath()
+                ctx.moveTo(line[0][0], line[0][1])
+                for (let i = 1; i < line.length; i++) ctx.lineTo(line[i][0], line[i][1])
+                ctx.stroke()
+              })
+            }
+
+            if (ease <= 0) return
+            corridors.forEach((c) => {
+              drawCorridorPath(ctx, c, ease)
+              ctx.strokeStyle = 'rgba(79,184,201,0.14)'
+              ctx.lineWidth = 9
+              ctx.stroke()
+              c.strands.forEach((st, k) => {
+                drawCorridorPath(ctx, st, ease)
+                ctx.strokeStyle = k === 1
+                  ? 'rgba(190,235,245,0.7)'
+                  : `rgba(126,204,220,${(0.3 + k * 0.08).toFixed(2)})`
+                ctx.lineWidth = k === 1 ? 1.3 : 0.9
+                ctx.stroke()
+              })
+            })
+
+            ctx.lineWidth = 0.8
+            scribbles.forEach((sc) => {
+              if (sc.birth > ease) return
+              const age = Math.min(1, (ease - sc.birth) * 6)
+              const pop = age < 1 ? 1 + (1 - age) * 0.8 : 1
+              ctx.strokeStyle = `rgba(79,184,201,${(sc.a * age * pop).toFixed(3)})`
+              ctx.beginPath()
+              ctx.moveTo(sc.pts[0][0], sc.pts[0][1])
+              for (let i = 1; i < sc.pts.length; i++) ctx.lineTo(sc.pts[i][0], sc.pts[i][1])
+              if (sc.closed) ctx.closePath()
+              ctx.stroke()
+            })
+          }
+
+          /* Bake the finished static pass at device resolution. */
+          const bakeStatic = () => {
+            const { W, H } = scene
+            const off = document.createElement('canvas')
+            off.width = canvas.width
+            off.height = canvas.height
+            const octx = off.getContext('2d')
+            const dpr = canvas.width / W
+            octx.setTransform(dpr, 0, 0, dpr, 0, 0)
+            drawStatic(octx, 1, 1)
+            staticLayer = off
           }
 
           const tick = (now) => {
@@ -348,52 +416,27 @@ export default function Portfolio() {
             vt += Math.min(now - last, 50)
             last = now
             const t = vt
-            const { W, H, shores, corridors, assets, scribbles, pointAt } = scene
-            map.setPaintProperty('base', 'raster-opacity', Math.min(DARK_OPACITY, (t / MAP_MS) * DARK_OPACITY))
+            const { W, H, corridors, assets, pointAt } = scene
+
+            /* Only touch the basemap paint while the fade is actually running;
+               setting it every frame forces a MapLibre repaint forever. */
+            if (!mapFaded) {
+              const o = Math.min(DARK_OPACITY, (t / MAP_MS) * DARK_OPACITY)
+              map.setPaintProperty('base', 'raster-opacity', o)
+              if (o >= DARK_OPACITY) mapFaded = true
+            }
+
             g.clearRect(0, 0, W, H)
 
             const sf = Math.min(1, Math.max(0, (t - SHORE_START) / SHORE_MS))
-            if (sf > 0 && shores.length) {
-              g.strokeStyle = `rgba(126,168,199,${(0.5 * sf).toFixed(3)})`
-              g.lineWidth = 1.1
-              shores.forEach((line) => {
-                g.beginPath()
-                g.moveTo(line[0][0], line[0][1])
-                for (let i = 1; i < line.length; i++) g.lineTo(line[i][0], line[i][1])
-                g.stroke()
-              })
-            }
-
             const cf = Math.min(1, Math.max(0, (t - COR_START) / COR_MS))
             const ease = 1 - Math.pow(1 - cf, 2)
-            if (cf > 0) {
-              corridors.forEach((c) => {
-                drawCorridorPath(c, ease)
-                g.strokeStyle = 'rgba(79,184,201,0.14)'
-                g.lineWidth = 9
-                g.stroke()
-                c.strands.forEach((st, k) => {
-                  drawCorridorPath(st, ease)
-                  g.strokeStyle = k === 1
-                    ? 'rgba(190,235,245,0.7)'
-                    : `rgba(126,204,220,${(0.3 + k * 0.08).toFixed(2)})`
-                  g.lineWidth = k === 1 ? 1.3 : 0.9
-                  g.stroke()
-                })
-              })
 
-              g.lineWidth = 0.8
-              scribbles.forEach((sc) => {
-                if (sc.birth > ease) return
-                const age = Math.min(1, (ease - sc.birth) * 6)
-                const pop = age < 1 ? 1 + (1 - age) * 0.8 : 1
-                g.strokeStyle = `rgba(79,184,201,${(sc.a * age * pop).toFixed(3)})`
-                g.beginPath()
-                g.moveTo(sc.pts[0][0], sc.pts[0][1])
-                for (let i = 1; i < sc.pts.length; i++) g.lineTo(sc.pts[i][0], sc.pts[i][1])
-                if (sc.closed) g.closePath()
-                g.stroke()
-              })
+            if (cf >= 1) {
+              if (!staticLayer) bakeStatic()
+              g.drawImage(staticLayer, 0, 0, W, H)
+            } else {
+              drawStatic(g, sf, ease)
             }
 
             if (cf >= 1) {
@@ -517,10 +560,18 @@ export default function Portfolio() {
           <h2 data-reveal>Asset by asset, corridor by corridor.</h2>
           <p className="body" data-reveal>
             A consolidation strategy in a fragmented market: aggregating urban logistics assets
-            across Western Europe&rsquo;s main corridors into an institutional portfolio.
+            across Western Europe&rsquo;s main corridors into institutional portfolios.
           </p>
-          <a className="beat-cta" data-reveal href="#/portfolio">Explore the portfolio <span className="cta-arrow">&rarr;</span></a>
+          <a className="btn btn--lg btn--solid btn--spaced" data-reveal href="#/portfolio">
+            <span>Explore the portfolio</span>
+            <span className="btn-arrow">&rarr;</span>
+          </a>
         </div>
+
+        {/* This canvas draws an ABSTRACT corridor network with representative
+            asset positions, not holdings. Without this label the beat reads as
+            a map of the portfolio, which it is not. */}
+        <div className="caption">Illustrative visual</div>
       </div>
     </section>
   )

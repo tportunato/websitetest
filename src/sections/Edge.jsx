@@ -149,7 +149,6 @@ export default function Edge() {
   const mapDiv = useRef(null)
   const cvs = useRef(null)
   const mapRef = useRef(null)
-
   useEffect(() => {
     const section = sectionRef.current
     const canvas = cvs.current
@@ -162,6 +161,14 @@ export default function Edge() {
     let scene = null
     let vt = 0
     let last = 0
+    /* After the sweep closes, the rings, the road network, the industrial dots,
+       the isochrones and the candidate markers are all final — only the beam
+       keeps turning. They were being re-stroked every frame regardless (the
+       Lyon network alone is ~3,000 polylines), which is the single most
+       expensive thing on the page. Bake once, then blit and draw the beam. */
+    let groundLayer = null   /* rings + road network: drawn UNDER the beam */
+    let markerLayer = null   /* dots, isochrones, candidates: drawn OVER it */
+    let mapFaded = false
 
     const g = canvas.getContext('2d')
 
@@ -278,6 +285,9 @@ export default function Edge() {
             canvas.style.width = W + 'px'
             canvas.style.height = H + 'px'
             g.setTransform(dpr, 0, 0, dpr, 0, 0)
+            /* Reprojected, so any bake is stale. */
+            groundLayer = null
+            markerLayer = null
             scene = { W, H, center, roads, dots, tops, isos, maxR }
           }
           build()
@@ -289,23 +299,20 @@ export default function Edge() {
           window.addEventListener('resize', resize)
           section.__cleanupResize = () => window.removeEventListener('resize', resize)
 
-          const tick = (now) => {
-            if (cancelled || !scene || !rafOn) return
-            if (!last) last = now
-            vt += Math.min(now - last, 50)
-            last = now
-            const t = vt
-            const { W, H, center, roads, dots, tops, isos, maxR } = scene
-            map.setPaintProperty('base', 'raster-opacity', Math.min(DARK_OPACITY, (t / MAP_MS) * DARK_OPACITY))
-            g.clearRect(0, 0, W, H)
+          /* The draw order matters and is the original's: rings and roads, then
+             the ripple, then the beam, then the markers on top of it. Baking it
+             as one layer would have put the beam over the markers and tinted
+             them. Hence two layers with the beam drawn between them. */
+          const drawGround = (ctx, t) => {
+            const { center, roads, maxR } = scene
 
             const ringsK = Math.min(1, Math.max(0, (t - ROADS_START) / ROADS_MS))
-            g.strokeStyle = `rgba(46,78,110,${0.5 * ringsK})`
-            g.lineWidth = 1
+            ctx.strokeStyle = `rgba(46,78,110,${0.5 * ringsK})`
+            ctx.lineWidth = 1
             for (const k of [0.35, 0.7, 1]) {
-              g.beginPath()
-              g.ellipse(center[0], center[1], maxR * k, maxR * k * 0.72, 0, 0, Math.PI * 2)
-              g.stroke()
+              ctx.beginPath()
+              ctx.ellipse(center[0], center[1], maxR * k, maxR * k * 0.72, 0, 0, Math.PI * 2)
+              ctx.stroke()
             }
 
             if (t > ROADS_START) {
@@ -315,21 +322,124 @@ export default function Edge() {
                 if (diff <= 0) continue
                 const edge = diff < 0.12 ? 1 - diff / 0.12 : 0
                 const base = r.m ? 0.55 : 0.26
-                g.strokeStyle = r.m
+                ctx.strokeStyle = r.m
                   ? `rgba(143,176,206,${base + edge * 0.45})`
                   : `rgba(62,92,124,${base + edge * 0.5})`
-                g.lineWidth = r.m ? 1.7 : 0.9
-                g.beginPath()
-                g.moveTo(r.pts[0][0], r.pts[0][1])
-                for (let i = 1; i < r.pts.length; i++) g.lineTo(r.pts[i][0], r.pts[i][1])
-                g.stroke()
+                ctx.lineWidth = r.m ? 1.7 : 0.9
+                ctx.beginPath()
+                ctx.moveTo(r.pts[0][0], r.pts[0][1])
+                for (let i = 1; i < r.pts.length; i++) ctx.lineTo(r.pts[i][0], r.pts[i][1])
+                ctx.stroke()
+              }
+            }
+          }
+
+          const drawMarkers = (ctx, t, sweep) => {
+            const { dots, tops, isos } = scene
+            if (sweep < 0) return
+
+            for (const d of dots) {
+              if (d.a > sweep) continue
+              const trail = sweep - d.a
+              const op = trail < 30 ? 1 - (trail / 30) * 0.35 : 0.6
+              ctx.fillStyle = `rgba(226,124,56,${op})`
+              ctx.fillRect(d.p[0] - 1.1, d.p[1] - 1.1, 2.2, 2.2)
+            }
+
+            if (isos.length && t > SWEEP_START) {
+              ctx.strokeStyle = `rgba(79,184,201,${Math.min(0.35, ((t - SWEEP_START) / 1000) * 0.35)})`
+              ctx.lineWidth = 0.8
+              for (const path of isos) {
+                ctx.beginPath()
+                ctx.moveTo(path[0][0], path[0][1])
+                for (let i = 1; i < path.length; i++) ctx.lineTo(path[i][0], path[i][1])
+                ctx.closePath()
+                ctx.stroke()
               }
             }
 
+            const tr = sweep - 25
+            for (const c of tops) {
+              if (c.a > tr) continue
+              const r = 3 + (c.s - 6) * 0.7
+              ctx.fillStyle = 'rgba(224,57,43,0.85)'
+              ctx.beginPath()
+              ctx.arc(c.p[0], c.p[1], r, 0, Math.PI * 2)
+              ctx.fill()
+              ctx.strokeStyle = 'rgba(242,160,90,0.9)'
+              ctx.lineWidth = 1
+              ctx.beginPath()
+              ctx.arc(c.p[0], c.p[1], r + 1.5, 0, Math.PI * 2)
+              ctx.stroke()
+            }
+          }
+
+          const drawBeam = (ctx, raw) => {
+            const { center, maxR } = scene
+            const beamK = raw <= 360 ? 1 : 0.55
+            const a1 = ((raw % 360) * Math.PI) / 180
+            ctx.save()
+            ctx.translate(center[0], center[1])
+            ctx.scale(1, 0.72)
+            for (let w = 0; w < 22; w += 2) {
+              const a0 = a1 - ((w + 2) * Math.PI) / 180
+              ctx.fillStyle = `rgba(200,105,42,${0.20 * (1 - w / 22) * beamK})`
+              ctx.beginPath()
+              ctx.moveTo(0, 0)
+              ctx.arc(0, 0, maxR, -Math.PI / 2 + a0, -Math.PI / 2 + a1 - (w * Math.PI) / 180)
+              ctx.closePath()
+              ctx.fill()
+            }
+            ctx.restore()
+          }
+
+          /* Bake the closed sweep at device resolution. */
+          const bake = (fn) => {
+            const { W } = scene
+            const off = document.createElement('canvas')
+            off.width = canvas.width
+            off.height = canvas.height
+            const octx = off.getContext('2d')
+            const dpr = canvas.width / W
+            octx.setTransform(dpr, 0, 0, dpr, 0, 0)
+            fn(octx)
+            return off
+          }
+
+          const bakeStatic = () => {
+            const tEnd = SWEEP_START + SWEEP_MS
+            groundLayer = bake((c) => drawGround(c, tEnd))
+            markerLayer = bake((c) => drawMarkers(c, tEnd, 360))
+          }
+
+          const tick = (now) => {
+            if (cancelled || !scene || !rafOn) return
+            if (!last) last = now
+            vt += Math.min(now - last, 50)
+            last = now
+            const t = vt
+            const { W, H, center, maxR } = scene
+
+            /* Only touch the basemap paint while the fade is running. */
+            if (!mapFaded) {
+              const o = Math.min(DARK_OPACITY, (t / MAP_MS) * DARK_OPACITY)
+              map.setPaintProperty('base', 'raster-opacity', o)
+              if (o >= DARK_OPACITY) mapFaded = true
+            }
+
+            g.clearRect(0, 0, W, H)
+
             const raw = t <= SWEEP_START ? -1 : ((t - SWEEP_START) / SWEEP_MS) * 360
             const sweep = raw < 0 ? -1 : Math.min(360, raw)
+            const closed = raw > 360
 
-            /* soft birth ripple */
+            if (closed && !groundLayer) bakeStatic()
+
+            /* 1. ground */
+            if (closed) g.drawImage(groundLayer, 0, 0, W, H)
+            else drawGround(g, t)
+
+            /* 2. soft birth ripple */
             if (t > SWEEP_START - 100 && t < SWEEP_START + 1400) {
               const k = (t - SWEEP_START + 100) / 1500
               g.strokeStyle = `rgba(226,124,56,${0.7 * (1 - k)})`
@@ -339,58 +449,13 @@ export default function Edge() {
               g.stroke()
             }
 
-            if (sweep >= 0) {
-              const beamK = raw <= 360 ? 1 : 0.55
-              const a1 = ((raw % 360) * Math.PI) / 180
-              g.save()
-              g.translate(center[0], center[1])
-              g.scale(1, 0.72)
-              for (let w = 0; w < 22; w += 2) {
-                const a0 = a1 - ((w + 2) * Math.PI) / 180
-                g.fillStyle = `rgba(200,105,42,${0.20 * (1 - w / 22) * beamK})`
-                g.beginPath()
-                g.moveTo(0, 0)
-                g.arc(0, 0, maxR, -Math.PI / 2 + a0, -Math.PI / 2 + a1 - (w * Math.PI) / 180)
-                g.closePath()
-                g.fill()
-              }
-              g.restore()
+            /* 3. beam */
+            if (sweep >= 0) drawBeam(g, raw)
 
-              for (const d of dots) {
-                if (d.a > sweep) continue
-                const trail = sweep - d.a
-                const op = trail < 30 ? 1 - (trail / 30) * 0.35 : 0.6
-                g.fillStyle = `rgba(226,124,56,${op})`
-                g.fillRect(d.p[0] - 1.1, d.p[1] - 1.1, 2.2, 2.2)
-              }
+            /* 4. markers, over the beam */
+            if (closed) g.drawImage(markerLayer, 0, 0, W, H)
+            else drawMarkers(g, t, sweep)
 
-              if (isos.length && t > SWEEP_START) {
-                g.strokeStyle = `rgba(79,184,201,${Math.min(0.35, ((t - SWEEP_START) / 1000) * 0.35)})`
-                g.lineWidth = 0.8
-                for (const path of isos) {
-                  g.beginPath()
-                  g.moveTo(path[0][0], path[0][1])
-                  for (let i = 1; i < path.length; i++) g.lineTo(path[i][0], path[i][1])
-                  g.closePath()
-                  g.stroke()
-                }
-              }
-
-              const tr = sweep - 25
-              for (const c of tops) {
-                if (c.a > tr) continue
-                const r = 3 + (c.s - 6) * 0.7
-                g.fillStyle = 'rgba(224,57,43,0.85)'
-                g.beginPath()
-                g.arc(c.p[0], c.p[1], r, 0, Math.PI * 2)
-                g.fill()
-                g.strokeStyle = 'rgba(242,160,90,0.9)'
-                g.lineWidth = 1
-                g.beginPath()
-                g.arc(c.p[0], c.p[1], r + 1.5, 0, Math.PI * 2)
-                g.stroke()
-              }
-            }
             raf = requestAnimationFrame(tick)
           }
 
@@ -478,10 +543,11 @@ export default function Edge() {
             segment, where competition is structurally thinner. We originate through a
             deep and granular network of national and local brokers across Western
             Europe&rsquo;s main corridors, through direct corporate and owner
-            relationships, and &mdash; alongside them &mdash; through proprietary
+            relationships, and, alongside them, through proprietary
             sourcing technology.
           </p>
         </div>
+
       </div>
     </section>
   )

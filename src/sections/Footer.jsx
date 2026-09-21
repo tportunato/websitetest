@@ -12,7 +12,7 @@ export default function Footer() {
             +41 22 344 22 00<br />
             <a href="mailto:info@daacap.com">info@daacap.com</a>
           </p>
-          <p className="coords">46.2044&deg; N &middot; 6.1489&deg; E</p>
+          <p className="coords">46.2023&deg; N &middot; 6.1459&deg; E</p>
         </div>
         <div data-reveal>
           <h3>Luxembourg</h3>
@@ -32,9 +32,18 @@ export default function Footer() {
           </p>
         </div>
       </div>
+      {/* Regulatory status, stated once and quietly. It is not a selling
+          point and must never be set as one; the full wording is on #/legal. */}
+      <p className="regstatus">
+        DAA Capital Partners SA is a Swiss portfolio manager licensed by FINMA and
+        supervised by SO-FIT.
+      </p>
+
       <div className="legal">
         <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
         <span>
+          <a href="#/legal">Legal &amp; Regulatory</a>
+          &nbsp;&middot;&nbsp;
           <a href="https://www.daacap.com/termsofuse/" target="_blank" rel="noreferrer">Terms of Use</a>
           &nbsp;&middot;&nbsp;
           <a href="https://www.daacap.com/privacypolicy/" target="_blank" rel="noreferrer">Privacy Policy</a>

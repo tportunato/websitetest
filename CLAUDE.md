@@ -29,13 +29,47 @@ a specific language:
   network over Western Europe. Mono captions, hairlines, tabular figures.
 - **Swiss restraint.** White on near-black, one accent (white), no colour
   system to speak of. Claims are stated flatly and let to stand.
-- **One serif moment**: the Manifesto, centred Cormorant Garamond italic. Do not
-  add a second — it stops being a moment.
+- **One serif moment**: now the Closing line only. The Manifesto was restyled to
+  mirror the firm section and then moved off the landing page onto
+  Sustainability, so Cormorant appears once. Do not add a second.
 
 When a section starts to read like a generic marketing band, that is the bug.
 The firm section was rebuilt once for exactly this reason: two supplied
 paragraphs set at equal weight in two columns. The fix was hierarchy — one claim
 at display size, notes demoted under it, a mono spec rail on a hairline.
+
+## Structure (pass 7)
+
+The one-pager became a site. Home is hero, firm, market, portfolio and a
+future-proof section that mirrors the firm section; origination, asset
+management, the thesis and news all moved to their own routes. Every nav
+destination is a real route in `src/App.jsx`'s ROUTES table.
+
+Shared page furniture lives in `src/sections/`: `PageHero` (variants `full` and
+`boxed` — boxed stops the image short and puts the copy on a solid panel under
+it), `SplitFeature` (the firm section's layout, reusable), `NewsStrip`,
+`GetInTouch`, and `PageBar`, which is just the shared `Nav`. Page copy is in
+`src/data/pages.js`.
+
+Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
+
+## Regulatory status is not a marketing argument
+
+The firm is not allowed to use its regulatory status as a selling point, and the
+homepage carried exactly that: "A FINMA regulated Swiss investment firm..." set
+at display size as the firm statement. It is gone.
+
+FINMA now appears in two places only, and nowhere else:
+- one quiet line in the footer, `.regstatus`, at the same weight as the
+  copyright, never larger and never styled as a badge;
+- the full wording on `#/legal` (`src/pages/Legal.jsx`).
+
+Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or a hero.
+`#/legal` is NOT the full investor disclaimer, which is a separate document;
+folding that in here would make the page read as defensive.
+
+The About page still says the firm is "regulated in Switzerland" in body copy.
+That is deliberate and pending a decision from the partners; leave it.
 
 ## Conventions
 
@@ -46,8 +80,20 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
   engine's own data semantics.
 - **Eyebrows** (`.eyebrow`) are white, uppercase, mono, and set once globally so
   every section matches the hero. Change them in one place.
-- **Headers** are 80px on the landing page and the subpages, both using the same
-  three-column grid so the bar does not resize between routes.
+- **Headers** are `--nav-h` (104px) on the landing page and the subpages, both
+  using the same three-column grid so the bar does not resize between routes.
+  Raised from 80px and the logo from 38px to 50px against axis-re.nl, which was
+  finally reachable — see below.
+- **One container system.** `--nav-h`, `--gutter`, `--maxw` and `--band` in
+  `:root` own every band's rhythm and measure. Sections used to carry their own
+  numbers (firm 14vh/1240px, news 16vh, closing 24vh, beats flush-left at
+  900px), so copy started at a different x depending where you were on the page.
+  A new section resolves through the tokens; it does not invent a padding.
+- **The nav groups.** Two dropdowns (`DAA`, `Strategy`) plus three flat links,
+  following axis-re.nl's grouping. Below 980px they collapse into a full-screen
+  panel — before that there was no mobile navigation at all and every subpage
+  was unreachable on a phone. There is deliberately no `#track-record` link:
+  that section was deleted in pass 5.
 - **Maps** take their tiles from `src/lib/basemap.js` and nowhere else. See
   below.
 - Comments explain *why*, not what. Several in this repo record a bug that was
@@ -167,8 +213,72 @@ there at 3240ms. Change the pace and none of those numbers need touching.
   radius is inflated.
 - **Projection units.** Mercator y is radians; longitude is degrees. Mixing them
   puts the axes on scales ~57x apart.
+- **Opening a page must JUMP to the top, not animate there.** Navigation used
+  to call `scrollToTop()` from the hashchange handler, which failed twice: it
+  ran before React had rendered the new page, so it scrolled the old one; and on
+  the landing page it started a 1.1s Lenis animation on an instance Landing
+  destroys a moment later when it unmounts, killing the scroll mid-flight.
+  Clicking through to Strategy landed you halfway down it. `jumpToTop()` is
+  instant and separate from `scrollToTop()`, which stays eased for the Back to
+  top button, and App calls it from a `useLayoutEffect` keyed on the page — so
+  after render, before paint. Two articles count as two pages, so the key
+  includes the article id.
 - **`window.scrollTo` fights Lenis** on the landing page. Go through
-  `src/lib/scroll.js`.
+  `src/lib/scroll.js`. App did exactly this until it was fixed: it reset scroll
+  on EVERY hashchange, so in-page anchors (`#market`, `#news`) threw you to the
+  top of the page instead of to the section. Scroll is now only reset when the
+  ROUTE changes; anchors go through `scrollToHash`.
+- **Static canvas layers.** Both instrument beats used to re-stroke their entire
+  finished composition every frame forever — ~5,600 Lyon polylines, the whole
+  scribble mesh — which is what made scrolling stutter. Once the build-in
+  closes, they bake to an offscreen canvas and blit. Edge bakes TWO layers
+  (ground, markers) because the beam draws between them; baking one would tint
+  the markers. Any resize invalidates the bake.
+- **`scrub: true` reads as stutter** against Lenis's eased scroll, because the
+  tween is tied to scroll position on the same frame. Use a scrub duration
+  (0.6) so GSAP catches up over time instead.
+- **`opacity: 0` does not make an overlay inert.** The mobile nav panel is
+  `display: block` at all times below the breakpoint and only fades, so with
+  opacity alone it stayed a full-screen, `overflow-y: auto`, pointer-accepting
+  layer sitting over the page. Every touch landed in it, a drag scrolled the
+  panel instead of the document, and the site was unscrollable on a phone from
+  the moment it loaded. It needs `visibility: hidden` AND
+  `pointer-events: none` when closed. Any full-screen overlay added later needs
+  the same three, not just the one.
+- **Do not centre a GSAP-animated element with `left:50%` + `translate:-50%`.**
+  GSAP takes ownership of transforms and folds the standalone `translate`
+  property into its own matrix. Chromium survives it, Safari does not: on iOS
+  the -50% was dropped and `.hero-content` sat at `left:50%`, shoved half a
+  screen right and running off the edge. Use `left:0; right:0; margin-inline:
+  auto` — pure layout, nothing for GSAP to consume. `.nav-menu` still uses
+  translate centring and is fine, because nothing animates it.
+- **Lenis is for a mouse, not a finger.** It drives scroll position from a rAF
+  loop, which fights the browser's own momentum and rubber-banding on a phone:
+  the page stalls, overshoots, or will not move. It is not constructed at all
+  when `(hover: none) and (pointer: coarse)` matches. `src/lib/motion.js` owns
+  that check alongside the reduced-motion one. Lenis also ships a stylesheet
+  from 1.1 onwards, `lenis/dist/lenis.css`, imported in `main.jsx`; it was
+  missing for several passes.
+- **A sticky beat is a dead zone under a thumb.** A `.beat` is 165svh around a
+  sticky 100svh stage, so ~430px of scrolling happens with the stage pinned and
+  nothing on screen changing. With a mouse that reads as a deliberate hold; on a
+  phone it reads as the page having stopped responding. Below 880px a beat is
+  the height of its stage, so there is no pin at all.
+- **Full-screen centred sections clip their own copy on a phone.** `.firm` and
+  `.split` are `min-height:100svh` with `align-items:center` and
+  `overflow:hidden` (the latter to contain the photo panel). Narrow screens make
+  the copy taller than a viewport, centring pushes it out of both ends, and the
+  overflow rule cuts it off — 42px of the firm section's text was simply not
+  rendered. Below 880px these sections grow with their content and the photo
+  moves behind the copy. Any new full-height centred section needs the same.
+- **`100vh` is wrong on a phone.** It counts the collapsing URL bar, so every
+  full-screen stage is taller than the visible viewport and the page jumps as
+  the bar hides and shows. Every `100vh` carries a `100svh` line after it;
+  browsers without `svh` ignore the second and keep the first. A new
+  full-height rule needs both.
+- **Reduced motion means the whole page settles**, not just the veil and the
+  scroll cue: Lenis is not constructed at all (it is smooth-scroll hijacking),
+  and the scrub tweens are skipped. `src/lib/motion.js` is the one check.
 - **Film grain uses `mix-blend-mode: overlay`**, which *lightens* near-black.
   Fine over footage, a veil over a dark instrument — hence `.stage--instrument`.
 - **A zero-length dash is not nothing.** With `stroke-linecap: round` it still
@@ -204,12 +314,20 @@ site are deliberately synthetic. The industrial points are real.
 - **Firm section background.** Three are built (`corridors`, `hold`, `frame`),
   switchable at runtime with `?bg=`. Default is `hold`. Once one is chosen,
   delete the other two and the query-param hatch.
+- **The manifesto rail.** The serif line now carries a sans sub-line and a mono
+  rail beneath it, because the claim alone gave a sceptical reader nothing. It
+  is still the page's ONE serif moment; the support is deliberately in the
+  page's other voices. If a graphic plate is ever made for this section, it goes
+  behind the type, not beside it.
 - **Contact form has no backend.** It opens a pre-filled mail draft rather than
   appearing to send and dropping the message. Wire a real endpoint when one
   exists.
-- **Header size and the contact page** were built against `axis-re.nl` as a
-  reference, which could not be loaded from the build environment. They may need
-  refining against the real thing.
+- ~~**Header size and the contact page** were built against `axis-re.nl` as a
+  reference, which could not be loaded from the build environment.~~ RESOLVED:
+  axis-re.nl was reachable on 2026-09-17. Its header is a fixed bar with a wide
+  logo and one grouped dropdown (`Axis` → About us / Vision & Mission / Team)
+  alongside flat items. The bar height, the 50px logo and the two nav groups
+  here follow it.
 - Copy says "specializing"; `index.html`'s meta says "specialising". Supplied
   copy was left as given.
 

@@ -1,5 +1,7 @@
 /* Portfolio assets. All facts and images from DAA's own public press releases
-   on daacap.com (REAL, publishable). Images are hotlinked from the existing
+   on daacap.com (REAL, publishable). `article` is the slug of that press
+   release in src/data/articles.js: the panel links to the announcement on this
+   site rather than throwing the reader out to the old WordPress. Images are hotlinked from the existing
    WordPress media library; to switch to local copies, drop files in
    public/images/ and change the img fields. */
 export const ASSETS = [
@@ -17,7 +19,7 @@ export const ASSETS = [
     blurb:
       'Acquired at 10,720 m² and comprehensively repositioned by end-2024: expanded to 11,749 m², reconfigured into independent tenant spaces with separated vehicle flows, modernised facades and BREEAM Very Good certification.',
     img: 'https://www.daacap.com/wp-content/uploads/2025/01/Heyrieux-Referbished-scaled.jpg',
-    link: 'https://www.daacap.com/repositioning-of-the-heyrieux-industrial-property-a-strategic-investment-for-future-growth/'
+    article: 'repositioning-of-the-heyrieux-industrial-property-a-strategic-investment-for-future-growth'
   },
   {
     id: 'montigny',
@@ -33,7 +35,7 @@ export const ASSETS = [
     blurb:
       'Last-mile warehouse in one of the Paris region’s most sought-after logistics locations, directly linked to the A12 with convenient access to Paris and the wider region.',
     img: 'https://www.daacap.com/wp-content/uploads/2023/03/Legendre-Montigny-Sky.png',
-    link: 'https://www.daacap.com/last-mile-warehouse-acquisition-strengthens-logistics-opportunities-fund-portfolio/'
+    article: 'last-mile-warehouse-acquisition-strengthens-logistics-opportunities-fund-portfolio'
   },
   {
     id: 'buccinasco',
@@ -49,7 +51,7 @@ export const ASSETS = [
     blurb:
       'Strategic last-mile facility operated by Amazon Italia, positioned off Milan’s tangenziale with direct access to the city centre and the country’s main highways.',
     img: 'https://www.daacap.com/wp-content/uploads/2023/01/Amazon-Buscinasco-1.png',
-    link: 'https://www.daacap.com/amazon-logistics-warehouse-acquired-in-buccinasco/'
+    article: 'amazon-logistics-warehouse-acquired-in-buccinasco'
   },
   {
     id: 'spinetta',
@@ -65,7 +67,7 @@ export const ASSETS = [
     blurb:
       'Last-mile asset key to FedEx operations in the region, in a market that has expanded consistently on the back of the Piacenza and Castel San Giovanni logistics hubs.',
     img: 'https://www.daacap.com/wp-content/uploads/2023/06/9039024172.png',
-    link: 'https://www.daacap.com/daa-capital-expands-its-logistics-platform-in-italy-with-the-acquisition-of-a-last-mile-fedex-asset/'
+    article: 'daa-capital-expands-its-logistics-platform-in-italy-with-the-acquisition-of-a-last-mile-fedex-asset'
   },
   {
     id: 'eindhoven',
@@ -81,6 +83,6 @@ export const ASSETS = [
     blurb:
       'Sale-and-leaseback in Eindhoven’s largest business park, 5.5 km from the city centre: an established last-mile location with access to the A58/A67 and the German hinterland.',
     img: 'https://www.daacap.com/wp-content/uploads/2023/09/Treffina-Eindhoven.jpg',
-    link: 'https://www.daacap.com/logistic-opportunities-enters-the-netherlands-with-latest-last-mile-acquisition/'
+    article: 'logistic-opportunities-enters-the-netherlands-with-latest-last-mile-acquisition'
   }
 ]

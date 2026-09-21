@@ -48,6 +48,14 @@ export const DARK_STYLE = {
     { id: 'bg', type: 'background', paint: { 'background-color': '#060d16' } },
     /* the standalone map page shows the basemap properly rather than fading it
        in behind an animation, so it runs well above the section ramp */
-    { id: 'base', type: 'raster', source: 'base', paint: darkRasterPaint(0.78, 300) }
+    /* The standalone map page is a map, not a backdrop: the section ramp's
+       brightness-max of 0.32 crushed the Esri rung so far down that land,
+       borders and labels were barely separable from the background. */
+    {
+      id: 'base',
+      type: 'raster',
+      source: 'base',
+      paint: { ...darkRasterPaint(0.95, 300), 'raster-brightness-max': 0.72, 'raster-contrast': 0.05 }
+    }
   ]
 }

@@ -1,5 +1,6 @@
 /* Leadership page. Content and photos from the existing daacap.com/leadership. */
-import Wordmark from '../sections/Wordmark.jsx'
+import Footer from '../sections/Footer.jsx'
+import PageBar from '../sections/PageBar.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 import { PRINCIPALS, ADVISORS } from '../data/team.js'
@@ -25,11 +26,7 @@ function Card({ person }) {
 export default function Leadership() {
   return (
     <div className="page-team">
-      <header className="page-bar">
-        <a className="page-home" href="#/"><Wordmark mode="none" /></a>
-        <div className="page-title">Leadership</div>
-        <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
-      </header>
+      <PageBar title="Leadership" />
       <div className="team-wrap">
         <p className="eyebrow">Principals</p>
         <div className="team-grid">
@@ -40,9 +37,7 @@ export default function Leadership() {
           {ADVISORS.map((p) => <Card key={p.name} person={p} />)}
         </div>
       </div>
-      <footer className="page-foot">
-        <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
-      </footer>
+      <Footer />
       <BackToTop />
     </div>
   )

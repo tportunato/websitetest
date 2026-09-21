@@ -1,4 +1,17 @@
 :root {
+  /* One container system. Every band on the page resolves its vertical rhythm
+     and its measure through these, so sections stop each carrying their own
+     numbers (the firm section was 14vh/1240px, news 16vh, closing 24vh, the
+     beats 900px — four rhythms and four measures on one page). */
+  /* Film grain strength. mix-blend-mode: overlay LIGHTENS near-black, so this
+     is the dial that decides how much the footage gets greyed. */
+  --grain: 0.04;
+
+  --nav-h: 104px;
+  --gutter: 6vw;
+  --maxw: 1240px;
+  --band: 16vh;
+
   --navy: #07111f;
   --navy2: #0a1e33;
   --paper: #f7f5f0;
@@ -41,8 +54,8 @@ main {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: 80px;
-  padding: 13px 40px;
+  min-height: var(--nav-h);
+  padding: 16px 40px;
   background: rgba(7, 17, 31, 0.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -70,24 +83,204 @@ main {
   margin-top: 4px;
 }
 
-.nav nav {
+.nav-main {
   justify-self: center;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 46px;
 }
 
-.nav nav a {
+/* One type treatment for a flat link and a group trigger, so the bar reads as
+   a single row rather than links plus buttons. */
+.nav-link,
+.nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: var(--paper);
   text-decoration: none;
-  font-size: 0.98rem;
+  font-family: inherit;
+  font-size: 1.22rem;
   font-weight: 500;
   letter-spacing: 0.02em;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   transition: color 0.25s;
 }
 
-.nav nav a:hover {
+.nav-link:hover,
+.nav-trigger:hover,
+.nav-group.open .nav-trigger {
   color: var(--accent);
+}
+
+.nav-caret {
+  width: 9px;
+  height: 6px;
+  opacity: 0.75;
+  transition: transform 0.25s ease;
+}
+
+.nav-group.open .nav-caret {
+  transform: rotate(180deg);
+}
+
+.nav-group {
+  position: relative;
+}
+
+/* The pad keeps the pointer inside the group while it travels from the trigger
+   down into the menu, so hover-open does not flicker shut in the gap. */
+.nav-group::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 22px;
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  translate: -50% 0;
+  min-width: 232px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  background: rgba(9, 20, 35, 0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(247, 245, 240, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+}
+
+.nav-group.open .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-menu a {
+  padding: 10px 22px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1rem;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-menu a:hover {
+  color: var(--paper);
+  background: rgba(247, 245, 240, 0.06);
+}
+
+.nav-end {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Burger: hidden until the links collapse. */
+.nav-burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 11px 9px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-burger span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: var(--paper);
+  transition: transform 0.28s ease, opacity 0.2s ease;
+}
+
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Full-screen panel. Before this there was no mobile navigation at all: the
+   links were simply display:none below 880px and every subpage was
+   unreachable on a phone. */
+.nav-panel {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Under the bar (50) but over the page. */
+  z-index: 45;
+  display: none;
+  background: rgba(7, 17, 31, 0.985);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-y: auto;
+  /* MUST be inert when closed. Below 1150px the panel is display:block at all
+     times and only fades out, so with opacity alone it stayed a full-screen
+     scrollable overlay sitting over the page with pointer-events:auto. Every
+     touch landed in it, dragging scrolled the panel rather than the document,
+     and the site was simply unscrollable on a phone until something forced it
+     to re-render. opacity does not make an element inert; these two do. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.26s ease, visibility 0.26s;
+}
+
+.nav-panel.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-panel-inner {
+  padding: 8vh var(--gutter) 12vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.panel-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panel-group-label {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.42);
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-group a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 1.32rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding: 11px 0;
 }
 
 .login {
@@ -105,11 +298,15 @@ main {
   border-color: var(--accent);
 }
 
-@media (max-width: 880px) {
+/* Links collapse into the panel here. The breakpoint has moved out twice as the
+   bar grew: 880 -> 980 when the dropdowns arrived, then 980 -> 1150 when the
+   link text went up to 1.22rem. Below this the row runs flush into the logo on
+   one side and the Get in touch button on the other. */
+@media (max-width: 1150px) {
   .nav,
   .page-bar {
-    grid-template-columns: auto 1fr;
-    min-height: 66px;
+    grid-template-columns: 1fr auto;
+    min-height: 76px;
     padding: 12px 22px;
   }
 
@@ -117,12 +314,31 @@ main {
     display: none;
   }
 
-  .nav nav {
+  .nav-main {
+    display: none;
+  }
+
+  .nav-burger {
+    display: flex;
+  }
+
+  .nav-panel {
+    display: block;
+  }
+
+  /* The Get in touch button lives in the panel at this size; the burger takes
+     the slot. */
+  .nav-end .login,
+  .nav-end .btn--nav {
     display: none;
   }
 
   .logo-img {
-    height: 34px;
+    height: 38px;
+  }
+
+  .nav-panel {
+    top: 76px;
   }
 }
 
@@ -185,15 +401,26 @@ h2 {
 .hero {
   position: relative;
   height: 100vh;
+  height: 100svh; /* mobile: vh includes the collapsing URL bar */
   overflow: hidden;
 }
 
+/* Centred with auto margins, NOT with left:50% + translate:-50%.
+
+   GSAP animates this element, and it takes ownership of transforms: it folds
+   the standalone `translate` property into its own matrix. Chromium survives
+   that consolidation, Safari does not — on iOS the -50% was dropped and the
+   copy sat at left:50%, shoved half a screen right and running off the edge.
+   Auto margins are pure layout, so GSAP can own `transform` outright. */
 .hero-content {
   position: absolute;
   left: 0;
   right: 0;
+  margin-inline: auto;
+  width: 100%;
   bottom: 13vh;
-  padding: 0 6vw;
+  padding: 0 var(--gutter);
+  max-width: calc(var(--maxw) + 2 * var(--gutter));
 }
 
 .scroll-cue {
@@ -217,12 +444,14 @@ h2 {
 .beat {
   position: relative;
   min-height: 165vh;
+  min-height: 165svh;
 }
 
 .stage {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh; /* mobile: vh includes the collapsing URL bar */
   overflow: hidden;
 }
 
@@ -232,10 +461,19 @@ h2 {
 
 .beat-content {
   position: absolute;
+  /* Centred on the same box as .firm-inner and the flat bands, so the copy on a
+     cinematic beat starts at the same x as the copy above and below it. It used
+     to be flush left at 6vw with its own 900px cap, which on a wide screen put
+     it a long way outside the 1240px column everything else sits in. */
+  /* Auto margins, not translate: see .hero-content. The beat videos inside
+     these stages are GSAP-scrubbed too. */
   left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 100%;
   bottom: 11vh;
-  padding: 0 6vw;
-  max-width: 900px;
+  padding: 0 var(--gutter);
+  max-width: calc(var(--maxw) + 2 * var(--gutter));
 }
 
 .canvas-wrap {
@@ -263,7 +501,7 @@ h2 {
 
 /* ---------- Footer ---------- */
 .footer {
-  padding: 12vh 6vw 6vh;
+  padding: var(--band) var(--gutter) 6vh;
   border-top: 1px solid var(--line);
   background: var(--navy);
 }
@@ -391,8 +629,8 @@ h2 {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: 80px;
-  padding: 13px 40px;
+  min-height: var(--nav-h);
+  padding: 16px 40px;
   background: rgba(7, 17, 31, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -513,8 +751,12 @@ h2 {
   line-height: 1;
 }
 
+/* Every asset and team photo is hotlinked from the daacap.com WordPress media
+   library, so it can 404 the day that site is decommissioned. The tone behind
+   it means a missing image reads as a placeholder plate rather than a hole. */
 .panel-img {
   height: 220px;
+  background-color: #0e2438;
   background-size: cover;
   background-position: center;
 }
@@ -598,8 +840,9 @@ h2 {
 /* Leadership */
 .page-team {
   min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
   background: var(--navy);
-  padding: 130px 6vw 0;
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
 }
 
 .team-wrap {
@@ -633,6 +876,7 @@ h2 {
   width: 108px;
   height: 108px;
   border-radius: 50%;
+  background-color: #0e2438;
   background-size: cover;
   background-position: center top;
   border: 1px solid rgba(247, 245, 240, 0.2);
@@ -695,8 +939,11 @@ h2 {
 
 
 /* ---------- Logo ---------- */
+/* The wordmark is inline SVG now, not an <img>, so it can draw itself: it
+   takes its colour from `color` and the brush that paints it is wider than the
+   letterform, so it must not be clipped to the viewBox. */
 .logo-img {
-  height: 38px;
+  height: 50px;
   width: auto;
   display: block;
   color: var(--paper);
@@ -751,6 +998,7 @@ button:focus-visible {
   height: 58px;
   width: auto;
   color: var(--paper);
+  overflow: visible;
   opacity: 0;
   animation: logoIn 0.9s ease-out 0.15s forwards;
 }
@@ -765,11 +1013,13 @@ button:focus-visible {
 }
 
 /* nav link underline draw */
-.nav nav a {
+.nav-link,
+.nav-trigger {
   position: relative;
 }
 
-.nav nav a::after {
+.nav-link::after,
+.nav-trigger::after {
   content: '';
   position: absolute;
   left: 0;
@@ -782,7 +1032,9 @@ button:focus-visible {
   transition: transform 0.3s ease;
 }
 
-.nav nav a:hover::after {
+.nav-link:hover::after,
+.nav-trigger:hover::after,
+.nav-group.open .nav-trigger::after {
   transform: scaleX(1);
 }
 
@@ -815,35 +1067,31 @@ button:focus-visible {
   will-change: transform;
 }
 
-/* rhythm: right-anchored beat */
-.beat-content--right {
-  left: auto;
-  right: 0;
-  max-width: 760px;
+/* rhythm: right-anchored beat. Stays inside the shared container and pushes
+   its blocks to the right edge of it, rather than leaving the column
+   altogether — the text itself stays left-aligned. */
+.beat-content--right > * {
+  margin-left: auto;
 }
 
 /* manifesto */
 .manifesto {
-  min-height: 92vh;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 6vw;
+  text-align: left;
+  padding: var(--band) var(--gutter);
   background: radial-gradient(90% 70% at 50% 50%, #0b2036 0%, var(--navy) 78%);
 }
 
-.manifesto h2 {
-  font-size: clamp(2.4rem, 5.4vw, 4.8rem);
-  line-height: 1.08;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  max-width: none;
-}
+
 
 /* closing */
 .closing {
-  padding: 24vh 6vw;
+  padding: var(--band) var(--gutter);
   text-align: center;
   background: var(--navy);
 }
@@ -884,8 +1132,8 @@ button:focus-visible {
 
 /* ---------- Atmosphere pass ---------- */
 
-/* second voice: the two statement moments speak serif */
-.manifesto h2,
+/* Second voice. The manifesto used to speak serif here too; it now mirrors the
+   firm section instead, so only the closing keeps it. */
 .closing h2 {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
@@ -893,21 +1141,35 @@ button:focus-visible {
   letter-spacing: 0;
 }
 
-.manifesto h2 {
-  font-size: clamp(2.8rem, 6.4vw, 5.6rem);
-}
+
 
 .closing h2 {
   font-size: clamp(2.4rem, 5vw, 4.4rem);
 }
 
+/* The hero scrim used the shared gradient, whose 0.55 top band sat straight
+   over the sky — the most saturated part of the shot — and greyed it. The bar
+   has its own opaque background with a backdrop blur, so nothing up there needs
+   protecting. Strength is kept at the bottom, where the headline sits. */
+.hero .scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 17, 31, 0.22) 0%,
+    rgba(7, 17, 31, 0.04) 38%,
+    rgba(7, 17, 31, 0.86) 100%
+  );
+}
+
 /* light arc: the page warms as the day breaks, cools to close */
+/* Was 0.55 across the top, which greyed the footage the same way the hero's
+   scrim did. Strength is kept low where the image is and high at the bottom,
+   under the copy. */
 #market .scrim {
-  background: linear-gradient(180deg, rgba(7, 17, 31, 0.55) 0%, rgba(9, 18, 30, 0.12) 42%, rgba(14, 21, 30, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.20) 0%, rgba(9, 18, 30, 0.04) 40%, rgba(14, 21, 30, 0.86) 100%);
 }
 
 #assets .scrim {
-  background: linear-gradient(180deg, rgba(10, 18, 30, 0.5) 0%, rgba(13, 20, 28, 0.1) 42%, rgba(24, 22, 20, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(10, 18, 30, 0.20) 0%, rgba(13, 20, 28, 0.04) 40%, rgba(24, 22, 20, 0.84) 100%);
 }
 
 .manifesto {
@@ -939,7 +1201,7 @@ button:focus-visible {
   inset: 0;
   pointer-events: none;
   z-index: 3;
-  opacity: 0.07;
+  opacity: var(--grain);
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
@@ -949,18 +1211,7 @@ main {
   counter-reset: beat;
 }
 
-.beat .stage::before {
-  counter-increment: beat;
-  content: '0' counter(beat);
-  position: absolute;
-  top: 96px;
-  right: 32px;
-  z-index: 4;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.3em;
-  color: rgba(247, 245, 240, 0.35);
-}
+/* The 01/02 beat numbers were removed at the client's request. */
 
 /* footer colophon */
 .coords {
@@ -985,8 +1236,91 @@ main {
 .firm {
   position: relative;
   overflow: hidden;
-  padding: 14vh 6vw;
+  /* Full screen, like the cinematic beats either side of it. It used to be a
+     padded band that came up well short of the viewport, which is why it read
+     as smaller than everything around it. */
+  min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
+  display: flex;
+  align-items: center;
+  padding: var(--band) var(--gutter);
   background: #060d16;
+}
+
+/* Photo panel: full height, hard against the right edge, feathered into the
+   ground on its left so it reads as part of the section rather than a pasted
+   rectangle. object-fit does the cropping at every width. */
+.firm-photo,
+.manifesto-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.firm-photo img,
+.manifesto-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* The fade has to reach the section's OWN ground colour, or the panel's left
+   edge shows as a tonal step. .firm sits on #060d16, .manifesto on a gradient
+   that lands near --navy, so each sets --photo-bg for itself. */
+.firm-photo,
+.manifesto-photo {
+  --photo-bg: 6, 13, 22;
+}
+
+.manifesto-photo {
+  --photo-bg: 7, 17, 31;
+}
+
+.firm-photo::after,
+.manifesto-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--photo-bg), 1) 0%,
+      rgba(var(--photo-bg), 0.92) 14%,
+      rgba(var(--photo-bg), 0.6) 34%,
+      rgba(var(--photo-bg), 0.24) 54%,
+      rgba(var(--photo-bg), 0) 74%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(var(--photo-bg), 0.6) 0%,
+      rgba(var(--photo-bg), 0) 26%,
+      rgba(var(--photo-bg), 0) 74%,
+      rgba(var(--photo-bg), 0.6) 100%
+    );
+}
+
+/* Keep the copy clear of the photo at every width. */
+.firm--photo .firm-inner,
+.manifesto--photo .manifesto-inner {
+  padding-right: 46%;
+}
+
+@media (max-width: 980px) {
+  .firm-photo,
+  .manifesto-photo {
+    width: 100%;
+    opacity: 0.3;
+  }
+
+  .firm--photo .firm-inner,
+  .manifesto--photo .manifesto-inner {
+    padding-right: 0;
+  }
 }
 
 /* the three backgrounds */
@@ -1066,7 +1400,7 @@ main {
 .firm-inner {
   position: relative;
   z-index: 2;
-  max-width: 1240px;
+  max-width: var(--maxw);
   margin: 0 auto;
 }
 
@@ -1081,12 +1415,14 @@ main {
   text-wrap: balance;
 }
 
+/* One column. Two equal columns read as a body-copy band, which is the exact
+   failure mode CLAUDE.md warns about for this section. */
 .firm-notes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 44px;
-  max-width: 780px;
-  margin-top: 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 62ch;
+  margin-top: 40px;
 }
 
 .firm-notes p {
@@ -1202,7 +1538,7 @@ main {
 /* ---------- News & insights ---------- */
 .news {
   position: relative;
-  padding: 16vh 6vw;
+  padding: var(--band) var(--gutter);
   background: var(--navy2);
 }
 
@@ -1313,8 +1649,9 @@ main {
 /* ---------- Contact page ---------- */
 .page-contact {
   min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
   background: var(--navy);
-  padding: 130px 6vw 0;
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
 }
 
 .contact-wrap {
@@ -1555,5 +1892,1088 @@ main {
   .to-top,
   .to-top svg {
     transition: opacity 0.2s ease;
+  }
+}
+
+
+/* ---------- Manifesto substance ---------- */
+/* The claim is still the moment. Everything under it is deliberately in the
+   page's OTHER voices — one sans sub-line, then the mono rail — so no second
+   serif appears and the statement keeps its weight. */
+.manifesto-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* Stacked in the left column rather than three across, because that column is
+   now half the width it was. */
+.manifesto-rail {
+  list-style: none;
+  padding: 30px 0 0;
+  margin: 40px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.manifesto-rail li {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 18px;
+  align-items: baseline;
+}
+
+.manifesto-rail-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.manifesto-rail-d {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 880px) {
+  .manifesto-rail li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+/* ---------- About page ---------- */
+.page-about {
+  min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
+  background: var(--navy);
+  padding: calc(var(--nav-h) + 5vh) var(--gutter) 0;
+}
+
+.about-wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* Same rhythm between blocks as between the landing page's bands. */
+.about-block + .about-block {
+  margin-top: var(--band);
+  padding-top: var(--band);
+  border-top: 1px solid var(--line);
+}
+
+.about-statement {
+  max-width: 23ch;
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.about-notes {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 780px;
+}
+
+.about-notes p {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  line-height: 1.62;
+}
+
+.about-spec {
+  margin-top: 40px;
+}
+
+.about-pillars {
+  margin-top: 46px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 38px;
+}
+
+.about-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-pillar-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.about-pillar-d {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.about-onward {
+  margin-top: var(--band);
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 34px;
+}
+
+.about-onward a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 1.02rem;
+  border-bottom: 1px solid rgba(247, 245, 240, 0.28);
+  padding-bottom: 3px;
+  transition: border-color 0.25s;
+}
+
+.about-onward a:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 880px) {
+  .about-pillars {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+
+/* The spec rail now sits in a half-width column, where it wrapped and left a
+   separator dot orphaned at the start of the second line. */
+.firm--photo .firm-spec {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+}
+
+.firm--photo .firm-spec li + li::before {
+  margin: 0 10px;
+}
+
+/* ============================================================
+   Buttons. One component, three sizes/weights. Everything that
+   was a bare underlined link is now an actual button, because the
+   old .beat-cta read as body copy with a rule under it.
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn--solid {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: #0b1520;
+}
+
+.btn--solid:hover { background: #fff; border-color: #fff; }
+
+.btn--outline:hover { border-color: var(--paper); }
+
+.btn--lg {
+  padding: 18px 36px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.btn--nav { padding: 11px 22px; font-size: 0.92rem; }
+.btn--spaced { margin-top: 34px; }
+
+.btn-ico { width: 18px; height: 18px; flex: none; }
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.btn:hover .btn-arrow { transform: translateX(5px); }
+
+.sr-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Content pages
+   ============================================================ */
+.page {
+  background: var(--navy);
+  min-height: 100vh;
+  min-height: 100svh; /* mobile: vh includes the collapsing URL bar */
+}
+
+/* ---------- Page hero ---------- */
+.phero {
+  position: relative;
+  isolation: isolate;
+}
+
+.phero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.phero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.82) 0%, rgba(7, 17, 31, 0.32) 42%, rgba(7, 17, 31, 0.78) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.1) 62%);
+}
+
+.phero-head {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 78vh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 8vh) var(--gutter) 7vh;
+}
+
+.phero-head-inner {
+  /* Must be positioned: .phero-media is a z-index:0 positioned element, which
+     paints above a static sibling, so the title was hidden behind the photo. */
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* The one place type is the whole composition. */
+.phero-title {
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  line-height: 0.94;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+.phero-panel {
+  position: relative;
+  z-index: 1;
+  padding: 8vh var(--gutter);
+  background: var(--navy);
+}
+
+.phero-panel-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.phero-lead {
+  font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+  line-height: 1.5;
+  max-width: 62ch;
+  font-weight: 400;
+}
+
+.phero-body,
+.phero-cols {
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.phero-body p + p,
+.phero-cols p + p { margin-top: 22px; }
+
+/* One column. Two columns left a ragged, uneven pair of blocks under the lead
+   and made the reader jump back up the page to start the second one. */
+.phero-cols {
+  max-width: 880px;
+}
+
+/* boxed: the image stops short and a solid panel carries the copy under it */
+.phero--boxed .phero-veil {
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.25) 40%, rgba(7, 17, 31, 0.92) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.6) 0%, rgba(7, 17, 31, 0.06) 66%);
+}
+
+.phero--boxed .phero-head {
+  min-height: 62vh;
+  padding-bottom: 5vh;
+}
+
+.phero--boxed .phero-panel {
+  background: var(--navy2);
+  border-top: 1px solid var(--line);
+  padding: 7vh var(--gutter);
+}
+
+@media (max-width: 880px) {
+  .phero--boxed .phero-head { min-height: 48vh; }
+}
+
+/* ---------- Alternating copy / photo (About > Our team) ---------- */
+.alt {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.alt-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+  align-items: center;
+}
+
+.alt-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.alt-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.alt-copy .btn { margin-top: 34px; }
+
+@media (max-width: 880px) {
+  .alt-inner { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ---------- Pillars ---------- */
+.pillars {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.pillars-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px;
+}
+
+.pillars-inner--four { grid-template-columns: repeat(4, 1fr); gap: 34px; }
+
+.pillar {
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.pillar-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pillar-d { color: var(--muted); font-size: 0.95rem; line-height: 1.62; }
+
+@media (max-width: 980px) {
+  .pillars-inner,
+  .pillars-inner--four { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 680px) {
+  .pillars-inner,
+  .pillars-inner--four { grid-template-columns: 1fr; }
+}
+
+/* ---------- CTA band ---------- */
+.cta-band {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+  background: var(--navy2);
+}
+
+.cta-band-inner { max-width: var(--maxw); margin: 0 auto; }
+
+.cta-band-note {
+  margin-top: 22px;
+  margin-bottom: 36px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.62;
+  max-width: 62ch;
+}
+
+/* ---------- Investment criteria ---------- */
+.criteria {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.criteria-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 5vw;
+}
+
+.crit {
+  display: flex;
+  gap: 22px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.crit-n {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(247, 245, 240, 0.4);
+  padding-top: 5px;
+  flex: none;
+}
+
+.crit-t { font-size: 1.22rem; font-weight: 500; letter-spacing: -0.01em; }
+
+.crit-d {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.97rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 880px) {
+  .criteria-inner { grid-template-columns: 1fr; }
+}
+
+/* ---------- News strip ---------- */
+.newsstrip {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.newsstrip-head {
+  max-width: var(--maxw);
+  margin: 0 auto 46px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+
+.newsstrip-head h2 { max-width: none; }
+
+/* The lead card is tall and the rest are wide, so the row reads as an edit
+   rather than three identical tiles. */
+.newsstrip-grid {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 26px;
+}
+
+.ncard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(10, 30, 51, 0.4);
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.ncard:hover { border-color: rgba(247, 245, 240, 0.4); transform: translateY(-3px); }
+
+.ncard--lead { grid-row: span 2; }
+
+.ncard-media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.ncard--lead .ncard-media { aspect-ratio: 4 / 5; }
+
+.ncard-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ncard:hover .ncard-media img { transform: scale(1.05); }
+
+.ncard-body { display: block; padding: 24px 26px 28px; }
+
+.ncard-meta {
+  display: block;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.45);
+}
+
+.ncard-title {
+  display: block;
+  margin-top: 12px;
+  font-size: 1.24rem;
+  font-weight: 500;
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+}
+
+.ncard--lead .ncard-title { font-size: 1.7rem; }
+
+.ncard-stand {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.newsstrip-src {
+  display: block;
+  max-width: var(--maxw);
+  margin: 30px auto 0;
+  color: rgba(247, 245, 240, 0.45);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+@media (max-width: 880px) {
+  .newsstrip-grid { grid-template-columns: 1fr; }
+  .ncard--lead { grid-row: auto; }
+  .ncard--lead .ncard-media { aspect-ratio: 16 / 9; }
+}
+
+/* ---------- Get in touch ---------- */
+.git {
+  padding: var(--band) var(--gutter) calc(var(--band) + 2vh);
+  border-top: 1px solid var(--line);
+}
+
+.git-plate {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 8vh 6% 8vh;
+  border-radius: 6px;
+  background: var(--navy2);
+}
+
+.git-plate-bg { position: absolute; inset: 0; z-index: -1; }
+
+.git-plate-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+}
+
+.git-plate-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 30, 51, 0.96) 0%, rgba(10, 30, 51, 0.7) 55%, rgba(10, 30, 51, 0.4) 100%);
+}
+
+.git-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+  flex-wrap: wrap;
+}
+
+.git-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  max-width: none;
+}
+
+.git-note {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 0.97rem;
+  max-width: 60ch;
+}
+
+/* ---------- Split feature (mirror of the firm section) ---------- */
+.split--flip .firm-photo { right: auto; left: 0; }
+
+.split--flip .firm-photo::after {
+  transform: scaleX(-1);
+}
+
+.split--flip .firm-inner { padding-right: 0; padding-left: 46%; }
+
+@media (max-width: 980px) {
+  .split--flip .firm-inner { padding-left: 0; }
+}
+
+/* Beat pages carry the fixed bar over a sticky stage. */
+.page--beat { padding-top: 0; }
+
+/* ---------- Hero lead row (lead + optional action button) ---------- */
+.phero-leadrow--split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.phero-leadrow--split .phero-lead { flex: 1 1 32ch; }
+.phero-leadrow--split .btn { flex: none; margin-top: 6px; }
+
+/* ---------- Investment profile points ---------- */
+.points {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.points-list {
+  list-style: none;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Reading size, not card size: six statements a broker can scan. */
+.points-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.15rem, 2vw, 1.62rem);
+  line-height: 1.38;
+  font-weight: 400;
+  letter-spacing: -0.014em;
+  max-width: 52ch;
+}
+
+.points-list li:first-child { border-top: 1px solid var(--line); }
+
+.bullet-arrow {
+  width: clamp(22px, 2.4vw, 30px);
+  height: clamp(22px, 2.4vw, 30px);
+  flex: none;
+  margin-top: 0.22em;
+  opacity: 0.7;
+}
+
+@media (max-width: 880px) {
+  .points-list li { max-width: none; gap: 16px; }
+}
+
+/* ---------- CTA band with a photo beside it ---------- */
+.cta-band--media .cta-band-inner {
+  display: grid;
+  grid-template-columns: 1fr 0.78fr;
+  gap: 5vw;
+  align-items: center;
+}
+
+.cta-band-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.cta-band-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 880px) {
+  .cta-band--media .cta-band-inner { grid-template-columns: 1fr; gap: 40px; }
+  .cta-band-media { aspect-ratio: 16 / 10; }
+}
+
+/* Pages carry the shared footer, which already owns its own top rule. */
+.page .footer { border-top: 1px solid var(--line); }
+
+
+/* ============================================================
+   Article template. One set of rules for every article, so they
+   all come out looking like the same publication.
+   ============================================================ */
+.art-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 66vh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 8vh) var(--gutter) 6vh;
+}
+
+.art-hero-media { position: absolute; inset: 0; z-index: 0; }
+
+.art-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.art-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 17, 31, 0.78) 0%, rgba(7, 17, 31, 0.34) 40%, rgba(7, 17, 31, 0.9) 100%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.7) 0%, rgba(7, 17, 31, 0.12) 64%);
+}
+
+.art-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.art-meta {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.6);
+  margin-bottom: 20px;
+}
+
+.art-title {
+  font-size: clamp(2.1rem, 4.6vw, 3.9rem);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  max-width: 22ch;
+}
+
+/* One measure for the whole body, so every article reads the same.
+   In px, not ch: `ch` resolves against the element's own font-size, which put
+   this at roughly 540px and made the column read as a thin ribbon on a wide
+   monitor. 880px is around 72 characters at the body size below. */
+.art-body {
+  /* The gutter padding sits INSIDE max-width under border-box, so a flat 880px
+     was leaving only ~650px of actual text on a 1920 monitor. Add the gutters
+     back so the measure is 880px of type, not 880px of box. */
+  max-width: calc(880px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 9vh var(--gutter) 4vh;
+}
+
+.art-stand {
+  font-size: clamp(1.18rem, 1.8vw, 1.48rem);
+  line-height: 1.5;
+  font-weight: 400;
+  padding-bottom: 30px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.art-byline {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.5);
+  margin-bottom: 12px;
+}
+
+.art-h2 {
+  font-size: clamp(1.4rem, 2.3vw, 1.85rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  max-width: none;
+  margin-top: 54px;
+  margin-bottom: 18px;
+}
+
+.art-h3 {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.72);
+  margin-top: 38px;
+  margin-bottom: 14px;
+}
+
+.art-p {
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.art-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.art-ul li {
+  position: relative;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.68;
+  padding-left: 26px;
+  margin-bottom: 14px;
+}
+
+.art-ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 10px;
+  height: 1px;
+  background: rgba(247, 245, 240, 0.5);
+}
+
+.art-source {
+  margin-top: 46px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  color: rgba(247, 245, 240, 0.45);
+  font-size: 0.86rem;
+}
+
+.art-source a { color: var(--paper); }
+
+.art-more {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.art-more-inner { max-width: var(--maxw); margin: 0 auto; }
+
+.art-more-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.art-more-grid .ncard-media { aspect-ratio: 16 / 9; }
+
+.art-missing {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: calc(var(--nav-h) + 10vh) var(--gutter) 10vh;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+@media (max-width: 880px) {
+  .art-more-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- News archive (the full list, 22 and counting) ---------- */
+.newsstrip-count {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.45);
+}
+
+.newsstrip-lead {
+  max-width: var(--maxw);
+  margin: 0 auto 26px;
+}
+
+.newsstrip-lead .ncard--lead { grid-row: auto; }
+
+.newsstrip-lead .ncard--lead .ncard-media { aspect-ratio: 21 / 9; }
+
+.newsstrip-archive {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+@media (max-width: 980px) {
+  .newsstrip-archive { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .newsstrip-archive { grid-template-columns: 1fr; }
+}
+
+/* ---------- Regulatory status line in the footer ---------- */
+/* Quiet on purpose. Status is not a selling point: same weight as the
+   copyright line, never larger, never set as a badge. */
+.regstatus {
+  margin-top: 56px;
+  color: rgba(247, 245, 240, 0.42);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+.regstatus + .legal { margin-top: 18px; }
+
+/* ---------- Legal & Regulatory page ---------- */
+.legalpage {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 12vh) var(--gutter) 14vh;
+  min-height: 62vh;
+}
+
+.legalpage-title {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  max-width: 18ch;
+}
+
+.legalpage-body {
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.72;
+}
+
+.legalpage-links {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.legalpage-links a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(247, 245, 240, 0.25);
+  padding-bottom: 3px;
+}
+
+/* ============================================================
+   Phone layout corrections.
+
+   Two faults the desktop layout hides:
+
+   1. .firm and .split are min-height:100svh, vertically centred, with
+      overflow:hidden to contain the photo panel. On a narrow screen the copy is
+      taller than one viewport, so centring pushed it out of both ends and
+      overflow:hidden cut it off — 42px of the firm section's text was simply
+      not rendered. Sections grow with their content here instead.
+
+   2. A .beat is 165svh around a sticky 100svh stage, which leaves ~430px of
+      scrolling where the stage is pinned and NOTHING on screen changes. With a
+      mouse that reads as a deliberate hold; under a thumb it reads as the page
+      having stopped responding. On a phone the section is the height of its
+      stage, so there is no dead pin.
+   ============================================================ */
+@media (max-width: 880px) {
+  .firm,
+  .split {
+    min-height: 0;
+    overflow: visible;
+    align-items: flex-start;
+    padding-top: calc(var(--nav-h) + 6vh);
+    padding-bottom: 10vh;
+  }
+
+  .firm-photo,
+  .manifesto-photo {
+    /* Behind the copy rather than beside it, and it must not clip either. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.22;
+    overflow: hidden;
+  }
+
+  .firm-inner,
+  .manifesto-inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .beat {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .manifesto {
+    min-height: 0;
+    padding-top: calc(var(--nav-h) + 6vh);
+    padding-bottom: 10vh;
+  }
+
+  /* The display statement's clamp floor is 2rem, which on a 390px screen runs
+     a single sentence to five lines and dominates the section. */
+  .firm-statement,
+  .about-statement {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+    max-width: none;
+  }
+
+  .phero-title {
+    font-size: clamp(2.4rem, 13vw, 4rem);
   }
 }

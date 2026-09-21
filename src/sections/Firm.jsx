@@ -33,8 +33,6 @@ const CORRIDORS = [
   [[2.35, 48.85], [1.45, 47.08], [-0.55, 44.84]]
 ]
 
-const SPEC = ['Geneva · FINMA regulated', 'Last-mile & urban logistics', 'Western European corridors']
-
 /* Web-Mercator, BOTH AXES IN RADIANS. Projecting y through Mercator while
    leaving x in degrees puts the two axes on scales that differ by ~57x, so a
    fit computed across them lands about 40x too far in and you see a couple of
@@ -223,17 +221,24 @@ export default function Firm() {
   })
 
   return (
-    <section className={'firm firm--' + bg} id="firm">
+    <section className={'firm firm--photo firm--' + bg} id="firm">
       {bg === 'corridors' && <Corridors />}
       {bg === 'hold' && <Hold />}
       {bg === 'frame' && <Frame />}
 
+      <div className="firm-photo" aria-hidden="true">
+        <img src="/images/geneva.jpg" alt="" />
+      </div>
+
       <div className="firm-inner">
         <p className="eyebrow" data-reveal>The firm</p>
 
+        {/* Regulatory status is NOT a marketing argument and must not appear
+            here as a badge or credential. It is stated once, quietly, in the
+            footer, with the full wording on #/legal. */}
         <h2 className="firm-statement" data-reveal>
-          A FINMA&nbsp;regulated Swiss investment firm, specializing in logistics
-          real estate across key European corridors.
+          A Swiss investment firm, specializing in logistics real estate across
+          key European corridors.
         </h2>
 
         <div className="firm-notes">
@@ -248,11 +253,6 @@ export default function Firm() {
           </p>
         </div>
 
-        <ul className="firm-spec" data-reveal>
-          {SPEC.map((sp) => (
-            <li key={sp}>{sp}</li>
-          ))}
-        </ul>
       </div>
     </section>
   )
