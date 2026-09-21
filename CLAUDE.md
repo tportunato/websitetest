@@ -131,6 +131,32 @@ hole that 4x smeared over. The check that matters renders at 10x and compares
 pixel for pixel with the two fills. Six pixels stay dark; that is the floor,
 since brushing both contours whole with no phases at all leaves five.
 
+## Where the wordmark animation plays
+
+The draw is the ARRIVAL MOMENT, not a decoration on every page. It runs in
+exactly two places:
+
+- **The intro veil** on the landing page (`src/Landing.jsx`), on a real page
+  load — including a refresh of the home tab — but not when you navigate back
+  from a subpage. The gate is a MODULE-LEVEL flag, deliberately: `Landing`
+  unmounts on a route change, so a component-level one would replay, and
+  `sessionStorage` survives a reload, so that played once per tab and never
+  again.
+- **The nav logo** (`src/sections/Nav.jsx`), on pointer enter. It never plays
+  unbidden.
+
+The three subpage headers are `mode="none"` — a static fill. They used to draw
+on mount, which animated the furniture on every route change.
+
+**The veil lifts when the wordmark reports itself finished** (`onDone`), never
+on a timer. Timing it by hand needs two clocks to agree and they do not: React
+mounts and starts the draw's rAF loop about 300ms after the veil's own CSS
+animation begins, so a delay picked to match the 2320ms draw still lifted while
+the last stroke was travelling. It used to lift at 1150ms and nobody had ever
+seen the last 15% of the mark on the real site. Measured end to end: the draw
+finishes at 2320ms, the veil holds 300ms, the lift takes 600ms, the page is
+there at 3240ms. Change the pace and none of those numbers need touching.
+
 ## Things that have already bitten
 
 - **MapLibre owns a marker element's `transform`.** Animating the root's

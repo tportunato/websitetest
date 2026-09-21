@@ -738,7 +738,13 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: veilLift 0.6s cubic-bezier(0.7, 0, 0.3, 1) 1.15s forwards;
+}
+
+/* The lift is triggered by the wordmark reporting itself finished, not by a
+   delay - see the note in Landing.jsx. The 0.25s here is the beat that lets
+   the completed mark register before the page arrives. */
+.intro-veil--lift {
+  animation: veilLift 0.6s cubic-bezier(0.7, 0, 0.3, 1) 0.25s forwards;
 }
 
 .intro-logo {

@@ -19,26 +19,49 @@ import { setLenis } from './lib/scroll.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* Module scope, deliberately: this survives a route change but NOT a reload.
+   Landing unmounts when you go to #/portfolio and friends, so without a flag
+   the veil would replay every time you came back. sessionStorage was wrong the
+   other way - it survives a refresh too, so the veil played once per tab and
+   never again. This gives what it should: the front door on a real page load,
+   including a refresh of the home tab, and nothing when you navigate back. */
+let introShown = false
+
 export default function Landing() {
-  /* Arrival moment: brief branded veil, once per session, skipped for
-     reduced-motion users. */
+  /* Arrival moment: branded veil on a real page load, skipped for
+     reduced-motion users.
+
+     THE VEIL LIFTS WHEN THE WORDMARK SAYS IT IS FINISHED, not on a timer.
+     Timing it by hand needs two clocks to agree and they do not: React mounts
+     and starts the draw's rAF loop about 300ms after the veil's own CSS
+     animation begins, so a delay picked to match the 2320ms draw lifted while
+     the last stroke was still travelling. It used to lift at 1150ms and nobody
+     had ever seen the last 15% of the mark on the real site. `onDone` fires on
+     the frame the final stroke lands; `.intro-veil--lift` then holds 250ms and
+     takes 600ms to clear. The fallback below is a safety net only - if the
+     draw ever fails to report, nobody is left stuck behind the veil. */
   const [intro, setIntro] = useState(() => {
     try {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-      return !sessionStorage.getItem('daaIntroSeen')
+      return !introShown
     } catch (e) {
       return false
     }
   })
+  const [lift, setLift] = useState(false)
 
   useEffect(() => {
     if (!intro) return
-    const t = setTimeout(() => {
-      try { sessionStorage.setItem('daaIntroSeen', '1') } catch (e) {}
-      setIntro(false)
-    }, 1750)
-    return () => clearTimeout(t)
+    introShown = true
+    const safety = setTimeout(() => setLift(true), 5000)
+    return () => clearTimeout(safety)
   }, [intro])
+
+  useEffect(() => {
+    if (!lift) return
+    const t = setTimeout(() => setIntro(false), 900)
+    return () => clearTimeout(t)
+  }, [lift])
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.12 })
@@ -122,8 +145,9 @@ export default function Landing() {
   return (
     <>
       {intro && (
-        <div className="intro-veil" aria-hidden="true">
-          <Wordmark className="intro-logo" mode="mount" duration={2200} delay={120} />
+        <div className={'intro-veil' + (lift ? ' intro-veil--lift' : '')} aria-hidden="true">
+          <Wordmark className="intro-logo" mode="mount" duration={2200} delay={120}
+                    onDone={() => setLift(true)} />
         </div>
       )}
       <Nav />

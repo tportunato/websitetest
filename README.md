@@ -227,3 +227,31 @@ Every timing map is also **forced to end at 1**. Left as measured, a map stops a
 the dash fraction where its ink stopped growing, which usefully skips a retrace
 plateau — but it leaves the interval's last sliver undrawn, and at arrow 10's
 terminal that cost 5 real pixels.
+
+
+## Pass 8 notes — where the wordmark animation lives
+
+The draw was firing in five places: the landing intro veil, the nav logo on
+hover, and all three subpage headers on mount. A logo that re-animates on every
+route change animates the furniture rather than the content, so it is now the
+arrival moment and nothing else:
+
+- **Intro veil** (`src/Landing.jsx`) on a real page load, including a refresh of
+  the home tab, but not on navigating back from a subpage. The gate is a
+  module-level flag — `Landing` unmounts on a route change so a component-level
+  one would replay, and `sessionStorage` survives a reload so that version
+  played once per tab and never again.
+- **Nav logo** on pointer enter. Never plays unbidden, invisible on touch.
+- **Subpage headers** are a static fill.
+
+### The veil used to cut the mark off
+It lifted at 1150ms while the draw ran 2320ms, so the last 15% had never been
+seen on the real site. Retiming it by hand did not work either: React mounts and
+starts the draw's rAF loop about 300ms after the veil's own CSS animation
+begins, so a delay picked to match the draw still lifted mid-stroke. The veil
+now lifts off an `onDone` callback fired on the frame the final stroke lands.
+
+Measured end to end in a real browser: draw finishes at **2320ms**, veil holds
+**300ms**, lift takes **600ms**, page is there at **3240ms**. Changing the pace
+moves none of those by hand. A 5s safety timeout lifts the veil regardless, so
+a failure can never leave anyone stuck behind it.

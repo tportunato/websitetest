@@ -28,11 +28,14 @@ export default function Wordmark({
   duration = 2200,
   delay = 0,
   className = 'logo-img',
-  title = 'DAA Capital Partners'
+  title = 'DAA Capital Partners',
+  onDone
 }) {
   const uid = useId().replace(/:/g, '')
   const strokes = useRef([])
   const rafRef = useRef(0)
+  const doneRef = useRef(onDone)
+  doneRef.current = onDone
   const [reduced, setReduced] = useState(true)
 
   useEffect(() => {
@@ -71,6 +74,12 @@ export default function Wordmark({
       const t = Math.min(1, elapsed / duration)
       paint(ease(t))
       if (t < 1) rafRef.current = requestAnimationFrame(tick)
+      /* onDone fires on the frame the last stroke lands, not on a timer.
+         The arrival veil lifts off this: two independent clocks drifted by
+         about 300ms - React mounts and starts the rAF loop a beat after the
+         veil's own CSS animation begins - and the mark was being cut off
+         mid-stroke again. */
+      else if (doneRef.current) doneRef.current()
     }
     paint(0)
     rafRef.current = requestAnimationFrame(tick)
