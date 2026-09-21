@@ -56,9 +56,11 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
 ## The wordmark draws itself
 
 `src/sections/Wordmark.jsx` + `src/lib/wordmark.js`. The logo is inline SVG now,
-not an `<img>`, so it can write itself on, in the order the mark is built: down
-the D's stem, round to close the D, the top of the first A carrying on into the
-whole second A, then back to fill the first A's bottom.
+not an `<img>`, so it can write itself on, in the order the mark is built and
+per the client's own sketch: down the D's stem, round the bowl to close the D,
+out along the BOTTOM of the first A, round the second A, then back leftward
+along the TOP of the first A to finish. The feet under each A land whenever the
+brush passes them and are not sequenced.
 
 It takes FOUR PHASES, not two, and that is not an accident. The logo is an
 interlaced ribbon and neither contour maps onto a letter: on the long one the
