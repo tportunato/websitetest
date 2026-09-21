@@ -1,11 +1,12 @@
 /* The DAA wordmark, drawn rather than placed.
 
    Inline SVG so the logo can write itself on, in the order the mark is built:
-   down the D's stem, round to close the D, the top of the first A carrying on
-   into the whole second A, then back for the bottom of the first A. The
-   mechanism, the phase list and the measured timing maps live in
-   src/lib/wordmark.js — read the comment at the top of that file before
-   changing anything here.
+   down the D's stem, round to close the D, out along the bottom of the first
+   A, round the second A, then back along the top of the first A. Phases may
+   overlap in time, so each one is positioned by its own start/end window
+   rather than by a running total. The mechanism, the phase list and the
+   measured timing maps live in src/lib/wordmark.js — read the comment at the
+   top of that file before changing anything here.
 
    mode:
      'mount' - draws once when it appears (the arrival veil, subpage bars)
@@ -102,8 +103,11 @@ export default function Wordmark({
       </defs>
       <g mask={`url(#wm${uid})`} fill="none" stroke="currentColor"
          strokeWidth={BRUSH} strokeLinecap={CAP} strokeLinejoin="round">
+        {/* per-phase brush: the second A's inner edge curves tighter than 7.6
+            reaches from the side the pen travels - see wordmark.js */}
         {PHASES.map((ph, i) => (
-          <path key={i} ref={(el) => { strokes.current[i] = el }} d={ph.d} />
+          <path key={i} ref={(el) => { strokes.current[i] = el }} d={ph.d}
+                strokeWidth={ph.brush} />
         ))}
       </g>
     </svg>

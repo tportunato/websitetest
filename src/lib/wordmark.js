@@ -13,10 +13,10 @@
    frame, so the direction of travel is a number, not an impression. Three
    earlier attempts each got some arrow backwards.
 
-   WHY FIVE PHASES. The logo is an interlaced ribbon saved as two filled
+   WHY PHASES AT ALL. The logo is an interlaced ribbon saved as two filled
    contours, and neither maps onto a letter. Measured region by region against
    the long contour entered at the stem tip:
-       stem       dash 0.03 -> 0.08
+       stem       dash 0.03 -> 0.07
        A1 bottom  dash 0.10 -> 0.25
        D bowl     dash 0.45 -> 0.65
    Travelling down the stem, the outline reaches the first A before it wraps
@@ -25,6 +25,19 @@
    the SAME way, so reversing does not help either - it needs a different
    INTERVAL. Phases draw intervals, and intervals replay in any order, because
    revealing is additive.
+
+   PHASES CAN OVERLAP IN TIME, which is why each one carries an explicit
+   `start`/`end` window rather than a share of a running total. Exactly one
+   does: the second A's FOOT is a RIDER, drawn under the bottom sweep's pen
+   rather than after it. Going round that contour the pen runs down the right
+   side, AROUND THE FOOT, and only then sweeps the bottom leftward, so in
+   outline order the foot completes before the bottom starts and reads as a
+   detour. No choice of interval fixes that; the order is the letterform's. As
+   a rider the foot takes the first 30% of the bottom sweep's window, and since
+   that sweep sets off from the foot's own corner, the foot fills in behind the
+   pen. That is the client's own rule for the feet - they appear as the flow
+   goes near them - and it is what the first A's foot already does for free,
+   because the long contour happens to pass through it mid-stroke.
 
    WHY IT IS NOT stroke-dashoffset ON A CENTRELINE. The mark is a monoline
    saved as filled outlines, so there is no centreline to dash. Recovering one
@@ -40,23 +53,17 @@
    and lit stray fragments of the next letter early. A butt cap advances as a
    clean edge.
 
-   COVERAGE IS COMPLETE: 22925 of the logo's 22925 pixels. Getting the last 173
-   of them honestly was the awkward part. The second A's inner edge curves
-   tighter than the brush reaches from the side arrow 7 travels, and the
-   interval that does reach it runs the OTHER way round the letter - so using
-   it would have quietly reversed arrow 7 to save a hairline. Instead there is
-   a final SETTLE phase carrying those 173 pixels, weighted at 0.75% of the run
-   (about 17ms of 2200), by which point everything else is already down. It is
-   the seam closing, not a stroke.
+   COVERAGE IS COMPLETE: 22925 of the logo's 22925 pixels.
 
    PACE IS MEASURED. A contour does not reveal area at a constant rate, so each
    phase was scanned at 121 points WITH THE EARLIER PHASES ALREADY DOWN and the
    later ones not started, counting white pixels behind the mask; the curve is
    inverted so MAP[i] is the dash fraction at which i/40 of that phase's ink is
-   down, and phases are weighted by the ink each lays.
+   down, and the windows are sized by the ink each phase lays (a rider's ink
+   counted against its host's window, since it costs no extra time).
 
-   ALL OF IT IS SPECIFIC TO THIS ARTWORK. Change the logo, the brush or any
-   interval and every number here has to be re-measured. */
+   ALL OF IT IS SPECIFIC TO THIS ARTWORK. Change the logo, a brush width, a cap
+   or any interval and every number here has to be re-measured. */
 
 /* The two contours, each re-authored so the pen enters where it should.
    LONG_D starts at the stem tip (40.8,0) heading down; LONG_F is the same
@@ -83,28 +90,32 @@ export const FILL_B =
 export const BRUSH = 7.6
 export const CAP = 'butt'
 
-/* Played in order. `a`/`b` bound the interval of that contour the phase
-   draws; `weight` is its share of the run, from the ink it lays; `map`
-   turns even time into even ink within the phase. */
+/* `a`/`b` bound the interval of that contour the phase draws; `brush` is its
+   stroke width; `start`/`end` are its window in the run, and MAY OVERLAP
+   another phase's - see the riders in the comment at the top; `map` turns even
+   time into even ink within the phase. */
 export const PHASES = [
-  /* 1  down the stem */
-  { d: LONG_D, a: 0, b: 0.09, weight: 0.1032,
-    map: [0, 0.0225, 0.045, 0.0754, 0.0983, 0.1229, 0.1516, 0.1741, 0.2024, 0.2274, 0.2499, 0.2807, 0.3032, 0.3257, 0.3565, 0.379, 0.4049, 0.4323, 0.4548, 0.4845, 0.5081, 0.5306, 0.5593, 0.5814, 0.6051, 0.6311, 0.6508, 0.6793, 0.7004, 0.7192, 0.7256, 0.7533, 0.7814, 0.8077, 0.8371, 0.8638, 0.8904, 0.9169, 0.9457, 0.9725, 1] },
+  /* 1  down the stem, and not one pixel past it */
+  { d: LONG_D, a: 0, b: 0.07, brush: 7.6, start: 0, end: 0.0823,
+    map: [0, 0.0246, 0.0491, 0.0737, 0.0983, 0.1229, 0.1558, 0.1803, 0.2049, 0.2295, 0.254, 0.2869, 0.3115, 0.3361, 0.3607, 0.3852, 0.4181, 0.4427, 0.4673, 0.4918, 0.5164, 0.5493, 0.5739, 0.5985, 0.623, 0.6476, 0.6722, 0.7048, 0.7284, 0.7515, 0.7746, 0.7978, 0.8281, 0.8509, 0.8745, 0.8976, 0.9207, 0.9296, 0.9442, 0.9721, 1] },
   /* 2-4  bottom, up the left, right across the top: the D closes */
-  { d: LONG_F, a: 0.32, b: 0.6, weight: 0.2678,
-    map: [0, 0.0235, 0.1118, 0.1315, 0.1508, 0.171, 0.1901, 0.2074, 0.2303, 0.2495, 0.2684, 0.2876, 0.3067, 0.326, 0.3447, 0.3637, 0.3826, 0.4017, 0.421, 0.4406, 0.4602, 0.4801, 0.5006, 0.521, 0.5418, 0.5623, 0.5836, 0.6047, 0.6266, 0.6477, 0.6695, 0.6905, 0.7123, 0.7334, 0.7484, 0.7762, 0.797, 0.8199, 0.8417, 0.8637, 0.9167] },
-  /* 5-6  bottom of the first A, rightward */
-  { d: LONG_D, a: 0.09, b: 0.42, weight: 0.146,
-    map: [0, 0.011, 0.0219, 0.0326, 0.0436, 0.0547, 0.0656, 0.0763, 0.0868, 0.0976, 0.1083, 0.1191, 0.13, 0.141, 0.152, 0.1628, 0.174, 0.1849, 0.1959, 0.2065, 0.2172, 0.2275, 0.2379, 0.2481, 0.2581, 0.2679, 0.2778, 0.2876, 0.2971, 0.306, 0.3149, 0.3236, 0.3352, 0.3951, 0.4113, 0.4231, 0.4335, 0.4423, 0.4532, 0.463, 0.475] },
-  /* 7-8  second A: top rightward, down the right, bottom leftward */
-  { d: SHORT, a: 0.62, b: 1, weight: 0.3189,
-    map: [0, 0.0214, 0.0449, 0.0682, 0.0918, 0.1153, 0.139, 0.1628, 0.1858, 0.2093, 0.2331, 0.2564, 0.2795, 0.303, 0.3262, 0.3499, 0.3731, 0.3965, 0.4188, 0.4395, 0.4607, 0.4809, 0.5026, 0.5257, 0.5477, 0.6415, 0.6548, 0.6962, 0.7196, 0.7432, 0.7669, 0.7913, 0.815, 0.8386, 0.8622, 0.8858, 0.9095, 0.9333, 0.9564, 0.9773, 1] },
+  { d: LONG_F, a: 0.32, b: 0.6, brush: 7.6, start: 0.0823, end: 0.3646,
+    map: [0, 0.026, 0.1141, 0.1348, 0.1543, 0.1768, 0.195, 0.218, 0.2397, 0.2591, 0.2788, 0.299, 0.3191, 0.3391, 0.3592, 0.3791, 0.3992, 0.4195, 0.44, 0.4607, 0.4819, 0.5036, 0.5249, 0.5467, 0.5688, 0.5909, 0.6133, 0.6363, 0.6586, 0.6815, 0.7041, 0.7265, 0.7452, 0.7716, 0.7943, 0.8177, 0.8403, 0.8637, 0.9513, 0.975, 1] },
+  /* 5-6  bottom of the first A, rightward; its foot lands in passing */
+  { d: LONG_D, a: 0.07, b: 0.42, brush: 7.6, start: 0.3646, end: 0.517,
+    map: [0, 0.0498, 0.0607, 0.0713, 0.082, 0.0924, 0.1037, 0.1143, 0.1244, 0.1352, 0.1459, 0.1564, 0.1672, 0.1778, 0.1885, 0.199, 0.21, 0.2208, 0.2318, 0.2425, 0.2531, 0.2635, 0.2736, 0.2838, 0.2938, 0.3036, 0.3134, 0.323, 0.3328, 0.3417, 0.3503, 0.3589, 0.3684, 0.426, 0.4397, 0.4544, 0.4636, 0.4742, 0.4835, 0.4926, 0.5083] },
+  /* 7  second A: from the junction, top rightward, down the right side */
+  { d: SHORT, a: 0.605, b: 0.79, brush: 11, start: 0.517, end: 0.6836,
+    map: [0, 0.0287, 0.0512, 0.0652, 0.0777, 0.1222, 0.1606, 0.1856, 0.2109, 0.2365, 0.2613, 0.2867, 0.3122, 0.3375, 0.3628, 0.3881, 0.4139, 0.4377, 0.4635, 0.4887, 0.5141, 0.5391, 0.5646, 0.5898, 0.6145, 0.6396, 0.6646, 0.6901, 0.7147, 0.7396, 0.7649, 0.7898, 0.8149, 0.84, 0.8654, 0.8898, 0.9148, 0.9395, 0.9598, 0.9828, 1] },
+  /* 8  second A: back along the bottom, leftward */
+  { d: SHORT, a: 0.867, b: 1, brush: 11, start: 0.6836, end: 0.8503,
+    map: [0, 0.0065, 0.0164, 0.0278, 0.0391, 0.052, 0.0654, 0.0827, 0.1052, 0.1322, 0.1606, 0.1888, 0.2163, 0.2449, 0.2721, 0.3007, 0.3302, 0.3587, 0.3876, 0.418, 0.4462, 0.4749, 0.5029, 0.531, 0.559, 0.5877, 0.6155, 0.6437, 0.6718, 0.7003, 0.7286, 0.7584, 0.7859, 0.8139, 0.8428, 0.8694, 0.8947, 0.92, 0.9449, 0.9694, 1] },
+  /*     RIDER on 8: its foot, filling in behind the pen that just left it */
+  { d: SHORT, a: 0.79, b: 0.867, brush: 11, start: 0.6836, end: 0.7336,
+    map: [0, 0.0079, 0.0158, 0.0233, 0.0308, 0.0383, 0.054, 0.0612, 0.0683, 0.0755, 0.0827, 0.0898, 0.097, 0.1042, 0.1113, 0.1185, 0.1257, 0.1329, 0.14, 0.1472, 0.1627, 0.1699, 0.177, 0.1843, 0.1922, 0.2006, 0.2099, 0.22, 0.2313, 0.2449, 0.2706, 0.3028, 0.4356, 0.4578, 0.4837, 0.4975, 0.5097, 0.5207, 0.5312, 0.987, 0.9917] },
   /* 9-10 back leftward along the first A top, to its terminal */
-  { d: SHORT, a: 0, b: 0.2, weight: 0.1566,
-    map: [0, 0.0199, 0.0391, 0.0588, 0.0775, 0.0965, 0.1157, 0.1354, 0.1546, 0.1743, 0.1939, 0.2123, 0.232, 0.2503, 0.2681, 0.2863, 0.3047, 0.3224, 0.3405, 0.3589, 0.3769, 0.395, 0.4129, 0.4314, 0.4483, 0.4669, 0.4855, 0.5033, 0.5214, 0.5393, 0.5571, 0.5755, 0.5932, 0.6115, 0.629, 0.6475, 0.6655, 0.6837, 0.7014, 0.7199, 0.7583] },
-  /* settle: the last hairline seam, everything else already down */
-  { d: SHORT, a: 0.2, b: 0.62, weight: 0.0075,
-    map: [0, 0.2842, 0.3027, 0.585, 0.5918, 0.5935, 0.5952, 0.5969, 0.5987, 0.6003, 0.6018, 0.6032, 0.6046, 0.6061, 0.6075, 0.6094, 0.6118, 0.6142, 0.6166, 0.6216, 0.6312, 0.9504, 0.951, 0.9516, 0.9522, 0.9528, 0.9534, 0.954, 0.9546, 0.9552, 0.9558, 0.9564, 0.957, 0.9576, 0.9582, 0.9595, 0.961, 0.9625, 0.964, 0.9655, 0.975] },
+  { d: SHORT, a: 0, b: 0.2, brush: 8.5, start: 0.8503, end: 1,
+    map: [0, 0.0189, 0.0381, 0.0616, 0.0866, 0.1117, 0.1367, 0.161, 0.1824, 0.1998, 0.2174, 0.2365, 0.2546, 0.2716, 0.2889, 0.3064, 0.3235, 0.3407, 0.3583, 0.3756, 0.3929, 0.41, 0.4277, 0.4444, 0.4622, 0.4793, 0.4966, 0.5137, 0.5308, 0.5481, 0.5649, 0.5825, 0.5996, 0.617, 0.6334, 0.6515, 0.6688, 0.686, 0.7029, 0.7211, 0.7583] },
 ]
 
 function sample(map, t) {
@@ -118,10 +129,8 @@ function sample(map, t) {
    parks the pattern at the interval's start, so the dash grows from `a`
    towards `b` rather than from the contour's own beginning. */
 export function phaseDash(index, t, length) {
-  let acc = 0
-  for (let i = 0; i < index; i++) acc += PHASES[i].weight
   const ph = PHASES[index]
-  const p = Math.max(0, Math.min(1, (t - acc) / ph.weight))
+  const p = Math.max(0, Math.min(1, (t - ph.start) / (ph.end - ph.start)))
   const f = sample(ph.map, p)
   return {
     dasharray: `${length * (ph.b - ph.a) * f} ${length * 2}`,
