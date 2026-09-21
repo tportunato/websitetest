@@ -62,7 +62,7 @@ out along the BOTTOM of the first A, round the second A, then back leftward
 along the TOP of the first A to finish. The feet under each A land whenever the
 brush passes them and are not sequenced.
 
-It takes EIGHT PHASES, not two, and that is not an accident. The logo is an
+It takes SIX PHASES, not two, and that is not an accident. The logo is an
 interlaced ribbon and neither contour maps onto a letter: on the long one the
 first A's bottom sits at dash 0.10-0.25 but the D's bowl at 0.45-0.65, so a
 single continuous dash cannot put the D first whichever way it runs. Each phase
@@ -78,15 +78,19 @@ the fill as a mask and dashes a fat brush along the outline underneath, and the
 timing maps were MEASURED in a browser (coverage sampled per path, then
 inverted) because a contour reveals area in fits and starts.
 
+A DASH ONLY GROWS FORWARD FROM ITS OWN START, so a phase whose interval begins
+away from where the pen is appears as a mark of its own, floating. That is what
+decides the phase list. **The whole second A is ONE dash, SHORT 0.605 to 1.0 —
+do not split it.** Splitting it put the bottom sweep's start at the far corner
+of the foot, which the foot had not reached yet, and the letter broke apart at
+the bottom right. The foot is traversed in passing, the same way the long
+contour dips through the first A's foot.
+
 PHASES MAY OVERLAP IN TIME, so each carries its own `start`/`end` window rather
-than a share of a running total. Two are riders. The second A's foot rides the
-first 30% of the bottom sweep, because the outline runs down the right side,
-around the foot, and only then sweeps the bottom - so drawn in outline order the
-foot finishes before the bottom starts and reads as a detour. As a rider it
-fills in behind a pen that is right there, which is what the first A's foot
-already does for free. The junction patch (SHORT 0.32-0.34) rides the first 25%
-of arrow 7, whose pen starts on top of it; it is an isolated region no stroke
-reaches, and the old build left it to a settle phase at the very end.
+than a share of a running total. One does: the junction patch (SHORT 0.32-0.34)
+is an isolated region no stroke reaches, and it rides the first 20% of arrows
+9-10, whose pen starts right beside it. Riding arrow 7 instead was tried — that
+pen starts ten units away, so the junction came up as four separate specks.
 
 Three things there are load-bearing and easy to undo by accident: the brush
 has a FLAT cap and is as narrow as will still cover (a round cap is a disc that
@@ -98,10 +102,10 @@ Change any of those and re-measure.
 
 THREE NUMBERS THERE WERE SWEPT, not chosen, and each closes a visible defect:
 the stem stops at dash 0.07 (0.075 spills 716 pixels of the first A's diagonal
-and 0.09 spills 2872 - it grew a branch out of the D before the D existed);
-arrow 7 starts at SHORT 0.605 rather than 0.62, worth 468 pixels around
-x 88-92; and the three second-A phases use a brush of 11, since 7.6 cannot
-reach the inner edge at x 120-123 from the side the pen travels. Every timing
+and 0.09 spills 2872 - it grew a branch out of the D before the D existed); the
+second A starts at SHORT 0.605 rather than 0.62, worth 468 pixels around
+x 88-92; and it uses a brush of 11, since 7.6 cannot reach the inner edge at
+x 120-123 from the side the pen travels. Every timing
 map is also forced to end at 1, or each phase leaves its interval's last sliver
 undrawn. There is no settle phase.
 

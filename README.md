@@ -169,50 +169,52 @@ Because that canvas is back, the firm section's `corridors` background now
 repeats it on the same page, so the default there moved to `hold`.
 
 
-## Pass 7 notes — three defects in the wordmark draw
+## Pass 7 notes — the wordmark draw
 
-All three were measured rather than eyeballed. **The measurement resolution was
-itself the story**: the first round of fixes was verified at 4x with a >128
-threshold, pronounced complete, and shipped a black slash across the crossing
-where the first **a** passes under the second — 3.3 square units of hole that 4x
-smeared above the threshold. Coverage is now checked by rendering at 10x and
-comparing against the plain fill pixel for pixel. Six pixels stay dark, which is
-the floor: brushing both contours whole, with no phases at all, leaves five in
-the same place.
+Measured rather than eyeballed, at 10x against the plain fill. An earlier round
+was verified at 4x with a brightness threshold, pronounced complete, and shipped
+a black slash across the crossing where the first **a** passes under the second —
+3.3 square units of hole that 4x smeared over. Six pixels stay dark in the
+finished mark, which is the floor: brushing both contours whole, with no phases
+at all, leaves five in the same place.
+
+### A dash only grows forward from its own start
+This is the rule the phase list is built around. A phase whose interval begins
+away from wherever the pen currently is comes up as a mark of its own, floating,
+and two earlier splits did exactly that:
+
+- The second **a** was three phases, with the bottom sweep and the foot drawn
+  concurrently. The sweep's interval starts at the *far* corner of the foot, a
+  point the foot had not reached yet, so the letter visibly broke apart at the
+  bottom right.
+- The junction patch rode the second **a**'s opening, whose pen starts ten units
+  away from it, so the crossing came up as four separate specks.
+
+So the whole second **a** is now **one dash**, SHORT 0.605 to 1.0: top rightward,
+down the right side, through the foot and back along the bottom without lifting.
+Its foot is traversed in passing, exactly as the long contour dips through the
+first **a**'s foot. It takes about 100ms of a 2200ms run. Compressing that dip to
+match the first **a**'s 25ms was tried and is worse — the measured map is
+ink-linear, so stealing time there spikes the ink rate to 2.5x its mean against
+1.96x for the whole eased run, and the spike reads as a lurch.
 
 ### A branch grew out of the D before the D was closed
 The stem phase ran to dash 0.09 of the long contour, and past 0.07 that contour
 has already turned into the first **a**'s diagonal. At 10x: 0.07 lays the stem
 plus 77 pixels of its own turn, 0.075 spills 716, 0.09 spills 2872 — the branch.
-The stem now stops at 0.07.
 
-### The second A's foot finished before the rest of the A
-Not a phase-order problem. Going round that contour the pen runs down the right
-side, **around the foot**, and only then sweeps the bottom leftward, so in
-outline order the foot genuinely completes first. No interval fixes it.
-
-Phases therefore carry an explicit `start`/`end` window instead of a share of a
-running total, and windows may overlap. The foot is now a **rider**: it takes
-the first 30% of the bottom sweep's window, and since that sweep sets off from
-the foot's own corner the foot fills in behind the pen — which is what the first
-**a**'s foot already did for free.
-
-### Zones on the second A that only finished at the very end
-Three of them, with three different causes. There is no settle phase any more.
+### Zones that only finished at the very end
+There is no settle phase any more.
 
 - x 120-123 was out of reach of a 7.6 brush from the side the pen travels.
-  **Brush 11** on the three second-**a** phases closes it; 10 still leaves 6
-  pixels.
-- x 88-92, y 24-28 closes by starting arrow 7 at SHORT **0.605** rather than
-  0.62 — worth 468 pixels.
+  **Brush 11** on the second-**a** phase closes it; 10 still leaves 6 pixels.
+- x 88-92, y 24-28 closes by starting the second **a** at SHORT **0.605** rather
+  than 0.62 — worth 468 pixels.
 - x 84-90, y 34-38 is an isolated patch at the crossing that **no stroke
-  reaches**. It is a second rider, SHORT 0.32-0.34, on the first 25% of arrow
-  7's window — arrow 7's pen starts on top of it.
+  reaches**. It rides the first 20% of arrows 9-10, whose pen starts right
+  beside it.
 
-Every timing map is also **forced to end at 1**. Left as measured, a map stops
-at the dash fraction where its ink stopped growing, which usefully skips a
-retrace plateau — but it leaves the interval's last sliver undrawn, and at arrow
-10's terminal that cost 5 real pixels.
-
-Every pixel the old build left to its settle phase now lands with the stroke
-that passes over it, between 52% and 88% of the run.
+Every timing map is also **forced to end at 1**. Left as measured, a map stops at
+the dash fraction where its ink stopped growing, which usefully skips a retrace
+plateau — but it leaves the interval's last sliver undrawn, and at arrow 10's
+terminal that cost 5 real pixels.
