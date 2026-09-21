@@ -1,4 +1,5 @@
 /* Leadership page. Content and photos from the existing daacap.com/leadership. */
+import Wordmark from '../sections/Wordmark.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 import { PRINCIPALS, ADVISORS } from '../data/team.js'
@@ -25,7 +26,7 @@ export default function Leadership() {
   return (
     <div className="page-team">
       <header className="page-bar">
-        <a className="page-home" href="#/"><img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" /></a>
+        <a className="page-home" href="#/"><Wordmark mode="mount" duration={1100} /></a>
         <div className="page-title">Leadership</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
       </header>

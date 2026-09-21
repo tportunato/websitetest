@@ -53,6 +53,18 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
 - Comments explain *why*, not what. Several in this repo record a bug that was
   expensive to find; keep that habit rather than trimming them.
 
+## The wordmark draws itself
+
+`src/sections/Wordmark.jsx` + `src/lib/wordmark.js`. The logo is inline SVG now,
+not an `<img>`, so it can write itself on. Read the comment at the top of
+`wordmark.js` before touching it — the short version is that the logo is a
+monoline saved as FILLED outlines, so there is no centreline to dash. It uses
+the fill as a mask and dashes a fat brush along the outline underneath, and the
+timing maps were MEASURED in a browser (coverage sampled at 121 points per
+path, then inverted) because a contour reveals area in fits and starts. The
+maps are specific to this artwork, this brush width and this direction. If the
+logo art changes, re-measure.
+
 ## Things that have already bitten
 
 - **MapLibre owns a marker element's `transform`.** Animating the root's
@@ -67,6 +79,11 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
   `src/lib/scroll.js`.
 - **Film grain uses `mix-blend-mode: overlay`**, which *lightens* near-black.
   Fine over footage, a veil over a dark instrument — hence `.stage--instrument`.
+- **A zero-length dash is not nothing.** With `stroke-linecap: round` it still
+  paints a round cap, so an un-started brush leaves a dot on screen.
+- **`if (!t0) t0 = now`** re-stamps the start on every frame when a rAF
+  timestamp is legitimately 0, freezing an animation at its first step. Use an
+  explicit `null` sentinel.
 
 ## The basemap, and why it is not simple
 

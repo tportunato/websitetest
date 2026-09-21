@@ -14,6 +14,7 @@ import News from './sections/News.jsx'
 import Closing from './sections/Closing.jsx'
 import Footer from './sections/Footer.jsx'
 import BackToTop from './sections/BackToTop.jsx'
+import Wordmark from './sections/Wordmark.jsx'
 import { setLenis } from './lib/scroll.js'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -122,7 +123,7 @@ export default function Landing() {
     <>
       {intro && (
         <div className="intro-veil" aria-hidden="true">
-          <img className="intro-logo" src="/images/daa-logo-white.svg" alt="" />
+          <Wordmark className="intro-logo" mode="mount" duration={1500} delay={120} />
         </div>
       )}
       <Nav />

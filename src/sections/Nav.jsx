@@ -1,8 +1,10 @@
+import Wordmark from './Wordmark.jsx'
+
 export default function Nav() {
   return (
     <header className="nav">
       <a className="wordmark" href="#top">
-        <img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" />
+        <Wordmark mode="hover" duration={900} />
       </a>
       <nav>
         <a href="#market">Market</a>

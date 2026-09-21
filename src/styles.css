@@ -697,7 +697,10 @@ h2 {
 /* ---------- Logo ---------- */
 .logo-img {
   height: 38px;
+  width: auto;
   display: block;
+  color: var(--paper);
+  overflow: visible;
 }
 
 .wordmark,
@@ -740,6 +743,8 @@ button:focus-visible {
 
 .intro-logo {
   height: 58px;
+  width: auto;
+  color: var(--paper);
   opacity: 0;
   animation: logoIn 0.9s ease-out 0.15s forwards;
 }

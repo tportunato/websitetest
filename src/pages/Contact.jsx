@@ -3,6 +3,7 @@
    no backend on this deploy, so it opens a pre-filled mail draft to
    info@daacap.com instead of silently swallowing the message. Swap in a form
    endpoint (Formspree, Vercel function, HubSpot) when one exists. */
+import Wordmark from '../sections/Wordmark.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { useState } from 'react'
 
@@ -65,7 +66,7 @@ export default function Contact() {
     <div className="page-contact">
       <header className="page-bar">
         <a className="page-home" href="#/">
-          <img className="logo-img" src="/images/daa-logo-white.svg" alt="DAA Capital Partners" />
+          <Wordmark mode="mount" duration={1100} />
         </a>
         <div className="page-title">Contact</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">
