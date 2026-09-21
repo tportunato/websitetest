@@ -86,20 +86,26 @@ of the foot, which the foot had not reached yet, and the letter broke apart at
 the bottom right. The foot is traversed in passing, the same way the long
 contour dips through the first A's foot.
 
-WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO, and WHICH WAY IT GROWS
-DECIDES WHETHER IT EVER LOOKS DETACHED. The second A began at SHORT 0.605, and
-SHORT there is not its own arc yet — it runs up the edge of the crossing, drawn
-at the end. So its first ink was a hairline down that edge, standing alone from
-52% of the run to 84%. It starts at 0.63 now.
+THREE THINGS ABOUT A DASH DECIDE HOW IT READS: where it starts, which way it
+grows, and whether it merely abuts the next one. **Two dashes that share a
+butt-cap edge do not composite to solid** — they leave a one-pixel dark seam
+across the finished letter. The second A's tip (SHORT 0.60-0.635, narrow brush)
+and its main stroke (0.63-1.0, brush 11) therefore OVERLAP rather than meet.
+The tip needs the narrow brush: 11 wide there reaches 276 pixels sideways
+across the gap onto the crossing, which is drawn at the end.
+
+**CHECK THE LIVE PAGE, NOT JUST A CANVAS.** That seam does not show in an
+offscreen rasterisation of the same SVG at 10x — it measured the same as a mark
+with no seam — but it is plainly visible in a screenshot of the rendered page.
+The check that matters screenshots the real element, redraws it as the plain
+fill, and compares pixel for pixel.
 
 PHASES MAY OVERLAP IN TIME, so each carries its own `start`/`end` window rather
-than a share of a running total. Two do: the crossing is two stretches no pen
-passes through, and they run just as the second A's pen lands on the junction
-beside them. They are taken on **`SHORT_R`, the same contour reversed**, because
-a dash only grows forward — on `SHORT` they grow away from the junction and each
-stands as an island until nearly complete, and the crossing comes up in chunks.
-Measured over the 61 frames from 68% to 98%: both on `SHORT`, 8 show the mark in
-more than two pieces; reversing one, 5; reversing both, 1.
+than a share of a running total. One does: the crossing is a stretch no pen
+passes through, and it runs just as the second A's pen lands on the junction
+beside it. It is taken on **`SHORT_R`, the same contour reversed**, because a
+dash only grows forward — on `SHORT` it grows away from the junction and stands
+as an island until nearly complete.
 
 Three things there are load-bearing and easy to undo by accident: the brush
 has a FLAT cap and is as narrow as will still cover (a round cap is a disc that

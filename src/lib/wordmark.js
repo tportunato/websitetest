@@ -48,29 +48,32 @@
    its mean there, against 1.96x for the whole eased run, and the spike reads
    as a lurch.
 
-   WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO, and WHICH WAY IT
-   GROWS DECIDES WHETHER IT EVER LOOKS DETACHED. Both cost a round of fixes:
-     - The second A used to begin at SHORT 0.605, and SHORT there is not yet
-       the A's own arc - it is running up the EDGE OF THE CROSSING, the stroke
-       drawn at the end. So the A's first ink was a hairline down that edge,
-       standing alone from 52% of the run to 84%. It starts at 0.63 now, on
-       its own arc; 0.62 still lets the leading edge of an 11-wide brush reach
-       276 pixels across the gap onto the crossing, 0.63 reaches none.
-     - The two crossing riders used to run on SHORT, where they grow AWAY from
-       the junction, so each stood as an island until it was nearly complete
-       and the crossing came up in three chunks over about 130ms. They run on
-       SHORT_R, the same contour reversed, where they grow OUT of the junction
-       the second A's pen has just reached. Measured over the 61 frames from
-       68% to 98%: both on SHORT, 8 of them show the mark in more than two
-       pieces; reversing one, 5; reversing both, 1.
+   WHERE A DASH STARTS, WHICH WAY IT GROWS, AND WHETHER IT MERELY ABUTS THE
+   NEXT ONE. All three cost a round of fixes, and all three are about the same
+   corner of the mark:
+     - The second A once began at SHORT 0.605, where the contour is not yet the
+       A's arc but the EDGE OF THE CROSSING, drawn at the end. Its first ink
+       was a hairline down that edge, standing alone from 52% of the run to
+       84%.
+     - Its own top-left terminal was then handed to a rider, so the A drew with
+       a blunt, squared-off end and only grew its point when the crossing
+       landed at 83%. It has its tip back: phase 7 is SHORT 0.60-0.635 on a
+       NARROW brush, because 11 wide here reaches 276 pixels sideways across
+       the gap onto the crossing and 7.6 reaches none.
+     - Those two then MERELY ABUTTED at 0.63, butt cap to butt cap, and left a
+       one-pixel dark seam across the finished letter. Two dashes that share an
+       edge do not composite to solid. The main dash therefore starts at 0.63,
+       INSIDE the tip's 0.60-0.635, so they overlap rather than meet.
+     - The crossing rider runs on SHORT_R, the same contour reversed, so it
+       grows OUT of the junction the pen has just reached rather than away from
+       it. On SHORT it stood as an island until nearly complete.
 
-   THE CROSSING IS DRAWN BY TWO RIDERS, SHORT_R 0.66-0.70 (lower) and 0.37-0.40
-   (upper), which are SHORT 0.30-0.34 and 0.60-0.63 travelled backwards. They
-   are stretches of contour no phase's pen passes through: the earliest build
-   left them to a settle phase at the very end, which read as pixels forgotten
-   and added afterwards. They start a little before the second A finishes, so
-   they grow out of its arriving pen, and overlap each other so the two read as
-   one stroke climbing the crossing.
+   CHECK THE LIVE PAGE, NOT JUST A CANVAS. That one-pixel seam does not show in
+   an offscreen rasterisation of the same SVG at 10x - it measured 6 dark
+   pixels, the same as a mark with no seam at all - but it is plainly visible
+   in a screenshot of the rendered page. The check that matters screenshots the
+   real element, then redraws that same element as the plain fill and compares
+   pixel for pixel. It now reports ZERO pixels dimmer than the fill.
 
    TRIM THE STEM AT 0.07. Past that the outline has already turned into the
    first A's diagonal, and a little branch grew out of the D before the D
@@ -82,22 +85,20 @@
      - x 120-123, on the second A, is out of reach of a 7.6 brush from the side
        the pen travels. Brush 11 on the second-A phase closes it; 10 still
        leaves 6 pixels.
-     - x 88-92, y 24-28 and x 84-90, y 34-38 are the two crossing riders above.
-       Their intervals were swept: SHORT 0.30-0.34 and 0.60-0.63 are the
-       shortest pair that reaches the floor. 0.32-0.34 for the lower one leaves
-       25 pixels in the gap between them.
+     - x 84-90, y 34-38 is the crossing rider, SHORT 0.30-0.34 reversed. Its
+       interval was swept; 0.32-0.34 leaves 25 pixels. x 88-92, y 24-28 is the
+       second A's own tip, which draws with the A.
    Each phase's timing map also ENDS AT 1 by force. Left as measured, a map
    stops at the dash fraction where its ink stopped growing, which usefully
    skips a retrace plateau - but it leaves the interval's last sliver undrawn,
    and at arrow 10's terminal that cost 5 real pixels.
 
-   MEASURE AT 10x, NOT 4x. All of the above was once "verified complete" at 4x
-   with a >128 threshold, and shipped with a black slash across the crossing
-   where the first A passes under the second: 3.3 square units of hole that 4x
-   smeared above the threshold. Coverage is now checked by rendering at 10x and
-   comparing against the PLAIN FILL pixel for pixel. Six pixels stay dark, and
-   that is the floor - brushing both contours whole, with no phases at all,
-   leaves five in the same place.
+   MEASURE AT 10x, NOT 4x. All of this was once "verified complete" at 4x with
+   a >128 threshold, and shipped with a black slash across the crossing where
+   the first A passes under the second: 3.3 square units of hole that 4x
+   smeared above the threshold. Coverage is checked at 10x against the plain
+   fill - and, since 10x still missed the butt-cap seam above, on the live page
+   as well.
 
    WHY IT IS NOT stroke-dashoffset ON A CENTRELINE. The mark is a monoline
    saved as filled outlines, so there is no centreline to dash. Recovering one
@@ -169,18 +170,20 @@ export const PHASES = [
   /* 5-6  bottom of the first A, rightward; its foot lands in passing */
   { d: LONG_D, a: 0.07, b: 0.42, brush: 7.6, start: 0.3646, end: 0.517,
     map: [0, 0.0498, 0.0607, 0.0713, 0.0818, 0.0927, 0.1037, 0.1141, 0.1244, 0.1354, 0.1459, 0.1564, 0.1671, 0.1778, 0.1886, 0.199, 0.21, 0.2208, 0.2317, 0.2427, 0.2531, 0.2637, 0.2736, 0.284, 0.2939, 0.3035, 0.3134, 0.3229, 0.3326, 0.3418, 0.3503, 0.3589, 0.3681, 0.426, 0.4372, 0.4542, 0.4643, 0.4742, 0.4835, 0.493, 1] },
-  /* 7-8  the whole second A in ONE dash: top rightward, down the right,
-     through the foot and back along the bottom. Do not split this, and do
-     not start it before 0.63 - see the comment at the top. */
-  { d: SHORT, a: 0.63, b: 1, brush: 11, start: 0.517, end: 0.8304,
-    map: [0, 0.021, 0.0447, 0.0685, 0.0922, 0.116, 0.1402, 0.1633, 0.1871, 0.2109, 0.2347, 0.2582, 0.2817, 0.3052, 0.3287, 0.3525, 0.3759, 0.3987, 0.4188, 0.4367, 0.4528, 0.4687, 0.4838, 0.504, 0.5264, 0.6096, 0.6337, 0.6932, 0.7172, 0.741, 0.7652, 0.7892, 0.8137, 0.8376, 0.8614, 0.8849, 0.9089, 0.933, 0.9559, 0.9771, 1] },
-  /*     the crossing, lower half. On the REVERSED contour so it grows FROM
-     the junction the second A has just reached, not away from it. */
-  { d: SHORT_R, a: 0.66, b: 0.7, brush: 7.6, start: 0.8184, end: 0.8641,
+  /* 7  the second A's own top-left terminal, on a NARROW brush: 11 wide here
+     reaches 276 pixels sideways across the gap onto the crossing */
+  { d: SHORT, a: 0.6, b: 0.635, brush: 7.6, start: 0.517, end: 0.5349,
+    map: [0, 0.0032, 0.0094, 0.0246, 0.0437, 0.066, 0.0953, 0.1359, 0.35, 0.3852, 0.4052, 0.4242, 0.4437, 0.4572, 0.4703, 0.4855, 0.4988, 0.5141, 0.5263, 0.5362, 0.55, 0.5629, 0.5969, 0.6805, 0.7219, 0.7609, 0.7885, 0.8105, 0.8271, 0.8403, 0.8573, 0.8703, 0.8844, 0.8992, 0.912, 0.9284, 0.9417, 0.9566, 0.9703, 0.9824, 1] },
+  /* 7-8  the rest of the second A in ONE dash: top rightward, down the right,
+     through the foot and back along the bottom. It starts at 0.63, INSIDE
+     the tip above, so the two never share a butt-cap edge. Do not split it
+     anywhere else, and do not let these two merely abut. */
+  { d: SHORT, a: 0.63, b: 1, brush: 11, start: 0.5349, end: 0.843,
+    map: [0, 0.0368, 0.0601, 0.0834, 0.107, 0.1304, 0.1538, 0.1768, 0.2004, 0.2233, 0.2465, 0.2696, 0.2929, 0.3163, 0.3394, 0.3627, 0.3862, 0.4073, 0.4266, 0.4428, 0.4575, 0.4728, 0.4892, 0.51, 0.5316, 0.6162, 0.6387, 0.6989, 0.722, 0.7455, 0.7692, 0.7931, 0.817, 0.8404, 0.8637, 0.887, 0.9105, 0.9342, 0.9566, 0.9775, 1] },
+  /*     RIDER: the crossing, on the REVERSED contour so it grows OUT of the
+     junction the pen has just reached rather than away from it */
+  { d: SHORT_R, a: 0.66, b: 0.7, brush: 7.6, start: 0.831, end: 0.8755,
     map: [0, 0.2208, 0.2404, 0.2615, 0.2824, 0.3019, 0.3197, 0.3396, 0.3589, 0.3795, 0.4002, 0.4186, 0.438, 0.4584, 0.4779, 0.4972, 0.5172, 0.5363, 0.5577, 0.5749, 0.5957, 0.6143, 0.6397, 0.6589, 0.6797, 0.6995, 0.719, 0.7393, 0.7617, 0.7796, 0.7987, 0.8183, 0.8406, 0.8595, 0.8797, 0.8991, 0.9201, 0.9397, 0.9605, 0.98, 1] },
-  /*     the crossing, upper half, likewise reversed, overlapping the lower */
-  { d: SHORT_R, a: 0.37, b: 0.4, brush: 7.6, start: 0.8298, end: 0.8755,
-    map: [0, 0.002, 0.0039, 0.0059, 0.0137, 0.0288, 0.0415, 0.0506, 0.0658, 0.076, 0.09, 0.099, 0.1131, 0.1244, 0.1341, 0.1469, 0.1566, 0.1718, 0.182, 0.1962, 0.2031, 0.2154, 0.2285, 0.2407, 0.2485, 0.2656, 0.2742, 0.2881, 0.2994, 0.3925, 0.4313, 0.4694, 0.5025, 0.5237, 0.5487, 0.5646, 0.585, 0.6075, 0.6331, 0.665, 1] },
   /* 9-10 back leftward along the first A top, to its terminal */
   { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.8755, end: 1,
     map: [0, 0.1738, 0.1901, 0.2063, 0.2193, 0.2344, 0.2494, 0.2638, 0.2781, 0.2924, 0.307, 0.3213, 0.3358, 0.3504, 0.3646, 0.379, 0.3935, 0.4075, 0.4221, 0.4369, 0.4498, 0.4648, 0.4798, 0.4941, 0.5081, 0.5225, 0.5369, 0.5509, 0.5653, 0.5797, 0.5942, 0.6083, 0.6227, 0.6374, 0.6515, 0.6662, 0.6801, 0.6945, 0.7091, 0.724, 1] },

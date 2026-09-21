@@ -179,37 +179,34 @@ finished mark, which is the floor: brushing both contours whole, with no phases
 at all, leaves five in the same place.
 
 ### A dash only grows forward from its own start
-This is the rule the phase list is built around. A phase whose interval begins
-away from wherever the pen currently is comes up as a mark of its own, floating,
-and two earlier splits did exactly that:
+This is the rule the phase list is built around. Three corollaries, each of
+which cost a round of fixes, and all in the same corner of the mark:
 
-- The second **a** was three phases, with the bottom sweep and the foot drawn
-  concurrently. The sweep's interval starts at the *far* corner of the foot, a
-  point the foot had not reached yet, so the letter visibly broke apart at the
-  bottom right.
-- The crossing rode the second **a**'s opening, whose pen starts ten units away
-  from it, so it came up as four separate specks.
-- The second **a** itself began at SHORT 0.605, where the contour is not yet the
-  **a**'s own arc but the edge of the crossing. Its first ink was therefore a
-  hairline down that edge, standing alone from 52% of the run until 84%, when
-  the rest of the crossing arrived around it. It starts at 0.63 now, on its arc;
-  at 0.62 the leading edge of an 11-wide brush still reaches 276 pixels across
-  the gap onto the crossing.
+- **Where it starts.** The second **a** began at SHORT 0.605, where the contour
+  is not yet the **a**'s arc but the edge of the crossing, drawn at the end. Its
+  first ink was a hairline down that edge, standing alone from 52% of the run
+  until 84%.
+- **Whether it owns its own shape.** Its top-left terminal was then handed to a
+  rider, so the **a** drew with a blunt, squared-off end and grew its point only
+  when the crossing landed at 83%. It has the tip back, on a narrow brush —
+  11 wide there reaches 276 pixels sideways onto the crossing, 7.6 reaches none.
+- **Whether it merely abuts the next dash.** Those two then met butt cap to butt
+  cap at 0.63 and left a **one-pixel dark seam** across the finished letter. Two
+  dashes that share an edge do not composite to solid. The main dash now starts
+  *inside* the tip's interval so they overlap.
 
-**Which way a dash grows matters as much as where it starts.** The two crossing
-riders are taken on `SHORT_R`, the same contour reversed, so they grow *out of*
-the junction the second **a** has just reached rather than away from it. On
-`SHORT`, each stood as an island until nearly complete and the crossing came up
-in chunks. Over the 61 frames from 68% to 98%: both on `SHORT`, 8 show the mark
-in more than two pieces; reversing one, 5; reversing both, 1.
+Also: the bottom sweep and the foot were once separate, with the sweep starting
+at the far corner of the foot — a point the foot had not reached — so the letter
+broke apart at the bottom right. The second **a** is one dash from 0.63 to 1.0.
+And the crossing rider runs on `SHORT_R`, the same contour reversed, so it grows
+*out of* the junction rather than away from it.
 
-So the whole second **a** is now **one dash**, SHORT 0.605 to 1.0: top rightward,
-down the right side, through the foot and back along the bottom without lifting.
-Its foot is traversed in passing, exactly as the long contour dips through the
-first **a**'s foot. It takes about 100ms of a 2200ms run. Compressing that dip to
-match the first **a**'s 25ms was tried and is worse — the measured map is
-ink-linear, so stealing time there spikes the ink rate to 2.5x its mean against
-1.96x for the whole eased run, and the spike reads as a lurch.
+### Check the live page, not just a canvas
+The butt-cap seam does not show in an offscreen rasterisation of the same SVG at
+10x — it measured the same as a mark with no seam at all — but it is plainly
+visible in a screenshot of the rendered page. The check that matters screenshots
+the real element, redraws that same element as the plain fill, and compares
+pixel for pixel. It now reports **zero** pixels dimmer than the fill.
 
 ### A branch grew out of the D before the D was closed
 The stem phase ran to dash 0.09 of the long contour, and past 0.07 that contour
