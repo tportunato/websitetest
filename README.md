@@ -188,12 +188,20 @@ and two earlier splits did exactly that:
   point the foot had not reached yet, so the letter visibly broke apart at the
   bottom right.
 - The crossing rode the second **a**'s opening, whose pen starts ten units away
-  from it, so it came up as four separate specks. It now rides arrows 9-10,
-  whose pen starts between its two halves.
+  from it, so it came up as four separate specks.
 - The second **a** itself began at SHORT 0.605, where the contour is not yet the
   **a**'s own arc but the edge of the crossing. Its first ink was therefore a
   hairline down that edge, standing alone from 52% of the run until 84%, when
-  the rest of the crossing arrived around it. It starts at 0.62 now, on its arc.
+  the rest of the crossing arrived around it. It starts at 0.63 now, on its arc;
+  at 0.62 the leading edge of an 11-wide brush still reaches 276 pixels across
+  the gap onto the crossing.
+
+**Which way a dash grows matters as much as where it starts.** The two crossing
+riders are taken on `SHORT_R`, the same contour reversed, so they grow *out of*
+the junction the second **a** has just reached rather than away from it. On
+`SHORT`, each stood as an island until nearly complete and the crossing came up
+in chunks. Over the 61 frames from 68% to 98%: both on `SHORT`, 8 show the mark
+in more than two pieces; reversing one, 5; reversing both, 1.
 
 So the whole second **a** is now **one dash**, SHORT 0.605 to 1.0: top rightward,
 down the right side, through the foot and back along the bottom without lifting.
@@ -214,9 +222,9 @@ There is no settle phase any more.
 - x 120-123 was out of reach of a 7.6 brush from the side the pen travels.
   **Brush 11** on the second-**a** phase closes it; 10 still leaves 6 pixels.
 - x 88-92, y 24-28 and x 84-90, y 34-38 are the crossing, which **no stroke
-  reaches**. Two riders, SHORT **0.30-0.34** and **0.60-0.62**, take the first
-  third of arrows 9-10's window — the shortest pair that reaches the floor, with
-  the lower leading by a tenth so the crossing fills upwards.
+  reaches**. Two riders, SHORT **0.30-0.34** and **0.60-0.63** (run reversed),
+  are the shortest pair that reaches the floor, overlapping so the two read as
+  one stroke climbing the crossing.
 
 Every timing map is also **forced to end at 1**. Left as measured, a map stops at
 the dash fraction where its ink stopped growing, which usefully skips a retrace

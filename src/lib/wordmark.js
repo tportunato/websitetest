@@ -48,21 +48,29 @@
    its mean there, against 1.96x for the whole eased run, and the spike reads
    as a lurch.
 
-   WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO. The second A used
-   to begin at SHORT 0.605, and SHORT there is not yet the A's own arc - it is
-   running up the EDGE OF THE CROSSING, the stroke that arrows 9-10 draw at the
-   end. So the second A's first ink was a hairline down that edge, standing on
-   its own from 52% of the run until 84%, when the rest of the crossing arrived
-   around it. It starts at 0.62 now, on its own arc.
+   WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO, and WHICH WAY IT
+   GROWS DECIDES WHETHER IT EVER LOOKS DETACHED. Both cost a round of fixes:
+     - The second A used to begin at SHORT 0.605, and SHORT there is not yet
+       the A's own arc - it is running up the EDGE OF THE CROSSING, the stroke
+       drawn at the end. So the A's first ink was a hairline down that edge,
+       standing alone from 52% of the run to 84%. It starts at 0.63 now, on
+       its own arc; 0.62 still lets the leading edge of an 11-wide brush reach
+       276 pixels across the gap onto the crossing, 0.63 reaches none.
+     - The two crossing riders used to run on SHORT, where they grow AWAY from
+       the junction, so each stood as an island until it was nearly complete
+       and the crossing came up in three chunks over about 130ms. They run on
+       SHORT_R, the same contour reversed, where they grow OUT of the junction
+       the second A's pen has just reached. Measured over the 61 frames from
+       68% to 98%: both on SHORT, 8 of them show the mark in more than two
+       pieces; reversing one, 5; reversing both, 1.
 
-   THE CROSSING IS DRAWN BY TWO RIDERS on arrows 9-10, SHORT 0.30-0.34 (lower)
-   and 0.60-0.62 (upper). Both are stretches of contour that no phase's pen
-   passes through: the earliest build left them to a settle phase at the very
-   end, which read as pixels forgotten and added afterwards. They are not
-   contiguous with each other or with arrows 9-10 in the parameter, but they
-   are adjacent to that pen IN SPACE - it starts at (85.3,36.1), between them -
-   so landing them in its first third completes the crossing under it. The
-   lower one leads by a tenth of the window so the crossing fills upwards.
+   THE CROSSING IS DRAWN BY TWO RIDERS, SHORT_R 0.66-0.70 (lower) and 0.37-0.40
+   (upper), which are SHORT 0.30-0.34 and 0.60-0.63 travelled backwards. They
+   are stretches of contour no phase's pen passes through: the earliest build
+   left them to a settle phase at the very end, which read as pixels forgotten
+   and added afterwards. They start a little before the second A finishes, so
+   they grow out of its arriving pen, and overlap each other so the two read as
+   one stroke climbing the crossing.
 
    TRIM THE STEM AT 0.07. Past that the outline has already turned into the
    first A's diagonal, and a little branch grew out of the D before the D
@@ -75,9 +83,9 @@
        the pen travels. Brush 11 on the second-A phase closes it; 10 still
        leaves 6 pixels.
      - x 88-92, y 24-28 and x 84-90, y 34-38 are the two crossing riders above.
-       Their intervals were swept: 0.30-0.34 and 0.60-0.62 are the shortest
-       pair that reaches the floor. 0.32-0.34 for the lower one leaves 25
-       pixels in the gap between them.
+       Their intervals were swept: SHORT 0.30-0.34 and 0.60-0.63 are the
+       shortest pair that reaches the floor. 0.32-0.34 for the lower one leaves
+       25 pixels in the gap between them.
    Each phase's timing map also ENDS AT 1 by force. Left as measured, a map
    stops at the dash fraction where its ink stopped growing, which usefully
    skips a retrace plateau - but it leaves the interval's last sliver undrawn,
@@ -130,6 +138,13 @@ const LONG_F =
 const SHORT =
   'M85.2809,36.1312L83.899,33.705L82.4513,31.1476L80.7405,28.1312L78.5689,24.1968C78.4373,24 78.3715,23.8033 78.2399,23.6066C78.1083,23.4099 78.0425,23.2132 77.9109,23.0164C77.8451,22.9509 77.8451,22.8853 77.7793,22.8197C76.8581,21.3771 75.8052,20.1312 74.555,19.0164C71.528,16.3935 67.6456,14.8197 63.3684,14.8197C55.5379,14.8197 48.8918,20.1312 47.0493,27.4099L44.6804,23.2787C47.8389,16.1968 55.0114,11.2131 63.3684,11.2131C69.0275,11.2131 74.0943,13.4426 77.7793,17.1148C78.898,18.2295 79.8192,19.4099 80.6747,20.7214C80.7405,20.7214 80.7405,20.7869 80.7405,20.7869C80.8063,20.8525 80.8721,20.9181 80.9379,21.0492L85.6099,28.8525L86.0705,29.705L89.0316,34.8853C89.2291,35.2788 89.4923,35.6722 89.6897,36.0657C89.8213,36.3279 90.0187,36.6558 90.1503,36.9181C90.9399,38.2952 91.598,39.8034 92.5192,41.1148C93.3088,42.2296 94.2959,43.3444 95.3487,44.2624C97.5202,46.164 100.152,47.4755 102.982,48.0657C104.101,48.2624 105.285,48.3936 106.404,48.3936C115.682,48.3936 123.249,40.8525 123.249,31.6066C123.249,22.3607 115.682,14.8197 106.404,14.8197C98.5731,14.8197 91.927,20.1312 90.0845,27.4099L87.7156,23.2787C90.8741,16.1968 98.0467,11.2131 106.404,11.2131C117.524,11.2131 126.605,20.0656 127,31.082L127,52.0001L123.381,52.0001L123.381,43.1476C119.696,48.5247 113.51,52.0001 106.535,52.0001C99.0337,52.0001 92.4534,48.0001 88.9,42.0329L85.2809,36.1312Z'
 
+/* SHORT the other way round. The two crossing riders run on this rather than
+   on SHORT, because a dash only grows forward: taken on SHORT they grow AWAY
+   from the junction and stand as islands until they are nearly done; on this
+   they grow out of it. Same shape, same length, p <-> 1-p. */
+const SHORT_R =
+  'M85.2809,36.1312L88.9,42.0329C92.4534,48.0001 99.0337,52.0001 106.535,52.0001C113.51,52.0001 119.696,48.5247 123.381,43.1476L123.381,52.0001L127,52.0001L127,31.082C126.605,20.0656 117.524,11.2131 106.404,11.2131C98.0467,11.2131 90.8741,16.1968 87.7156,23.2787L90.0845,27.4099C91.927,20.1312 98.5731,14.8197 106.404,14.8197C115.682,14.8197 123.249,22.3607 123.249,31.6066C123.249,40.8525 115.682,48.3936 106.404,48.3936C105.285,48.3936 104.101,48.2624 102.982,48.0657C100.152,47.4755 97.5202,46.164 95.3487,44.2624C94.2959,43.3444 93.3088,42.2296 92.5192,41.1148C91.598,39.8034 90.9399,38.2952 90.1503,36.9181C90.0187,36.6558 89.8213,36.3279 89.6897,36.0657C89.4923,35.6722 89.2291,35.2788 89.0316,34.8853L86.0705,29.705L85.6099,28.8525L80.9379,21.0492C80.8721,20.9181 80.8063,20.8525 80.7405,20.7869C80.7405,20.7869 80.7405,20.7214 80.6747,20.7214C79.8192,19.4099 78.898,18.2295 77.7793,17.1148C74.0943,13.4426 69.0275,11.2131 63.3684,11.2131C55.0114,11.2131 47.8389,16.1968 44.6804,23.2787L47.0493,27.4099C48.8918,20.1312 55.5379,14.8197 63.3684,14.8197C67.6456,14.8197 71.528,16.3935 74.555,19.0164C75.8052,20.1312 76.8581,21.3771 77.7793,22.8197C77.8451,22.8853 77.8451,22.9509 77.9109,23.0164C78.0425,23.2132 78.1083,23.4099 78.2399,23.6066C78.3715,23.8033 78.4373,24 78.5689,24.1968L80.7405,28.1312L82.4513,31.1476L83.899,33.705L85.2809,36.1312Z'
+
 /* The mask is the untouched artwork from daa-logo-white.svg. */
 export const FILL_A =
   'M106.404 11.2131C98.0467 11.2131 90.8741 16.1968 87.7156 23.2787L90.0845 27.4099C91.927 20.1312 98.5731 14.8197 106.404 14.8197C115.682 14.8197 123.249 22.3607 123.249 31.6066C123.249 40.8525 115.682 48.3936 106.404 48.3936C105.285 48.3936 104.101 48.2624 102.982 48.0657C100.152 47.4755 97.5202 46.164 95.3487 44.2624C94.2959 43.3444 93.3088 42.2296 92.5192 41.1148C91.598 39.8034 90.9399 38.2952 90.1503 36.9181C90.0187 36.6558 89.8213 36.3279 89.6897 36.0657C89.4923 35.6722 89.2291 35.2788 89.0316 34.8853L86.0705 29.705L85.6099 28.8525L80.9379 21.0492C80.8721 20.9181 80.8063 20.8525 80.7405 20.7869C80.7405 20.7869 80.7405 20.7214 80.6747 20.7214C79.8192 19.4099 78.898 18.2295 77.7793 17.1148C74.0943 13.4426 69.0275 11.2131 63.3684 11.2131C55.0114 11.2131 47.8389 16.1968 44.6804 23.2787L47.0493 27.4099C48.8918 20.1312 55.5379 14.8197 63.3684 14.8197C67.6456 14.8197 71.528 16.3935 74.555 19.0164C75.8052 20.1312 76.8581 21.3771 77.7793 22.8197C77.8451 22.8853 77.8451 22.9509 77.9109 23.0164C78.0425 23.2132 78.1083 23.4099 78.2399 23.6066C78.3715 23.8033 78.4373 24 78.5689 24.1968L80.7405 28.1312L82.4513 31.1476L83.899 33.705L85.2809 36.1312L88.9 42.0329C92.4534 48.0001 99.0337 52.0001 106.535 52.0001C113.51 52.0001 119.696 48.5247 123.381 43.1476V52.0001H127V31.082C126.605 20.0656 117.524 11.2131 106.404 11.2131Z'
@@ -156,18 +171,19 @@ export const PHASES = [
     map: [0, 0.0498, 0.0607, 0.0713, 0.0818, 0.0927, 0.1037, 0.1141, 0.1244, 0.1354, 0.1459, 0.1564, 0.1671, 0.1778, 0.1886, 0.199, 0.21, 0.2208, 0.2317, 0.2427, 0.2531, 0.2637, 0.2736, 0.284, 0.2939, 0.3035, 0.3134, 0.3229, 0.3326, 0.3418, 0.3503, 0.3589, 0.3681, 0.426, 0.4372, 0.4542, 0.4643, 0.4742, 0.4835, 0.493, 1] },
   /* 7-8  the whole second A in ONE dash: top rightward, down the right,
      through the foot and back along the bottom. Do not split this, and do
-     not start it before 0.62 - see the comment at the top. */
-  { d: SHORT, a: 0.62, b: 1, brush: 11, start: 0.517, end: 0.841,
-    map: [0, 0.0151, 0.0405, 0.0644, 0.0881, 0.112, 0.136, 0.1603, 0.1836, 0.2077, 0.2316, 0.2555, 0.2791, 0.3029, 0.3264, 0.35, 0.3737, 0.3977, 0.4203, 0.4405, 0.4569, 0.4724, 0.4879, 0.5047, 0.5272, 0.5496, 0.6329, 0.6563, 0.7154, 0.7392, 0.7634, 0.7879, 0.8124, 0.8363, 0.8602, 0.8839, 0.9081, 0.9323, 0.9555, 0.977, 1] },
+     not start it before 0.63 - see the comment at the top. */
+  { d: SHORT, a: 0.63, b: 1, brush: 11, start: 0.517, end: 0.8304,
+    map: [0, 0.021, 0.0447, 0.0685, 0.0922, 0.116, 0.1402, 0.1633, 0.1871, 0.2109, 0.2347, 0.2582, 0.2817, 0.3052, 0.3287, 0.3525, 0.3759, 0.3987, 0.4188, 0.4367, 0.4528, 0.4687, 0.4838, 0.504, 0.5264, 0.6096, 0.6337, 0.6932, 0.7172, 0.741, 0.7652, 0.7892, 0.8137, 0.8376, 0.8614, 0.8849, 0.9089, 0.933, 0.9559, 0.9771, 1] },
+  /*     the crossing, lower half. On the REVERSED contour so it grows FROM
+     the junction the second A has just reached, not away from it. */
+  { d: SHORT_R, a: 0.66, b: 0.7, brush: 7.6, start: 0.8184, end: 0.8641,
+    map: [0, 0.2208, 0.2404, 0.2615, 0.2824, 0.3019, 0.3197, 0.3396, 0.3589, 0.3795, 0.4002, 0.4186, 0.438, 0.4584, 0.4779, 0.4972, 0.5172, 0.5363, 0.5577, 0.5749, 0.5957, 0.6143, 0.6397, 0.6589, 0.6797, 0.6995, 0.719, 0.7393, 0.7617, 0.7796, 0.7987, 0.8183, 0.8406, 0.8595, 0.8797, 0.8991, 0.9201, 0.9397, 0.9605, 0.98, 1] },
+  /*     the crossing, upper half, likewise reversed, overlapping the lower */
+  { d: SHORT_R, a: 0.37, b: 0.4, brush: 7.6, start: 0.8298, end: 0.8755,
+    map: [0, 0.002, 0.0039, 0.0059, 0.0137, 0.0288, 0.0415, 0.0506, 0.0658, 0.076, 0.09, 0.099, 0.1131, 0.1244, 0.1341, 0.1469, 0.1566, 0.1718, 0.182, 0.1962, 0.2031, 0.2154, 0.2285, 0.2407, 0.2485, 0.2656, 0.2742, 0.2881, 0.2994, 0.3925, 0.4313, 0.4694, 0.5025, 0.5237, 0.5487, 0.5646, 0.585, 0.6075, 0.6331, 0.665, 1] },
   /* 9-10 back leftward along the first A top, to its terminal */
-  { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.841, end: 1,
-    map: [0, 0.0196, 0.0384, 0.058, 0.0765, 0.0952, 0.1142, 0.1339, 0.159, 0.1813, 0.1998, 0.2185, 0.2372, 0.2561, 0.2735, 0.2914, 0.3095, 0.3273, 0.3455, 0.3632, 0.381, 0.3988, 0.4166, 0.4351, 0.4515, 0.4703, 0.4882, 0.5059, 0.5237, 0.5413, 0.5592, 0.5772, 0.595, 0.6129, 0.6301, 0.6486, 0.6666, 0.6842, 0.7019, 0.7202, 1] },
-  /*     RIDER on 9-10: the lower half of the crossing */
-  { d: SHORT, a: 0.3, b: 0.34, brush: 7.6, start: 0.841, end: 0.8728,
-    map: [0, 0.2642, 0.2659, 0.2677, 0.3319, 0.3336, 0.3353, 0.337, 0.37, 0.3717, 0.3734, 0.4064, 0.4081, 0.4098, 0.4116, 0.4758, 0.4775, 0.4792, 0.4809, 0.5077, 0.5094, 0.5111, 0.5441, 0.5458, 0.5475, 0.5492, 0.6134, 0.6152, 0.6169, 0.6186, 0.6516, 0.6533, 0.655, 0.688, 0.6897, 0.6914, 0.6931, 0.7573, 0.7591, 0.7608, 1] },
-  /*     RIDER on 9-10: the upper half of the crossing */
-  { d: SHORT, a: 0.6, b: 0.62, brush: 7.6, start: 0.8601, end: 0.8919,
-    map: [0, 0.0007, 0.0015, 0.0022, 0.003, 0.0037, 0.0045, 0.0052, 0.006, 0.0105, 0.0198, 0.0243, 0.0306, 0.039, 0.0423, 0.0508, 0.0571, 0.0616, 0.0678, 0.0745, 0.0813, 0.0942, 0.1009, 0.1077, 0.1162, 0.1273, 0.1403, 0.1503, 0.1663, 0.173, 0.1859, 0.2041, 0.215, 0.2247, 0.2569, 0.2766, 0.315, 0.6347, 0.7794, 0.8678, 1] },
+  { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.8755, end: 1,
+    map: [0, 0.1738, 0.1901, 0.2063, 0.2193, 0.2344, 0.2494, 0.2638, 0.2781, 0.2924, 0.307, 0.3213, 0.3358, 0.3504, 0.3646, 0.379, 0.3935, 0.4075, 0.4221, 0.4369, 0.4498, 0.4648, 0.4798, 0.4941, 0.5081, 0.5225, 0.5369, 0.5509, 0.5653, 0.5797, 0.5942, 0.6083, 0.6227, 0.6374, 0.6515, 0.6662, 0.6801, 0.6945, 0.7091, 0.724, 1] },
 ]
 
 function sample(map, t) {

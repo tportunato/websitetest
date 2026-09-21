@@ -86,18 +86,20 @@ of the foot, which the foot had not reached yet, and the letter broke apart at
 the bottom right. The foot is traversed in passing, the same way the long
 contour dips through the first A's foot.
 
-WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO. The second A began at
-SHORT 0.605, and SHORT there is not its own arc yet — it runs up the edge of the
-crossing, which arrows 9-10 draw at the end. So its first ink was a hairline
-down that edge, standing alone from 52% of the run to 84%. It starts at 0.62
-now.
+WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO, and WHICH WAY IT GROWS
+DECIDES WHETHER IT EVER LOOKS DETACHED. The second A began at SHORT 0.605, and
+SHORT there is not its own arc yet — it runs up the edge of the crossing, drawn
+at the end. So its first ink was a hairline down that edge, standing alone from
+52% of the run to 84%. It starts at 0.63 now.
 
 PHASES MAY OVERLAP IN TIME, so each carries its own `start`/`end` window rather
-than a share of a running total. Two do: the crossing (SHORT 0.30-0.34 and
-0.60-0.62) is two stretches no pen passes through, and they ride the first third
-of arrows 9-10, whose pen starts at (85.3,36.1), between them. Riding the second
-A instead was tried — that pen starts ten units away, so the crossing came up as
-four separate specks.
+than a share of a running total. Two do: the crossing is two stretches no pen
+passes through, and they run just as the second A's pen lands on the junction
+beside them. They are taken on **`SHORT_R`, the same contour reversed**, because
+a dash only grows forward — on `SHORT` they grow away from the junction and each
+stands as an island until nearly complete, and the crossing comes up in chunks.
+Measured over the 61 frames from 68% to 98%: both on `SHORT`, 8 show the mark in
+more than two pieces; reversing one, 5; reversing both, 1.
 
 Three things there are load-bearing and easy to undo by accident: the brush
 has a FLAT cap and is as narrow as will still cover (a round cap is a disc that
