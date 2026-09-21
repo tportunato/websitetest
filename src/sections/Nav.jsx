@@ -4,7 +4,7 @@ export default function Nav() {
   return (
     <header className="nav">
       <a className="wordmark" href="#top">
-        <Wordmark mode="hover" duration={900} />
+        <Wordmark mode="hover" duration={1500} />
       </a>
       <nav>
         <a href="#market">Market</a>

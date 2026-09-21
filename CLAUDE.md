@@ -60,10 +60,16 @@ not an `<img>`, so it can write itself on. Read the comment at the top of
 `wordmark.js` before touching it — the short version is that the logo is a
 monoline saved as FILLED outlines, so there is no centreline to dash. It uses
 the fill as a mask and dashes a fat brush along the outline underneath, and the
-timing maps were MEASURED in a browser (coverage sampled at 121 points per
-path, then inverted) because a contour reveals area in fits and starts. The
-maps are specific to this artwork, this brush width and this direction. If the
-logo art changes, re-measure.
+timing maps were MEASURED in a browser (coverage sampled per path, then
+inverted) because a contour reveals area in fits and starts.
+
+Three things there are load-bearing and easy to undo by accident: the brush
+has a FLAT cap and is as narrow as will still cover (a round cap is a disc that
+reaches into the neighbouring letterform and lights stray fragments early); the
+short path is re-authored to START AT THE JUNCTION so the second stroke
+continues the first rather than restarting in mid-air; and the maps are
+specific to this artwork, this brush width, this cap and this direction. Change
+any of those and re-measure.
 
 ## Things that have already bitten
 

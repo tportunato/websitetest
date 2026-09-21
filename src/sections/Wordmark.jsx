@@ -14,7 +14,7 @@
    not content, so there is nothing to lose by holding still. */
 import { useEffect, useId, useRef, useState } from 'react'
 import {
-  PATH_LEFT, PATH_RIGHT, BRUSH, MAP_LEFT, MAP_RIGHT, dashFor, split
+  PATH_LEFT, PATH_RIGHT, BRUSH, CAP, MAP_LEFT, MAP_RIGHT, dashFor, split
 } from '../lib/wordmark.js'
 
 /* gentle ease either side of a constant middle: a pen starts and stops, but
@@ -23,7 +23,7 @@ const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 
 export default function Wordmark({
   mode = 'none',
-  duration = 1500,
+  duration = 2200,
   delay = 0,
   className = 'logo-img',
   title = 'DAA Capital Partners'
@@ -110,7 +110,7 @@ export default function Wordmark({
         </mask>
       </defs>
       <g mask={`url(#wm${uid})`} fill="none" stroke="currentColor"
-         strokeWidth={BRUSH} strokeLinecap="round" strokeLinejoin="round">
+         strokeWidth={BRUSH} strokeLinecap={CAP} strokeLinejoin="round">
         <path ref={leftRef} d={PATH_LEFT} />
         <path ref={rightRef} d={PATH_RIGHT} />
       </g>

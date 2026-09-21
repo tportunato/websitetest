@@ -66,7 +66,7 @@ export default function Contact() {
     <div className="page-contact">
       <header className="page-bar">
         <a className="page-home" href="#/">
-          <Wordmark mode="mount" duration={1100} />
+          <Wordmark mode="mount" duration={1800} />
         </a>
         <div className="page-title">Contact</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">

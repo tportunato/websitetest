@@ -26,7 +26,7 @@ export default function Leadership() {
   return (
     <div className="page-team">
       <header className="page-bar">
-        <a className="page-home" href="#/"><Wordmark mode="mount" duration={1100} /></a>
+        <a className="page-home" href="#/"><Wordmark mode="mount" duration={1800} /></a>
         <div className="page-title">Leadership</div>
         <a className="login" href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a>
       </header>

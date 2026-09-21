@@ -123,7 +123,7 @@ export default function Landing() {
     <>
       {intro && (
         <div className="intro-veil" aria-hidden="true">
-          <Wordmark className="intro-logo" mode="mount" duration={1500} delay={120} />
+          <Wordmark className="intro-logo" mode="mount" duration={2200} delay={120} />
         </div>
       )}
       <Nav />
