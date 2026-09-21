@@ -48,14 +48,21 @@
    its mean there, against 1.96x for the whole eased run, and the spike reads
    as a lurch.
 
-   ONE PHASE IS STILL A RIDER, drawn under another phase's pen rather than
-   after it: the JUNCTION PATCH, SHORT 0.32-0.34. It is a small isolated
-   region at the crossing that no stroke reaches - the earliest build left it
-   to a settle phase at the very end, which read as pixels forgotten and added
-   afterwards. It takes the first 20% of arrows 9-10's window, because that
-   pen starts at (85.3,36.1), right beside it, so it lands under the pen
-   instead of adrift. That is also the client's rule for the feet: they appear
-   as the flow goes near them.
+   WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO. The second A used
+   to begin at SHORT 0.605, and SHORT there is not yet the A's own arc - it is
+   running up the EDGE OF THE CROSSING, the stroke that arrows 9-10 draw at the
+   end. So the second A's first ink was a hairline down that edge, standing on
+   its own from 52% of the run until 84%, when the rest of the crossing arrived
+   around it. It starts at 0.62 now, on its own arc.
+
+   THE CROSSING IS DRAWN BY TWO RIDERS on arrows 9-10, SHORT 0.30-0.34 (lower)
+   and 0.60-0.62 (upper). Both are stretches of contour that no phase's pen
+   passes through: the earliest build left them to a settle phase at the very
+   end, which read as pixels forgotten and added afterwards. They are not
+   contiguous with each other or with arrows 9-10 in the parameter, but they
+   are adjacent to that pen IN SPACE - it starts at (85.3,36.1), between them -
+   so landing them in its first third completes the crossing under it. The
+   lower one leads by a tenth of the window so the crossing fills upwards.
 
    TRIM THE STEM AT 0.07. Past that the outline has already turned into the
    first A's diagonal, and a little branch grew out of the D before the D
@@ -67,9 +74,10 @@
      - x 120-123, on the second A, is out of reach of a 7.6 brush from the side
        the pen travels. Brush 11 on the second-A phase closes it; 10 still
        leaves 6 pixels.
-     - x 88-92, y 24-28 closes by starting the second A at SHORT 0.605 rather
-       than 0.62, which is worth 468 pixels.
-     - x 84-90, y 34-38 is the junction patch, the rider above.
+     - x 88-92, y 24-28 and x 84-90, y 34-38 are the two crossing riders above.
+       Their intervals were swept: 0.30-0.34 and 0.60-0.62 are the shortest
+       pair that reaches the floor. 0.32-0.34 for the lower one leaves 25
+       pixels in the gap between them.
    Each phase's timing map also ENDS AT 1 by force. Left as measured, a map
    stops at the dash fraction where its ink stopped growing, which usefully
    skips a retrace plateau - but it leaves the interval's last sliver undrawn,
@@ -147,16 +155,19 @@ export const PHASES = [
   { d: LONG_D, a: 0.07, b: 0.42, brush: 7.6, start: 0.3646, end: 0.517,
     map: [0, 0.0498, 0.0607, 0.0713, 0.0818, 0.0927, 0.1037, 0.1141, 0.1244, 0.1354, 0.1459, 0.1564, 0.1671, 0.1778, 0.1886, 0.199, 0.21, 0.2208, 0.2317, 0.2427, 0.2531, 0.2637, 0.2736, 0.284, 0.2939, 0.3035, 0.3134, 0.3229, 0.3326, 0.3418, 0.3503, 0.3589, 0.3681, 0.426, 0.4372, 0.4542, 0.4643, 0.4742, 0.4835, 0.493, 1] },
   /* 7-8  the whole second A in ONE dash: top rightward, down the right,
-     through the foot and back along the bottom. Do not split this. */
-  { d: SHORT, a: 0.605, b: 1, brush: 11, start: 0.517, end: 0.8503,
-    map: [0, 0.0236, 0.0369, 0.0753, 0.0987, 0.1225, 0.1463, 0.17, 0.1942, 0.2172, 0.2408, 0.2644, 0.2883, 0.3116, 0.3348, 0.3584, 0.382, 0.4053, 0.4288, 0.4508, 0.4689, 0.4846, 0.4997, 0.515, 0.5348, 0.5572, 0.6366, 0.6592, 0.7182, 0.7418, 0.7656, 0.7898, 0.8143, 0.838, 0.8615, 0.885, 0.9088, 0.9331, 0.9562, 0.9772, 1] },
+     through the foot and back along the bottom. Do not split this, and do
+     not start it before 0.62 - see the comment at the top. */
+  { d: SHORT, a: 0.62, b: 1, brush: 11, start: 0.517, end: 0.841,
+    map: [0, 0.0151, 0.0405, 0.0644, 0.0881, 0.112, 0.136, 0.1603, 0.1836, 0.2077, 0.2316, 0.2555, 0.2791, 0.3029, 0.3264, 0.35, 0.3737, 0.3977, 0.4203, 0.4405, 0.4569, 0.4724, 0.4879, 0.5047, 0.5272, 0.5496, 0.6329, 0.6563, 0.7154, 0.7392, 0.7634, 0.7879, 0.8124, 0.8363, 0.8602, 0.8839, 0.9081, 0.9323, 0.9555, 0.977, 1] },
   /* 9-10 back leftward along the first A top, to its terminal */
-  { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.8503, end: 1,
-    map: [0, 0.0189, 0.0384, 0.0628, 0.0877, 0.1118, 0.1373, 0.1619, 0.183, 0.2011, 0.219, 0.2369, 0.2551, 0.2719, 0.2893, 0.3068, 0.3239, 0.3414, 0.3586, 0.3759, 0.3933, 0.4102, 0.428, 0.4449, 0.4616, 0.4797, 0.4968, 0.5139, 0.5312, 0.5478, 0.5652, 0.5825, 0.5999, 0.6169, 0.634, 0.6515, 0.669, 0.6862, 0.7031, 0.7208, 1] },
-  /*     RIDER on 9-10: the patch at the crossing, which no stroke reaches.
-     It sits at that pen's starting point, so it lands under it, not adrift. */
-  { d: SHORT, a: 0.32, b: 0.34, brush: 7.6, start: 0.8503, end: 0.8803,
-    map: [0, 0.3005, 0.3009, 0.3014, 0.3019, 0.3023, 0.3028, 0.3033, 0.3037, 0.3042, 0.3047, 0.3052, 0.3056, 0.3061, 0.3753, 0.3758, 0.3763, 0.3767, 0.3772, 0.3777, 0.3781, 0.3786, 0.3791, 0.3795, 0.38, 0.3805, 0.3809, 0.5127, 0.5131, 0.5136, 0.5141, 0.5145, 0.515, 0.5155, 0.5159, 0.5164, 0.5169, 0.5173, 0.5178, 0.5183, 1] },
+  { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.841, end: 1,
+    map: [0, 0.0196, 0.0384, 0.058, 0.0765, 0.0952, 0.1142, 0.1339, 0.159, 0.1813, 0.1998, 0.2185, 0.2372, 0.2561, 0.2735, 0.2914, 0.3095, 0.3273, 0.3455, 0.3632, 0.381, 0.3988, 0.4166, 0.4351, 0.4515, 0.4703, 0.4882, 0.5059, 0.5237, 0.5413, 0.5592, 0.5772, 0.595, 0.6129, 0.6301, 0.6486, 0.6666, 0.6842, 0.7019, 0.7202, 1] },
+  /*     RIDER on 9-10: the lower half of the crossing */
+  { d: SHORT, a: 0.3, b: 0.34, brush: 7.6, start: 0.841, end: 0.8728,
+    map: [0, 0.2642, 0.2659, 0.2677, 0.3319, 0.3336, 0.3353, 0.337, 0.37, 0.3717, 0.3734, 0.4064, 0.4081, 0.4098, 0.4116, 0.4758, 0.4775, 0.4792, 0.4809, 0.5077, 0.5094, 0.5111, 0.5441, 0.5458, 0.5475, 0.5492, 0.6134, 0.6152, 0.6169, 0.6186, 0.6516, 0.6533, 0.655, 0.688, 0.6897, 0.6914, 0.6931, 0.7573, 0.7591, 0.7608, 1] },
+  /*     RIDER on 9-10: the upper half of the crossing */
+  { d: SHORT, a: 0.6, b: 0.62, brush: 7.6, start: 0.8601, end: 0.8919,
+    map: [0, 0.0007, 0.0015, 0.0022, 0.003, 0.0037, 0.0045, 0.0052, 0.006, 0.0105, 0.0198, 0.0243, 0.0306, 0.039, 0.0423, 0.0508, 0.0571, 0.0616, 0.0678, 0.0745, 0.0813, 0.0942, 0.1009, 0.1077, 0.1162, 0.1273, 0.1403, 0.1503, 0.1663, 0.173, 0.1859, 0.2041, 0.215, 0.2247, 0.2569, 0.2766, 0.315, 0.6347, 0.7794, 0.8678, 1] },
 ]
 
 function sample(map, t) {

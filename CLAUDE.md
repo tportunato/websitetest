@@ -62,7 +62,7 @@ out along the BOTTOM of the first A, round the second A, then back leftward
 along the TOP of the first A to finish. The feet under each A land whenever the
 brush passes them and are not sequenced.
 
-It takes SIX PHASES, not two, and that is not an accident. The logo is an
+It takes SEVEN PHASES, not two, and that is not an accident. The logo is an
 interlaced ribbon and neither contour maps onto a letter: on the long one the
 first A's bottom sits at dash 0.10-0.25 but the D's bowl at 0.45-0.65, so a
 single continuous dash cannot put the D first whichever way it runs. Each phase
@@ -86,11 +86,18 @@ of the foot, which the foot had not reached yet, and the letter broke apart at
 the bottom right. The foot is traversed in passing, the same way the long
 contour dips through the first A's foot.
 
+WHERE A DASH STARTS IS WHAT IT LOOKS LIKE IT BELONGS TO. The second A began at
+SHORT 0.605, and SHORT there is not its own arc yet — it runs up the edge of the
+crossing, which arrows 9-10 draw at the end. So its first ink was a hairline
+down that edge, standing alone from 52% of the run to 84%. It starts at 0.62
+now.
+
 PHASES MAY OVERLAP IN TIME, so each carries its own `start`/`end` window rather
-than a share of a running total. One does: the junction patch (SHORT 0.32-0.34)
-is an isolated region no stroke reaches, and it rides the first 20% of arrows
-9-10, whose pen starts right beside it. Riding arrow 7 instead was tried — that
-pen starts ten units away, so the junction came up as four separate specks.
+than a share of a running total. Two do: the crossing (SHORT 0.30-0.34 and
+0.60-0.62) is two stretches no pen passes through, and they ride the first third
+of arrows 9-10, whose pen starts at (85.3,36.1), between them. Riding the second
+A instead was tried — that pen starts ten units away, so the crossing came up as
+four separate specks.
 
 Three things there are load-bearing and easy to undo by accident: the brush
 has a FLAT cap and is as narrow as will still cover (a round cap is a disc that
@@ -103,8 +110,8 @@ Change any of those and re-measure.
 THREE NUMBERS THERE WERE SWEPT, not chosen, and each closes a visible defect:
 the stem stops at dash 0.07 (0.075 spills 716 pixels of the first A's diagonal
 and 0.09 spills 2872 - it grew a branch out of the D before the D existed); the
-second A starts at SHORT 0.605 rather than 0.62, worth 468 pixels around
-x 88-92; and it uses a brush of 11, since 7.6 cannot reach the inner edge at
+second A starts at SHORT 0.62, not earlier, or its first ink lands on the
+crossing; and it uses a brush of 11, since 7.6 cannot reach the inner edge at
 x 120-123 from the side the pen travels. Every timing
 map is also forced to end at 1, or each phase leaves its interval's last sliver
 undrawn. There is no settle phase.
