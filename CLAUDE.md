@@ -109,6 +109,16 @@ That is deliberate and pending a decision from the partners; leave it.
   radius is inflated.
 - **Projection units.** Mercator y is radians; longitude is degrees. Mixing them
   puts the axes on scales ~57x apart.
+- **Opening a page must JUMP to the top, not animate there.** Navigation used
+  to call `scrollToTop()` from the hashchange handler, which failed twice: it
+  ran before React had rendered the new page, so it scrolled the old one; and on
+  the landing page it started a 1.1s Lenis animation on an instance Landing
+  destroys a moment later when it unmounts, killing the scroll mid-flight.
+  Clicking through to Strategy landed you halfway down it. `jumpToTop()` is
+  instant and separate from `scrollToTop()`, which stays eased for the Back to
+  top button, and App calls it from a `useLayoutEffect` keyed on the page — so
+  after render, before paint. Two articles count as two pages, so the key
+  includes the article id.
 - **`window.scrollTo` fights Lenis** on the landing page. Go through
   `src/lib/scroll.js`. App did exactly this until it was fixed: it reset scroll
   on EVERY hashchange, so in-page anchors (`#market`, `#news`) threw you to the

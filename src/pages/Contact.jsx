@@ -1,5 +1,7 @@
 /* Contact page. Offices, phones and email are the real ones already carried in
-   the site footer (taken from daacap.com). The form posts nowhere yet: there is
+   the site footer (taken from daacap.com). The Geneva coordinates are the
+   office's own, supplied by the client (46.202311, 6.145920), rounded to four
+   decimals; they were previously a rough placeholder for the city. The form posts nowhere yet: there is
    no backend on this deploy, so it opens a pre-filled mail draft to
    info@daacap.com instead of silently swallowing the message. Swap in a form
    endpoint (Formspree, Vercel function, HubSpot) when one exists. */
@@ -17,7 +19,7 @@ const OFFICES = [
     lines: ['Rue de la Pélisserie 16', 'CH-1204 Geneva, Switzerland'],
     phone: '+41 22 344 22 00',
     tel: '+41223442200',
-    coords: '46.2044° N · 6.1489° E'
+    coords: '46.2023° N · 6.1459° E'
   },
   {
     id: 'luxembourg',

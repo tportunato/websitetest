@@ -16,12 +16,34 @@ function reduced() {
   }
 }
 
+/* The Back to top button: an eased ride up the page the reader asked for. */
 export function scrollToTop() {
   if (lenis) {
     lenis.scrollTo(0, { duration: reduced() ? 0 : 1.1 })
     return
   }
   window.scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' })
+}
+
+/* Opening a new page. This must be INSTANT, and it is deliberately not the
+   function above.
+
+   Navigating used to call scrollToTop() from the hashchange handler, which
+   failed twice over: it ran before React had rendered the new page, so it
+   scrolled the old one; and on the landing page it started a 1.1s Lenis
+   animation on an instance that Landing destroys a moment later when it
+   unmounts, killing the scroll in flight. Clicking through to Strategy left you
+   halfway down the new page.
+
+   A new page has no relationship to where the reader was, so there is nothing
+   to animate between. Jump. */
+export function jumpToTop() {
+  if (lenis) lenis.scrollTo(0, { immediate: true })
+  try {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  } catch (e) {
+    window.scrollTo(0, 0)
+  }
 }
 
 /* In-page anchors (#market, #news, ...). The header is fixed and overlaps the
