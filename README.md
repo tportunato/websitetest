@@ -171,14 +171,20 @@ repeats it on the same page, so the default there moved to `hold`.
 
 ## Pass 7 notes — three defects in the wordmark draw
 
-All three were measured rather than eyeballed; the scripts render the mark in a
-headless browser at 4x and count white pixels behind the mask.
+All three were measured rather than eyeballed. **The measurement resolution was
+itself the story**: the first round of fixes was verified at 4x with a >128
+threshold, pronounced complete, and shipped a black slash across the crossing
+where the first **a** passes under the second — 3.3 square units of hole that 4x
+smeared above the threshold. Coverage is now checked by rendering at 10x and
+comparing against the plain fill pixel for pixel. Six pixels stay dark, which is
+the floor: brushing both contours whole, with no phases at all, leaves five in
+the same place.
 
 ### A branch grew out of the D before the D was closed
-The stem phase ran to dash 0.07-0.09 of the long contour, and past 0.07 that
-contour has already turned into the first A's diagonal — 295 pixels of it. Swept:
-0.07 gives 1821 pixels of stem and zero spill, 0.075 already spills 21. The stem
-now stops at 0.07 and the first A's diagonal waits its turn.
+The stem phase ran to dash 0.09 of the long contour, and past 0.07 that contour
+has already turned into the first **a**'s diagonal. At 10x: 0.07 lays the stem
+plus 77 pixels of its own turn, 0.075 spills 716, 0.09 spills 2872 — the branch.
+The stem now stops at 0.07.
 
 ### The second A's foot finished before the rest of the A
 Not a phase-order problem. Going round that contour the pen runs down the right
@@ -189,22 +195,24 @@ Phases therefore carry an explicit `start`/`end` window instead of a share of a
 running total, and windows may overlap. The foot is now a **rider**: it takes
 the first 30% of the bottom sweep's window, and since that sweep sets off from
 the foot's own corner the foot fills in behind the pen — which is what the first
-A's foot already did for free.
+**a**'s foot already did for free.
 
-### Two pixel zones on the second A only finished at the very end
-Different causes, both closed where the pen actually passes. There is no settle
-phase any more.
+### Zones on the second A that only finished at the very end
+Three of them, with three different causes. There is no settle phase any more.
 
 - x 120-123 was out of reach of a 7.6 brush from the side the pen travels.
-  Brush **11** on the three second-A phases takes it from 52 covered pixels to
-  127, for 41 pixels of early bleed into the first A's top.
-- the junction seam closes by starting arrow 7 at SHORT **0.605** instead of
-  0.62. 0.61 still leaves 13 pixels open. An earlier attempt drew the seam as
-  its own sliver riding arrow 7; it worked, but flashed a detached fragment,
-  because a dash only grows forward and that sliver grows *towards* the junction
-  while arrow 7 grows away from it.
-- the last 11 pixels want **8.5** rather than 7.6 on the final phase.
+  **Brush 11** on the three second-**a** phases closes it; 10 still leaves 6
+  pixels.
+- x 88-92, y 24-28 closes by starting arrow 7 at SHORT **0.605** rather than
+  0.62 — worth 468 pixels.
+- x 84-90, y 34-38 is an isolated patch at the crossing that **no stroke
+  reaches**. It is a second rider, SHORT 0.32-0.34, on the first 25% of arrow
+  7's window — arrow 7's pen starts on top of it.
 
-Coverage is 22925 of 22925, and every pixel the old build left to its settle
-phase now lands between 52% and 88% of the run, with the stroke that passes over
-it.
+Every timing map is also **forced to end at 1**. Left as measured, a map stops
+at the dash fraction where its ink stopped growing, which usefully skips a
+retrace plateau — but it leaves the interval's last sliver undrawn, and at arrow
+10's terminal that cost 5 real pixels.
+
+Every pixel the old build left to its settle phase now lands with the stroke
+that passes over it, between 52% and 88% of the run.

@@ -27,17 +27,47 @@
    revealing is additive.
 
    PHASES CAN OVERLAP IN TIME, which is why each one carries an explicit
-   `start`/`end` window rather than a share of a running total. Exactly one
-   does: the second A's FOOT is a RIDER, drawn under the bottom sweep's pen
-   rather than after it. Going round that contour the pen runs down the right
-   side, AROUND THE FOOT, and only then sweeps the bottom leftward, so in
-   outline order the foot completes before the bottom starts and reads as a
-   detour. No choice of interval fixes that; the order is the letterform's. As
-   a rider the foot takes the first 30% of the bottom sweep's window, and since
-   that sweep sets off from the foot's own corner, the foot fills in behind the
-   pen. That is the client's own rule for the feet - they appear as the flow
-   goes near them - and it is what the first A's foot already does for free,
-   because the long contour happens to pass through it mid-stroke.
+   `start`/`end` window rather than a share of a running total. Two are RIDERS,
+   drawn under another phase's pen rather than after it, in the window where
+   that pen is passing over them:
+     - The second A's FOOT takes the first 30% of the bottom sweep's window.
+       Going round that contour the pen runs down the right side, AROUND THE
+       FOOT, and only then sweeps the bottom leftward, so in outline order the
+       foot completes before the bottom starts and reads as a detour. No choice
+       of interval fixes that; the order is the letterform's. As a rider it
+       fills in behind a pen that sets off from its own corner - which is the
+       client's rule for the feet, and what the first A's foot already does for
+       free, the long contour happening to pass through it mid-stroke.
+     - The JUNCTION PATCH, SHORT 0.32-0.34, takes the first 25% of arrow 7's
+       window. It is a small isolated region at the crossing that NO stroke
+       reaches; the old build left it to a settle phase at the very end. Arrow
+       7's pen starts on top of it, so that is where it belongs.
+
+   TRIM THE STEM AT 0.07. Past that the outline has already turned into the
+   first A's diagonal, and a little branch grew out of the D before the D
+   existed. Measured at 10x: 0.07 lays the stem plus 77 pixels of its own turn,
+   0.075 spills 716, 0.09 spills 2872 - the branch.
+
+   THREE ZONES USED TO FINISH ONLY AT THE VERY END, which read as pixels
+   forgotten and added afterwards. There is no settle phase any more:
+     - x 120-123, on the second A, is out of reach of a 7.6 brush from the side
+       the pen travels. Brush 11 on the three second-A phases closes it; 10
+       still leaves 6 pixels.
+     - x 88-92, y 24-28 closes by starting arrow 7 at SHORT 0.605 rather than
+       0.62, which is worth 468 pixels.
+     - x 84-90, y 34-38 is the junction patch, the rider above.
+   Each phase's timing map also ENDS AT 1 by force. Left as measured, a map
+   stops at the dash fraction where its ink stopped growing, which usefully
+   skips a retrace plateau - but it leaves the interval's last sliver undrawn,
+   and at arrow 10's terminal that cost 5 real pixels.
+
+   MEASURE AT 10x, NOT 4x. All of the above was once "verified complete" at 4x
+   with a >128 threshold, and shipped with a black slash across the crossing
+   where the first A passes under the second: 3.3 square units of hole that 4x
+   smeared above the threshold. Coverage is now checked by rendering at 10x and
+   comparing against the PLAIN FILL pixel for pixel. Six pixels stay dark, and
+   that is the floor - brushing both contours whole, with no phases at all,
+   leaves five in the same place.
 
    WHY IT IS NOT stroke-dashoffset ON A CENTRELINE. The mark is a monoline
    saved as filled outlines, so there is no centreline to dash. Recovering one
@@ -52,8 +82,6 @@
    stroke width of each other near the junctions, so that disc reached across
    and lit stray fragments of the next letter early. A butt cap advances as a
    clean edge.
-
-   COVERAGE IS COMPLETE: 22925 of the logo's 22925 pixels.
 
    PACE IS MEASURED. A contour does not reveal area at a constant rate, so each
    phase was scanned at 121 points WITH THE EARLIER PHASES ALREADY DOWN and the
@@ -95,7 +123,7 @@ export const CAP = 'butt'
    another phase's - see the riders in the comment at the top; `map` turns even
    time into even ink within the phase. */
 export const PHASES = [
-  /* 1  down the stem, and not one pixel past it */
+  /* 1  down the stem, and not into the first A behind it */
   { d: LONG_D, a: 0, b: 0.07, brush: 7.6, start: 0, end: 0.0823,
     map: [0, 0.0246, 0.0491, 0.0737, 0.0983, 0.1229, 0.1558, 0.1803, 0.2049, 0.2295, 0.254, 0.2869, 0.3115, 0.3361, 0.3607, 0.3852, 0.4181, 0.4427, 0.4673, 0.4918, 0.5164, 0.5493, 0.5739, 0.5985, 0.623, 0.6476, 0.6722, 0.7048, 0.7284, 0.7515, 0.7746, 0.7978, 0.8281, 0.8509, 0.8745, 0.8976, 0.9207, 0.9296, 0.9442, 0.9721, 1] },
   /* 2-4  bottom, up the left, right across the top: the D closes */
@@ -103,19 +131,22 @@ export const PHASES = [
     map: [0, 0.026, 0.1141, 0.1348, 0.1543, 0.1768, 0.195, 0.218, 0.2397, 0.2591, 0.2788, 0.299, 0.3191, 0.3391, 0.3592, 0.3791, 0.3992, 0.4195, 0.44, 0.4607, 0.4819, 0.5036, 0.5249, 0.5467, 0.5688, 0.5909, 0.6133, 0.6363, 0.6586, 0.6815, 0.7041, 0.7265, 0.7452, 0.7716, 0.7943, 0.8177, 0.8403, 0.8637, 0.9513, 0.975, 1] },
   /* 5-6  bottom of the first A, rightward; its foot lands in passing */
   { d: LONG_D, a: 0.07, b: 0.42, brush: 7.6, start: 0.3646, end: 0.517,
-    map: [0, 0.0498, 0.0607, 0.0713, 0.082, 0.0924, 0.1037, 0.1143, 0.1244, 0.1352, 0.1459, 0.1564, 0.1672, 0.1778, 0.1885, 0.199, 0.21, 0.2208, 0.2318, 0.2425, 0.2531, 0.2635, 0.2736, 0.2838, 0.2938, 0.3036, 0.3134, 0.323, 0.3328, 0.3417, 0.3503, 0.3589, 0.3684, 0.426, 0.4397, 0.4544, 0.4636, 0.4742, 0.4835, 0.4926, 0.5083] },
+    map: [0, 0.0498, 0.0607, 0.0713, 0.082, 0.0924, 0.1037, 0.1143, 0.1244, 0.1352, 0.1459, 0.1564, 0.1672, 0.1778, 0.1885, 0.199, 0.21, 0.2208, 0.2318, 0.2425, 0.2531, 0.2635, 0.2736, 0.2838, 0.2938, 0.3036, 0.3134, 0.323, 0.3328, 0.3417, 0.3503, 0.3589, 0.3684, 0.426, 0.4397, 0.4544, 0.4636, 0.4742, 0.4835, 0.4926, 1] },
+  /*     RIDER on 7: the patch at the crossing, which no stroke reaches */
+  { d: SHORT, a: 0.32, b: 0.34, brush: 7.6, start: 0.517, end: 0.5637,
+    map: [0, 0.0041, 0.0082, 0.0357, 0.0581, 0.0878, 0.1091, 0.1387, 0.1642, 0.1917, 0.2151, 0.2427, 0.2678, 0.2942, 0.317, 0.3466, 0.37, 0.3995, 0.4234, 0.4488, 0.4725, 0.5029, 0.5235, 0.5545, 0.5853, 0.6027, 0.6327, 0.6564, 0.6907, 0.7157, 0.7346, 0.7583, 0.787, 0.8196, 0.8615, 0.8789, 0.9004, 0.9255, 0.9491, 0.9813, 1] },
   /* 7  second A: from the junction, top rightward, down the right side */
-  { d: SHORT, a: 0.605, b: 0.79, brush: 11, start: 0.517, end: 0.6836,
-    map: [0, 0.0287, 0.0512, 0.0652, 0.0777, 0.1222, 0.1606, 0.1856, 0.2109, 0.2365, 0.2613, 0.2867, 0.3122, 0.3375, 0.3628, 0.3881, 0.4139, 0.4377, 0.4635, 0.4887, 0.5141, 0.5391, 0.5646, 0.5898, 0.6145, 0.6396, 0.6646, 0.6901, 0.7147, 0.7396, 0.7649, 0.7898, 0.8149, 0.84, 0.8654, 0.8898, 0.9148, 0.9395, 0.9598, 0.9828, 1] },
+  { d: SHORT, a: 0.605, b: 0.79, brush: 11, start: 0.517, end: 0.7037,
+    map: [0, 0.0362, 0.0551, 0.0687, 0.0802, 0.1342, 0.1666, 0.1913, 0.2167, 0.2419, 0.2669, 0.2913, 0.3173, 0.3422, 0.3674, 0.3924, 0.4179, 0.4417, 0.4675, 0.4924, 0.5176, 0.5425, 0.5678, 0.593, 0.6174, 0.6423, 0.667, 0.6924, 0.7168, 0.7415, 0.7667, 0.7914, 0.8163, 0.8413, 0.8665, 0.8907, 0.9153, 0.94, 0.9602, 0.9829, 1] },
   /* 8  second A: back along the bottom, leftward */
-  { d: SHORT, a: 0.867, b: 1, brush: 11, start: 0.6836, end: 0.8503,
-    map: [0, 0.0065, 0.0164, 0.0278, 0.0391, 0.052, 0.0654, 0.0827, 0.1052, 0.1322, 0.1606, 0.1888, 0.2163, 0.2449, 0.2721, 0.3007, 0.3302, 0.3587, 0.3876, 0.418, 0.4462, 0.4749, 0.5029, 0.531, 0.559, 0.5877, 0.6155, 0.6437, 0.6718, 0.7003, 0.7286, 0.7584, 0.7859, 0.8139, 0.8428, 0.8694, 0.8947, 0.92, 0.9449, 0.9694, 1] },
+  { d: SHORT, a: 0.867, b: 1, brush: 11, start: 0.7037, end: 0.8606,
+    map: [0, 0.006, 0.0147, 0.0254, 0.0355, 0.0471, 0.0595, 0.0732, 0.0908, 0.114, 0.1394, 0.1655, 0.1919, 0.2173, 0.244, 0.2691, 0.2957, 0.3229, 0.3492, 0.3763, 0.4035, 0.4298, 0.457, 0.4828, 0.5089, 0.5351, 0.5612, 0.5878, 0.6134, 0.6395, 0.6656, 0.6918, 0.7183, 0.7449, 0.7714, 0.7978, 0.8246, 0.8503, 0.8738, 0.8978, 1] },
   /*     RIDER on 8: its foot, filling in behind the pen that just left it */
-  { d: SHORT, a: 0.79, b: 0.867, brush: 11, start: 0.6836, end: 0.7336,
-    map: [0, 0.0079, 0.0158, 0.0233, 0.0308, 0.0383, 0.054, 0.0612, 0.0683, 0.0755, 0.0827, 0.0898, 0.097, 0.1042, 0.1113, 0.1185, 0.1257, 0.1329, 0.14, 0.1472, 0.1627, 0.1699, 0.177, 0.1843, 0.1922, 0.2006, 0.2099, 0.22, 0.2313, 0.2449, 0.2706, 0.3028, 0.4356, 0.4578, 0.4837, 0.4975, 0.5097, 0.5207, 0.5312, 0.987, 0.9917] },
+  { d: SHORT, a: 0.79, b: 0.867, brush: 11, start: 0.7037, end: 0.7508,
+    map: [0, 0.0079, 0.0158, 0.0233, 0.0308, 0.0383, 0.054, 0.0612, 0.0683, 0.0755, 0.0827, 0.0898, 0.097, 0.1042, 0.1113, 0.1185, 0.1257, 0.1329, 0.14, 0.1472, 0.1627, 0.1699, 0.177, 0.1843, 0.1922, 0.2006, 0.2099, 0.22, 0.2313, 0.2449, 0.2706, 0.3028, 0.4356, 0.4578, 0.4837, 0.4975, 0.5097, 0.5207, 0.5312, 0.987, 1] },
   /* 9-10 back leftward along the first A top, to its terminal */
-  { d: SHORT, a: 0, b: 0.2, brush: 8.5, start: 0.8503, end: 1,
-    map: [0, 0.0189, 0.0381, 0.0616, 0.0866, 0.1117, 0.1367, 0.161, 0.1824, 0.1998, 0.2174, 0.2365, 0.2546, 0.2716, 0.2889, 0.3064, 0.3235, 0.3407, 0.3583, 0.3756, 0.3929, 0.41, 0.4277, 0.4444, 0.4622, 0.4793, 0.4966, 0.5137, 0.5308, 0.5481, 0.5649, 0.5825, 0.5996, 0.617, 0.6334, 0.6515, 0.6688, 0.686, 0.7029, 0.7211, 0.7583] },
+  { d: SHORT, a: 0, b: 0.2, brush: 7.6, start: 0.8606, end: 1,
+    map: [0, 0.0782, 0.1012, 0.1246, 0.148, 0.1698, 0.1886, 0.2054, 0.2219, 0.2388, 0.2556, 0.2713, 0.2876, 0.3039, 0.3196, 0.3358, 0.3523, 0.3683, 0.3844, 0.4002, 0.4163, 0.4329, 0.4479, 0.4647, 0.481, 0.4971, 0.5129, 0.5289, 0.5448, 0.5608, 0.5772, 0.5929, 0.6094, 0.6251, 0.6414, 0.6574, 0.6733, 0.6899, 0.7052, 0.7221, 1] },
 ]
 
 function sample(map, t) {

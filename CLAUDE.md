@@ -62,7 +62,7 @@ out along the BOTTOM of the first A, round the second A, then back leftward
 along the TOP of the first A to finish. The feet under each A land whenever the
 brush passes them and are not sequenced.
 
-It takes SEVEN PHASES, not two, and that is not an accident. The logo is an
+It takes EIGHT PHASES, not two, and that is not an accident. The logo is an
 interlaced ribbon and neither contour maps onto a letter: on the long one the
 first A's bottom sits at dash 0.10-0.25 but the D's bowl at 0.45-0.65, so a
 single continuous dash cannot put the D first whichever way it runs. Each phase
@@ -79,12 +79,14 @@ timing maps were MEASURED in a browser (coverage sampled per path, then
 inverted) because a contour reveals area in fits and starts.
 
 PHASES MAY OVERLAP IN TIME, so each carries its own `start`/`end` window rather
-than a share of a running total. One does: the second A's foot rides the first
-30% of the bottom sweep, because the outline runs down the right side, around
-the foot, and only then sweeps the bottom - so drawn in outline order the foot
-finishes before the bottom starts and reads as a detour. As a rider it fills in
-behind a pen that is right there, which is what the first A's foot already does
-for free.
+than a share of a running total. Two are riders. The second A's foot rides the
+first 30% of the bottom sweep, because the outline runs down the right side,
+around the foot, and only then sweeps the bottom - so drawn in outline order the
+foot finishes before the bottom starts and reads as a detour. As a rider it
+fills in behind a pen that is right there, which is what the first A's foot
+already does for free. The junction patch (SHORT 0.32-0.34) rides the first 25%
+of arrow 7, whose pen starts on top of it; it is an isolated region no stroke
+reaches, and the old build left it to a settle phase at the very end.
 
 Three things there are load-bearing and easy to undo by accident: the brush
 has a FLAT cap and is as narrow as will still cover (a round cap is a disc that
@@ -94,13 +96,21 @@ continues the first rather than restarting in mid-air; and the maps are
 specific to this artwork, these brush widths, this cap and this direction.
 Change any of those and re-measure.
 
-FOUR NUMBERS THERE WERE SWEPT, not chosen, and each closes a visible defect:
-the stem stops at dash 0.07 (0.075 already spills 21 pixels of the first A's
-diagonal, and it grew a branch out of the D before the D existed); arrow 7
-starts at SHORT 0.605 (0.61 leaves 13 pixels of the junction seam open); the
-three second-A phases use a brush of 11 (7.6 cannot reach the inner edge at
-x 120-123 from the side the pen travels); and the last phase uses 8.5, worth
-the final 11 pixels. Coverage is 22925 of 22925 and there is no settle phase.
+THREE NUMBERS THERE WERE SWEPT, not chosen, and each closes a visible defect:
+the stem stops at dash 0.07 (0.075 spills 716 pixels of the first A's diagonal
+and 0.09 spills 2872 - it grew a branch out of the D before the D existed);
+arrow 7 starts at SHORT 0.605 rather than 0.62, worth 468 pixels around
+x 88-92; and the three second-A phases use a brush of 11, since 7.6 cannot
+reach the inner edge at x 120-123 from the side the pen travels. Every timing
+map is also forced to end at 1, or each phase leaves its interval's last sliver
+undrawn. There is no settle phase.
+
+**VERIFY COVERAGE AT 10x AGAINST THE PLAIN FILL, NOT AT 4x.** A 4x render with a
+>128 threshold pronounced all of this complete and shipped a black slash across
+the crossing where the first A passes under the second - 3.3 square units of
+hole that 4x smeared over. The check that matters renders at 10x and compares
+pixel for pixel with the two fills. Six pixels stay dark; that is the floor,
+since brushing both contours whole with no phases at all leaves five.
 
 ## Things that have already bitten
 
