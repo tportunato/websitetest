@@ -56,11 +56,16 @@ at display size, notes demoted under it, a mono spec rail on a hairline.
 ## The wordmark draws itself
 
 `src/sections/Wordmark.jsx` + `src/lib/wordmark.js`. The logo is inline SVG now,
-not an `<img>`, so it can write itself on, in the order the mark is actually
-built: down the D's stem, round to close the D, along the bottom of the first A,
-over to the second A, and back to finish the first A's top last. The logo is an
-interlaced ribbon whose two contours overlap in the middle and meet twice, which
-is why that last bit belongs to the second contour. Read the comment at the top
+not an `<img>`, so it can write itself on, in the order the mark is built: down
+the D's stem, round to close the D, the top of the first A carrying on into the
+whole second A, then back to fill the first A's bottom.
+
+It takes FOUR PHASES, not two, and that is not an accident. The logo is an
+interlaced ribbon and neither contour maps onto a letter: on the long one the
+first A's bottom sits at dash 0.10-0.25 but the D's bowl at 0.45-0.65, so a
+single continuous dash cannot put the D first whichever way it runs. Each phase
+draws an INTERVAL of a contour, and intervals can be replayed in any order
+because revealing is additive. Read the comment at the top
 of `wordmark.js` before touching it — the short version is that the logo is a
 monoline saved as FILLED outlines, so there is no centreline to dash. It uses
 the fill as a mask and dashes a fat brush along the outline underneath, and the
