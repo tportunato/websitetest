@@ -62,12 +62,16 @@ out along the BOTTOM of the first A, round the second A, then back leftward
 along the TOP of the first A to finish. The feet under each A land whenever the
 brush passes them and are not sequenced.
 
-It takes FOUR PHASES, not two, and that is not an accident. The logo is an
+It takes SIX PHASES, not two, and that is not an accident. The logo is an
 interlaced ribbon and neither contour maps onto a letter: on the long one the
 first A's bottom sits at dash 0.10-0.25 but the D's bowl at 0.45-0.65, so a
 single continuous dash cannot put the D first whichever way it runs. Each phase
 draws an INTERVAL of a contour, and intervals can be replayed in any order
-because revealing is additive. Read the comment at the top
+because revealing is additive. The two directions of travel round the long
+contour sweep the bowl the SAME way, so reversing does not help - only a
+different interval does. Directions are verified by tracking the centroid of
+newly revealed ink frame by frame, never by eye: three earlier attempts each
+had some arrow backwards and looked fine to me. Read the comment at the top
 of `wordmark.js` before touching it — the short version is that the logo is a
 monoline saved as FILLED outlines, so there is no centreline to dash. It uses
 the fill as a mask and dashes a fat brush along the outline underneath, and the
