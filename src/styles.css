@@ -2590,18 +2590,31 @@ main {
   padding: 0;
 }
 
-/* Reading size, not card size: six statements a broker can scan. */
+/* Reading size, not card size: six statements a broker can scan.
+
+   NO max-width HERE. A 52ch cap used to sit inside the 1240px list, so every
+   item hugged the container's left edge and the whole block read 191px left of
+   centre on a 1920 screen - the rules stopped short of the right and it looked
+   like a mistake. The list is centred by `.points-list`; an item fills it.
+
+   THE TYPE IS SIZED SO EACH POINT HOLDS ONE LINE. The longest of the six is
+   105 characters and wants 1319px at the old 1.62rem, against the 1186px a
+   1240px list leaves once the arrow and its gap are taken off - so all six
+   wrapped to two lines. Measured, not guessed: at 1.4rem it wants 1140px and
+   the vw term keeps it inside the container down to about 1150px wide. Below
+   that it wraps, which is correct - there is no width left to give it. Add a
+   seventh point longer than these and re-measure. */
 .points-list li {
   display: flex;
   align-items: flex-start;
   gap: 24px;
   padding: 30px 0;
   border-bottom: 1px solid var(--line);
-  font-size: clamp(1.15rem, 2vw, 1.62rem);
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
   line-height: 1.38;
   font-weight: 400;
   letter-spacing: -0.014em;
-  max-width: 52ch;
+  text-wrap: pretty;
 }
 
 .points-list li:first-child { border-top: 1px solid var(--line); }
@@ -2615,7 +2628,7 @@ main {
 }
 
 @media (max-width: 880px) {
-  .points-list li { max-width: none; gap: 16px; }
+  .points-list li { gap: 16px; }
 }
 
 /* ---------- CTA band with a photo beside it ---------- */
