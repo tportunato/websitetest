@@ -936,6 +936,210 @@ h2 {
   border-bottom: 1px solid rgba(247, 245, 240, 0.25);
 }
 
+/* ---------- Team carousel ---------- */
+/* Five members turn one at a time. The slides are stacked in ONE grid cell so
+   the stage measures the tallest bio and nothing resizes as it turns; see the
+   comment at the top of TeamCarousel.jsx for why the fades are staggered. */
+.teamcar {
+  margin-top: 26px;
+  outline: none;
+}
+
+.teamcar:focus-visible {
+  outline: 1px solid var(--line);
+  outline-offset: 18px;
+}
+
+.teamcar-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.teamcar-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.teamcar-arrow {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--paper);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.teamcar-arrow:hover {
+  background: rgba(247, 245, 240, 0.08);
+  border-color: rgba(247, 245, 240, 0.4);
+}
+
+/* Tabular figures, so the counter does not shuffle as it counts. */
+.teamcar-count {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: rgba(247, 245, 240, 0.45);
+  font-variant-numeric: tabular-nums;
+  min-width: 68px;
+  text-align: center;
+}
+
+.teamcar-count-now {
+  color: var(--paper);
+}
+
+.teamcar-count-sep {
+  margin: 0 6px;
+}
+
+.teamcar-stage {
+  display: grid;
+  margin-top: 40px;
+}
+
+/* Every slide occupies the same cell. */
+.teamcar-slide {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 54px;
+  align-items: start;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0s linear 0.22s;
+}
+
+/* The incoming slide WAITS for the outgoing one. Run together they both sit
+   near half opacity mid-transition and the two faces ghost over each other. */
+.teamcar-slide.is-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.34s ease 0.2s, visibility 0s;
+}
+
+/* The portraits are shot on white and cut with an oval fade at the bottom, so
+   they sit on a paper plate and melt into it rather than being punched into a
+   disc on the near-black ground. */
+.teamcar-portrait {
+  background: var(--paper);
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.teamcar-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.teamcar-copy {
+  padding-top: 8px;
+}
+
+.teamcar-name {
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.teamcar-copy .team-role {
+  margin-top: 10px;
+}
+
+.teamcar-bio {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 60ch;
+}
+
+.teamcar-copy .team-li {
+  display: inline-block;
+  margin-top: 24px;
+}
+
+/* A rail of five ticks, one per member, ruled with the same hairline as the
+   rest of the page: position in a sequence rather than decoration. */
+.teamcar-rail {
+  display: flex;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.teamcar-tick {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  padding: 0;
+  border: none;
+  background: var(--line);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.teamcar-tick:hover {
+  background: rgba(247, 245, 240, 0.4);
+}
+
+.teamcar-tick.is-on {
+  background: var(--accent);
+}
+
+.teamcar-tick-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 880px) {
+  .teamcar-slide {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .teamcar-portrait {
+    max-width: 280px;
+  }
+
+  .teamcar-bio {
+    font-size: 0.95rem;
+  }
+
+  /* 44px is the smallest a thumb reliably hits. */
+  .teamcar-arrow {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Reduce means the page settles: the slide still changes, it just does not
+   animate getting there. */
+@media (prefers-reduced-motion: reduce) {
+  .teamcar-slide,
+  .teamcar-slide.is-on {
+    transition: none;
+  }
+}
+
 .page-foot {
   max-width: 1200px;
   margin: 10vh auto 0;

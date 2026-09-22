@@ -1,8 +1,13 @@
-/* The principals and advisory grids, lifted out of what used to be the
-   standalone Leadership page so the About page can carry them as a section.
-   Content and photos from the existing daacap.com/leadership. */
+/* The team section of the About page: the carousel of principals, then the
+   advisory board as a grid.
+
+   The principals used to be a three-up grid too. Five members made that a row
+   of three and a row of two, which reads as a team with a gap in it, so they
+   turn one at a time instead. The advisers stay a grid - there are three of
+   them and they are a board, not a sequence. */
 import { useState } from 'react'
-import { PRINCIPALS, ADVISORS } from '../data/team.js'
+import { ADVISORS } from '../data/team.js'
+import TeamCarousel from './TeamCarousel.jsx'
 
 function Card({ person }) {
   const [open, setOpen] = useState(false)
@@ -25,10 +30,7 @@ function Card({ person }) {
 export default function TeamGrid() {
   return (
     <>
-      <p className="eyebrow">Principals</p>
-      <div className="team-grid">
-        {PRINCIPALS.map((p) => <Card key={p.name} person={p} />)}
-      </div>
+      <TeamCarousel />
       <p className="eyebrow" style={{ marginTop: '9vh' }}>Advisory members</p>
       <div className="team-grid">
         {ADVISORS.map((p) => <Card key={p.name} person={p} />)}

@@ -84,7 +84,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* Leadership opens on the team photograph, which is what the About page
+      {/* THE SECTION IS LABELLED "Team", THE ID AND THE URL ARE STILL
+          "leadership". That is not an oversight: #/leadership is a published
+          address and SECTION_OF in App.jsx maps it here, so renaming the id to
+          match the label would break every existing link for the sake of a
+          word nobody sees. Rename both together or neither.
+
+          It opens on the team photograph, which is what the About page
           used to spend its own `alt` band on. That band carried a button down
           to the leadership PAGE; on one page it would have scrolled you a few
           hundred pixels, so it is the section's opener instead of a teaser for
@@ -94,7 +100,7 @@ export default function About() {
         id="leadership"
         variant="boxed"
         eyebrow={ABOUT.team.eyebrow}
-        title="Leadership"
+        title="Team"
         image="/images/team-photo.jpg"
         lead={ABOUT.team.statement}
       >

@@ -22,7 +22,7 @@ const GROUPS = [
       { label: 'About us', href: '#/about' },
       { label: 'Vision & Mission', href: '#/vision' },
       { label: 'Sustainability', href: '#/sustainability' },
-      { label: 'Leadership', href: '#/leadership' }
+      { label: 'Team', href: '#/leadership' }
     ]
   }
 ]

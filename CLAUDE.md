@@ -55,13 +55,20 @@ Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
 ## The DAA group is one page
 
-Vision & Mission, Sustainability and Leadership are SECTIONS of `#/about`, not
-routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx` is
-the team grid lifted out of the old Leadership page.
+Vision & Mission, Sustainability and the team are SECTIONS of `#/about`, not
+routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx`
+holds what was lifted out of the old Leadership page - the advisory grid, and
+`src/sections/TeamCarousel.jsx` for the team itself.
+
+**The section is LABELLED "Team"; its id and its URL are still `leadership`.**
+That split is deliberate. `#/leadership` is a published address, `SECTION_OF`
+maps it to the section id, and renaming the id to match a word nobody sees
+would break every existing link. Rename both together or neither.
 
 **Each section keeps the hero it had as a page.** Vision & Mission and
 Sustainability open on the same boxed `PageHero`, with the same photograph, as
-when they were routes of their own, and Leadership opens on the team photo.
+when they were routes of their own, and the team section opens on the team
+photo.
 `section` on PageHero is the in-page form: a `<section>` with an id and an h2
 instead of a `<header>` with the page's one h1. The first attempt folded them
 in as plain eyebrow-and-statement bands and the page stopped feeling like the
@@ -78,6 +85,35 @@ Arriving at a section from another page JUMPS; moving between sections while
 already on About EASES, because that is an in-page anchor. A ref tells the two
 apart. Bare `#/about` has to be handled explicitly: the page key does not
 change between these four URLs, so `jumpToTop` never fires for them.
+
+## The team carousel
+
+Five members turn one at a time in `src/sections/TeamCarousel.jsx`. Three
+things there are load-bearing:
+
+- **Every slide is in the DOM at once, stacked in ONE grid cell.** The stage
+  then measures the tallest bio, so moving from Tomaso's three lines to
+  Dominique's eight does not resize the page under the reader's cursor, and the
+  fade is a real crossfade rather than a swap. Absolutely positioning the
+  slides would have hidden them from the height as well as from the flow.
+- **The two fades are STAGGERED**, out then in. Run together, both slides sit
+  near half opacity mid-transition and the two faces ghost over each other. The
+  incoming slide carries a 0.2s transition delay; that is the whole mechanism.
+- **An inactive slide is hidden three ways** - opacity, visibility and
+  pointer-events - for the same reason the mobile nav panel is. Opacity alone
+  leaves a full-size layer over the live one swallowing every click.
+
+Photos: the six published members are still hotlinked from daacap.com. The
+three under `public/images/team/` were supplied to us directly and are cut to
+match that set - head and shoulders on white, the bottom melting out along an
+oval arc rather than meeting a straight edge. The arc is generated, not
+hand-masked; it dips below the frame at the centre and rises at the edges. The
+portrait sits on a `--paper` plate in the carousel so it has something white to
+melt INTO; punched into a disc on the near-black ground the fade does nothing.
+
+`TEAM[].linkedin` may be `null` and the card then drops the link. Two seats are
+null today: the incoming CIO, whose name is not public, and Tomaso, whose
+profile URL has not been supplied. Do not guess one.
 
 ## Regulatory status is not a marketing argument
 
