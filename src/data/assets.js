@@ -18,7 +18,7 @@ export const ASSETS = [
     highlight: 'BREEAM "Very Good" · repositioned 2024',
     blurb:
       'Acquired at 10,720 m² and comprehensively repositioned by end-2024: expanded to 11,749 m², reconfigured into independent tenant spaces with separated vehicle flows, modernised facades and BREEAM Very Good certification.',
-    img: 'https://www.daacap.com/wp-content/uploads/2025/01/Heyrieux-Referbished-scaled.jpg',
+    img: '/images/assets/heyrieux.jpg',
     article: 'repositioning-of-the-heyrieux-industrial-property-a-strategic-investment-for-future-growth'
   },
   {
@@ -34,7 +34,7 @@ export const ASSETS = [
     highlight: 'A12 · N10 · N12 access',
     blurb:
       'Last-mile warehouse in one of the Paris region’s most sought-after logistics locations, directly linked to the A12 with convenient access to Paris and the wider region.',
-    img: 'https://www.daacap.com/wp-content/uploads/2023/03/Legendre-Montigny-Sky.png',
+    img: '/images/assets/montigny.jpg',
     article: 'last-mile-warehouse-acquisition-strengthens-logistics-opportunities-fund-portfolio'
   },
   {
@@ -50,7 +50,7 @@ export const ASSETS = [
     highlight: 'Off Milan’s ring road, direct city access',
     blurb:
       'Strategic last-mile facility operated by Amazon Italia, positioned off Milan’s tangenziale with direct access to the city centre and the country’s main highways.',
-    img: 'https://www.daacap.com/wp-content/uploads/2023/01/Amazon-Buscinasco-1.png',
+    img: '/images/assets/buccinasco.jpg',
     article: 'amazon-logistics-warehouse-acquired-in-buccinasco'
   },
   {
@@ -66,7 +66,7 @@ export const ASSETS = [
     highlight: 'Greater south-west Milan market',
     blurb:
       'Last-mile asset key to FedEx operations in the region, in a market that has expanded consistently on the back of the Piacenza and Castel San Giovanni logistics hubs.',
-    img: 'https://www.daacap.com/wp-content/uploads/2023/06/9039024172.png',
+    img: '/images/assets/spinetta.jpg',
     article: 'daa-capital-expands-its-logistics-platform-in-italy-with-the-acquisition-of-a-last-mile-fedex-asset'
   },
   {
@@ -82,7 +82,7 @@ export const ASSETS = [
     highlight: 'A58/A67 · 1h from Port of Antwerp',
     blurb:
       'Sale-and-leaseback in Eindhoven’s largest business park, 5.5 km from the city centre: an established last-mile location with access to the A58/A67 and the German hinterland.',
-    img: 'https://www.daacap.com/wp-content/uploads/2023/09/Treffina-Eindhoven.jpg',
+    img: '/images/assets/eindhoven.jpg',
     article: 'logistic-opportunities-enters-the-netherlands-with-latest-last-mile-acquisition'
   }
 ]

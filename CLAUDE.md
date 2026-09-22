@@ -127,12 +127,14 @@ one.
 
 ## Team portraits
 
-The published members are still hotlinked from daacap.com, which is BLOCKED
-from the build sandbox, so they render blank locally and are fine on the
-deploy. The three under `public/images/team/` were supplied directly.
-`placeholder.jpg` is referenced by nothing right now - it is the grey
-silhouette for the CIO seat that was pulled, kept so restoring the seat is one
-line.
+All eight portraits are local under `public/images/team/`. The five that were
+hotlinked from daacap.com were pulled down on 2026-09-22 when the site was cut
+free of WordPress, and every one of them was out of frame: crown between 0.028
+and 0.081 where the frame wants 0.080, which is up to 21px of vertical drift in
+a 400px picture and plainly visible as heads bobbing along the row. They were
+re-cut to the measurements below. `placeholder.jpg` is referenced by nothing
+right now - it is the grey silhouette for the CIO seat that was pulled, kept so
+restoring the seat is one line.
 
 They are cut to a MEASURED frame rather than by eye, because the row puts them
 side by side and a head half a size out is obvious: 400x400, crown at 0.08 of
@@ -157,6 +159,14 @@ Two traps, both of which shipped once:
 
 Tomaso's source is 118x150. It is upscaled and soft; a larger original is the
 only fix.
+
+The cutter is not in the repo, deliberately - it is a one-off, and keeping a
+script that nothing runs invites someone to trust it without re-reading it. The
+measurements above are the specification; re-derive from them. The extraction
+that matters is the neck: find the widest row of the head first, then take the
+narrowest row BELOW it, or a jaw gets mistaken for a neck. Validate any new
+implementation against philippe-riachi.jpg and tomaso-portunato.jpg, which sit
+on the frame at crown 0.080 and crown-to-neck 0.532 and 0.540.
 
 ## Regulatory status is not a marketing argument
 
@@ -450,9 +460,17 @@ site are deliberately synthetic. The industrial points are real.
 
 ## Environment
 
-Sandboxed sessions may have restricted egress. In the session this file was
-written in, only GitHub and package registries were reachable: `daacap.com`
-(hotlinked asset and team photos), jsDelivr (MapLibre) and the tile providers
-were all blocked, so maps and images render blank locally and are fine on the
-deploy. If you need to verify a map, serve MapLibre from `node_modules` and stub
-the tiles rather than concluding something is broken.
+Sandboxed sessions may have restricted egress, and it varies between sessions.
+`daacap.com` was blocked for several passes and was reachable on 2026-09-22,
+which is what finally allowed the site to be cut free of WordPress. jsDelivr
+(MapLibre) and the tile providers are still blocked, so maps render blank
+locally and are fine on the deploy. If you need to verify a map, serve MapLibre
+from `node_modules` and stub the tiles rather than concluding something is
+broken.
+
+Nothing on the site fetches from daacap.com any more, so a block there no longer
+hides anything: every image is local. Check with
+
+    grep -rn "wp-content" src/ index.html public/
+
+which should return nothing at all.

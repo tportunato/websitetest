@@ -15,6 +15,8 @@ import News from './pages/News.jsx'
 import Article from './pages/Article.jsx'
 import Strategy from './pages/Strategy.jsx'
 import Legal from './pages/Legal.jsx'
+import LegalDoc from './pages/LegalDoc.jsx'
+import { TERMS, PRIVACY } from './data/legal.js'
 import { jumpToTop, scrollToTop, goToSection } from './lib/scroll.js'
 
 /* Order matters: '#/news/<id>' has to be tested before the bare '#/news'. */
@@ -29,7 +31,9 @@ const ROUTES = [
   ['#/news/', 'article', Article],
   ['#/news', 'news', News],
   ['#/strategy', 'strategy', Strategy],
-  ['#/legal', 'legal', Legal]
+  ['#/legal', 'legal', Legal],
+  ['#/terms', 'terms', () => <LegalDoc doc={TERMS} />],
+  ['#/privacy', 'privacy', () => <LegalDoc doc={PRIVACY} />]
 ]
 
 /* Vision & Mission, Sustainability and Leadership are SECTIONS of the About

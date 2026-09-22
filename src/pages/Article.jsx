@@ -20,6 +20,16 @@ function Block({ b }) {
       </ul>
     )
   }
+  /* Charts. Only the September update carries any so far; they are the article's
+     own figures, downloaded local like everything else. */
+  if (b.t === 'img') {
+    return (
+      <figure className="art-fig">
+        <img src={b.v} alt={b.alt || ''} loading="lazy" />
+        {b.cap && <figcaption>{b.cap}</figcaption>}
+      </figure>
+    )
+  }
   return <p className="art-p">{b.v}</p>
 }
 

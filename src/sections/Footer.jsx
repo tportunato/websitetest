@@ -44,9 +44,9 @@ export default function Footer() {
         <span>
           <a href="#/legal">Legal &amp; Regulatory</a>
           &nbsp;&middot;&nbsp;
-          <a href="https://www.daacap.com/termsofuse/" target="_blank" rel="noreferrer">Terms of Use</a>
+          <a href="#/terms">Terms of Use</a>
           &nbsp;&middot;&nbsp;
-          <a href="https://www.daacap.com/privacypolicy/" target="_blank" rel="noreferrer">Privacy Policy</a>
+          <a href="#/privacy">Privacy Policy</a>
         </span>
       </div>
     </footer>

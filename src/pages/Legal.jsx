@@ -26,8 +26,8 @@ export default function Legal() {
         </p>
 
         <div className="legalpage-links">
-          <a href="https://www.daacap.com/termsofuse/" target="_blank" rel="noreferrer">Terms of Use &rarr;</a>
-          <a href="https://www.daacap.com/privacypolicy/" target="_blank" rel="noreferrer">Privacy Policy &rarr;</a>
+          <a href="#/terms">Terms of Use &rarr;</a>
+          <a href="#/privacy">Privacy Policy &rarr;</a>
         </div>
       </div>
 
