@@ -12,7 +12,9 @@ export const ABOUT = {
   lead:
     'DAA Capital Partners builds portfolios of small- and mid-box last-mile urban logistics real estate.',
   body: [
-    'The firm is regulated in Switzerland and invests across Western Europe\u2019s main logistics corridors, with selective geography on a fund-by-fund basis.'
+    'The firm is regulated in Switzerland and invests across Western Europe\u2019s main logistics corridors, with selective geography on a fund-by-fund basis.',
+    'We buy in the \u20ac5m to \u20ac50m segment, where most assets change hands off-market or through a single adviser rather than a broad process.',
+    'Buildings are acquired to be improved rather than simply held. Specification, energy performance and lease structure are the levers, and they are worked from the day an asset comes into the portfolio.'
   ],
   team: {
     eyebrow: 'Our team',

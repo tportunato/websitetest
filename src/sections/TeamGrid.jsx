@@ -1,7 +1,6 @@
-/* Leadership page. Content and photos from the existing daacap.com/leadership. */
-import Footer from '../sections/Footer.jsx'
-import PageBar from '../sections/PageBar.jsx'
-import BackToTop from '../sections/BackToTop.jsx'
+/* The principals and advisory grids, lifted out of what used to be the
+   standalone Leadership page so the About page can carry them as a section.
+   Content and photos from the existing daacap.com/leadership. */
 import { useState } from 'react'
 import { PRINCIPALS, ADVISORS } from '../data/team.js'
 
@@ -23,22 +22,17 @@ function Card({ person }) {
   )
 }
 
-export default function Leadership() {
+export default function TeamGrid() {
   return (
-    <div className="page-team">
-      <PageBar title="Leadership" />
-      <div className="team-wrap">
-        <p className="eyebrow">Principals</p>
-        <div className="team-grid">
-          {PRINCIPALS.map((p) => <Card key={p.name} person={p} />)}
-        </div>
-        <p className="eyebrow" style={{ marginTop: '9vh' }}>Advisory members</p>
-        <div className="team-grid">
-          {ADVISORS.map((p) => <Card key={p.name} person={p} />)}
-        </div>
+    <>
+      <p className="eyebrow">Principals</p>
+      <div className="team-grid">
+        {PRINCIPALS.map((p) => <Card key={p.name} person={p} />)}
       </div>
-      <Footer />
-      <BackToTop />
-    </div>
+      <p className="eyebrow" style={{ marginTop: '9vh' }}>Advisory members</p>
+      <div className="team-grid">
+        {ADVISORS.map((p) => <Card key={p.name} person={p} />)}
+      </div>
+    </>
   )
 }

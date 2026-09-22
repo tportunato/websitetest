@@ -14,6 +14,10 @@ const GROUPS = [
   {
     id: 'daa',
     label: 'DAA',
+    /* The group label is itself a destination. Clicking DAA used to only
+       toggle the menu, which on a trackpad reads as nothing happening at all
+       because hover had already opened it. */
+    href: '#/about',
     items: [
       { label: 'About us', href: '#/about' },
       { label: 'Vision & Mission', href: '#/vision' },
@@ -91,17 +95,21 @@ export default function Nav({ pageTitle }) {
               onMouseEnter={() => setOpen(g.id)}
               onMouseLeave={() => setOpen((cur) => (cur === g.id ? null : cur))}
             >
-              <button
-                type="button"
+              {/* A link, not a button: it goes somewhere. The menu still opens
+                  on hover and on focus, so a keyboard reaches the children
+                  without having to follow the parent first. */}
+              <a
                 className="nav-trigger"
+                href={g.href}
                 aria-expanded={open === g.id}
-                onClick={() => setOpen((cur) => (cur === g.id ? null : g.id))}
+                onFocus={() => setOpen(g.id)}
+                onClick={close}
               >
                 {g.label}
                 <svg className="nav-caret" viewBox="0 0 10 6" aria-hidden="true">
                   <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.3" />
                 </svg>
-              </button>
+              </a>
               <div className="nav-menu">
                 {g.items.map((it) => (
                   <a key={it.href} href={it.href} onClick={close}>{it.label}</a>
@@ -146,7 +154,9 @@ export default function Nav({ pageTitle }) {
           </div>
           {GROUPS.map((g) => (
             <div className="panel-group" key={g.id}>
-              <p className="panel-group-label">{g.label}</p>
+              <a className="panel-group-label panel-group-label--link" href={g.href} onClick={close}>
+                {g.label}
+              </a>
               {g.items.map((it) => <a key={it.href} href={it.href} onClick={close}>{it.label}</a>)}
             </div>
           ))}

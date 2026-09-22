@@ -263,6 +263,14 @@ main {
   gap: 2px;
 }
 
+.panel-group-label--link {
+  display: block;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.panel-group-label--link:hover { color: var(--accent); }
+
 .panel-group-label {
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
   font-size: 0.62rem;
@@ -2283,6 +2291,31 @@ main {
 @media (max-width: 880px) {
   .alt-inner { grid-template-columns: 1fr; gap: 40px; }
 }
+
+/* ---------- About page sections ----------
+   Vision & Mission, Sustainability and Leadership are bands on the About page
+   rather than pages of their own. Same rhythm as .alt and .pillars so the page
+   reads as one document: the container tokens own the measure, the band does
+   not invent a padding of its own.
+
+   scroll-margin-top is the belt to scroll.js's braces. That helper takes the
+   fixed bar off the target itself, but a native anchor jump (a pasted URL, a
+   browser restoring position) does not go through it, and without this the
+   header would sit over the section heading. */
+.about-sec {
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: var(--nav-h);
+}
+
+.about-sec-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.about-sec .firm-statement { margin-bottom: 40px; }
+
+.about-sec--team .team-grid { margin-top: 34px; }
 
 /* ---------- Pillars ---------- */
 .pillars {

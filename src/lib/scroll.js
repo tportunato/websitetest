@@ -55,22 +55,37 @@ export function jumpToTop() {
    CLAUDE.md warns fights Lenis. */
 export function scrollToHash(hash) {
   if (!hash || hash.startsWith('#/') || hash === '#') return false
-  let el = null
+  let id = null
   try {
-    el = document.getElementById(decodeURIComponent(hash.slice(1)))
+    id = decodeURIComponent(hash.slice(1))
   } catch (e) {
     return false
   }
+  return goToSection(id)
+}
+
+/* Move the page to a section by id, with the fixed header taken off the top.
+
+   `instant` is the difference between arriving and moving. The About page
+   gathers Vision & Mission, Sustainability and Leadership, and each still has
+   its own URL: coming to one of those from another page is a page opening, so
+   it jumps, exactly as jumpToTop does and for the same reason. Clicking
+   between them while already on About is an in-page anchor, so it eases.
+   App.jsx decides which; this only carries it out. */
+export function goToSection(id, { instant = false } = {}) {
+  if (!id) return false
+  const el = document.getElementById(id)
   if (!el) return false
 
   const bar = document.querySelector('.nav, .page-bar')
   const offset = bar ? -bar.offsetHeight : 0
 
   if (lenis) {
-    lenis.scrollTo(el, { offset, duration: reduced() ? 0 : 1.2 })
-  } else {
-    const y = el.getBoundingClientRect().top + window.pageYOffset + offset
-    window.scrollTo({ top: y, behavior: reduced() ? 'auto' : 'smooth' })
+    lenis.scrollTo(el, instant ? { offset, immediate: true }
+                               : { offset, duration: reduced() ? 0 : 1.2 })
+    return true
   }
+  const y = el.getBoundingClientRect().top + window.pageYOffset + offset
+  window.scrollTo({ top: y, behavior: instant || reduced() ? 'auto' : 'smooth' })
   return true
 }
