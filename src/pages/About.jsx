@@ -59,23 +59,6 @@ export default function About() {
         </div>
       </PageHero>
 
-      <section className="cta-band cta-band--media">
-        <div className="cta-band-inner">
-          <div className="cta-band-copy">
-            <p className="eyebrow" data-reveal>{VISION.investment.eyebrow}</p>
-            <h2 className="firm-statement" data-reveal>{VISION.investment.statement}</h2>
-            <p className="cta-band-note" data-reveal>{VISION.investment.note}</p>
-            <a className="btn btn--lg btn--solid" href="#/investment-profile">
-              <span>Let&rsquo;s work together</span>
-              <span className="btn-arrow">&rarr;</span>
-            </a>
-          </div>
-          <div className="cta-band-media" aria-hidden="true">
-            <img src="/images/investment-side.jpg" alt="" />
-          </div>
-        </div>
-      </section>
-
       <PageHero
         section
         id="sustainability"
@@ -123,6 +106,27 @@ export default function About() {
       <section className="about-sec about-sec--team">
         <div className="about-sec-inner">
           <TeamGrid />
+        </div>
+      </section>
+
+      {/* The hand-off to the investment profile closes the page rather than
+          interrupting it. It used to sit between Vision & Mission and
+          Sustainability, which broke the run of three sections the DAA group
+          is made of. */}
+      <section className="cta-band cta-band--media">
+        <div className="cta-band-inner">
+          <div className="cta-band-copy">
+            <p className="eyebrow" data-reveal>{VISION.investment.eyebrow}</p>
+            <h2 className="firm-statement" data-reveal>{VISION.investment.statement}</h2>
+            <p className="cta-band-note" data-reveal>{VISION.investment.note}</p>
+            <a className="btn btn--lg btn--solid" href="#/investment-profile">
+              <span>Let&rsquo;s work together</span>
+              <span className="btn-arrow">&rarr;</span>
+            </a>
+          </div>
+          <div className="cta-band-media" aria-hidden="true">
+            <img src="/images/investment-side.jpg" alt="" />
+          </div>
         </div>
       </section>
 
