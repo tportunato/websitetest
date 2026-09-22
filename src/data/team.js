@@ -26,7 +26,7 @@ export const TEAM = [
     /* The appointment is announced, the name is not. The seat is shown rather
        than hidden because an incoming CIO is part of the argument. */
     name: 'Joining in December 2026',
-    role: 'Chief Investment Officer',
+    role: 'Partner · CIO',
     img: '/images/team/placeholder.jpg',
     linkedin: null,
     bio: 'Previously Head of Development, France at a major European logistics investor, with a €600m transaction track record.'
