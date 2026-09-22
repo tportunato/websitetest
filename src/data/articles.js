@@ -12,9 +12,14 @@
    than printing the same sentence twice; the cards still use it. NEVER drop the
    paragraph instead: on the short press releases it is most of the article.
 
+   The per-article `link` is the WordPress permalink the text was taken from.
+   It is kept as PROVENANCE for NOTES-data-honesty.md and is deliberately NOT
+   rendered: WordPress is being switched off, so every one of these will be a
+   dead URL. Do not put them back on the page.
+
    IMAGES: the five transaction announcements carry the real photograph of the
-   asset, the same media the portfolio panels use, hotlinked from the daacap.com
-   library. Every other article carries a PLACEHOLDER photograph from
+   asset, the same media the portfolio panels use, now served from
+   public/images/assets. Every other article carries a PLACEHOLDER photograph from
    public/images with no relationship to its subject. `imgReal` says which is
    which. The posts' own inline images were mostly charts, so they are not used
    as heroes.
@@ -681,8 +686,6 @@ export const ARTICLES = [
     ]
   },
 ]
-
-export const ARTICLE_INDEX = 'https://www.daacap.com/news/'
 
 export function getArticle(id) {
   return ARTICLES.find((a) => a.id === id) || null

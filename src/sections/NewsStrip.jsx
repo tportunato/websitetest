@@ -7,7 +7,7 @@
 
    Cards link to the article page on this site. They used to bounce the reader
    out to the old WordPress. */
-import { ARTICLES, ARTICLE_INDEX } from '../data/articles.js'
+import { ARTICLES } from '../data/articles.js'
 
 function Card({ n, lead }) {
   return (
@@ -56,9 +56,6 @@ export default function NewsStrip({ limit = 3, full = false, heading = 'News & p
         </div>
       )}
 
-      <a className="newsstrip-src" href={ARTICLE_INDEX} target="_blank" rel="noreferrer">
-        daacap.com/news &rarr;
-      </a>
     </section>
   )
 }

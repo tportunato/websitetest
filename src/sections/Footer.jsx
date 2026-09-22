@@ -28,7 +28,7 @@ export default function Footer() {
           <p>
             <a href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">Investor Login</a><br />
             <a href="https://daaventures.com" target="_blank" rel="noreferrer">DAA Ventures</a><br />
-            <a href="https://www.daacap.com/news/" target="_blank" rel="noreferrer">News &amp; Insights</a>
+            <a href="#/news">News &amp; Insights</a>
           </p>
         </div>
       </div>

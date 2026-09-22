@@ -759,9 +759,9 @@ h2 {
   line-height: 1;
 }
 
-/* Every asset and team photo is hotlinked from the daacap.com WordPress media
-   library, so it can 404 the day that site is decommissioned. The tone behind
-   it means a missing image reads as a placeholder plate rather than a hole. */
+/* Asset and team photos are served from public/images, not from the old
+   WordPress library, so nothing 404s when that site goes dark. The tone behind
+   the plate stays: a missing image reads as a plate rather than a hole. */
 .panel-img {
   height: 220px;
   background-color: #0e2438;
@@ -2660,15 +2660,6 @@ main {
   line-height: 1.6;
 }
 
-.newsstrip-src {
-  display: block;
-  max-width: var(--maxw);
-  margin: 30px auto 0;
-  color: rgba(247, 245, 240, 0.45);
-  font-size: 0.85rem;
-  text-decoration: none;
-}
-
 @media (max-width: 880px) {
   .newsstrip-grid { grid-template-columns: 1fr; }
   .ncard--lead { grid-row: auto; }
@@ -2976,16 +2967,6 @@ main {
   height: 1px;
   background: rgba(247, 245, 240, 0.5);
 }
-
-.art-source {
-  margin-top: 46px;
-  padding-top: 26px;
-  border-top: 1px solid var(--line);
-  color: rgba(247, 245, 240, 0.45);
-  font-size: 0.86rem;
-}
-
-.art-source a { color: var(--paper); }
 
 .art-more {
   padding: var(--band) var(--gutter);

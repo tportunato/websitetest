@@ -81,10 +81,6 @@ export default function Article({ id }) {
           {a.author && <p className="art-byline">By {a.author}</p>}
           {a.body.map((b, i) => <Block b={b} key={i} />)}
 
-          <p className="art-source">
-            Originally published on{' '}
-            <a href={a.link} target="_blank" rel="noreferrer">daacap.com</a>.
-          </p>
         </div>
       </article>
 

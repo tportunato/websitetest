@@ -458,6 +458,33 @@ site are deliberately synthetic. The industrial points are real.
 - Copy says "specializing"; `index.html`'s meta says "specialising". Supplied
   copy was left as given.
 
+## WordPress is switched off
+
+The site was cut free of daacap.com on 2026-09-22 so the domain can be pointed
+at Vercel. Nothing on any page now requests, links to or depends on the old
+WordPress. Three things follow from that and are easy to undo by accident:
+
+- **No outbound links to daacap.com anywhere.** The "Originally published on
+  daacap.com" line under each article, the source link under the news strip and
+  the footer's News & Insights link all pointed at a site that is going dark.
+  They are gone; the footer link goes to `#/news`.
+- **`link` in `src/data/articles.js` is provenance, not a destination.** It is
+  the WordPress permalink each article's text was taken from and is kept so
+  `NOTES-data-honesty.md` can say where the words came from. It is deliberately
+  never rendered. Do not wire it back into the page.
+- **Terms of Use and Privacy Policy are real routes**, `#/terms` and `#/privacy`,
+  built from `src/data/legal.js` through `src/pages/LegalDoc.jsx` (one template,
+  both documents, matching `#/legal`'s shape). They used to be outbound links.
+  `#/legal` stays separate: it is the regulatory page, not the investor
+  disclaimer.
+
+`mailto:info@daacap.com` is the firm's address and stays. The audit is
+
+    grep -rn "daacap\.com" src/ index.html public/
+
+which should return only that mailto, the `link:` provenance fields and
+comments.
+
 ## Environment
 
 Sandboxed sessions may have restricted egress, and it varies between sessions.
