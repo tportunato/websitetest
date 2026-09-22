@@ -1,135 +1,153 @@
-/* The team, one member at a time.
+/* The team, as a row you drag sideways.
 
-   EVERY SLIDE IS IN THE DOM AT ONCE, stacked in a single grid cell. Two
-   reasons, both of which bit the obvious implementations first:
+   The cards are the SAME cards the three-up grid used - same width, same 108px
+   circular portrait, same truncated bio and Read more toggle. Five members
+   simply do not fit across, so the row scrolls instead of wrapping to three
+   and two, which read as a team with a hole in it.
 
-   - The stage then measures the TALLEST bio, so moving between Tomaso's three
-     lines and Dominique's eight does not resize the page under the reader's
-     cursor. Absolutely positioning the slides would have hidden them from the
-     height the same way it hides them from the flow.
-   - It makes the fade a real crossfade rather than a swap: the outgoing member
-     is still there to fade out of.
+   IT IS A NATIVE SCROLLER, not a transform track. That buys momentum on a
+   phone, two-finger trackpad scrolling, keyboard and scroll-snap for nothing,
+   and it is the same lesson Lenis taught this repo: a hand-driven scroll rig
+   fights the browser's own. Only mouse-drag is missing from the native set, so
+   that is the one thing added by hand below. Lenis itself is constructed by
+   Landing and destroyed on a route change, so nothing is hijacking wheel
+   events on this page.
 
-   The two fades are STAGGERED, not simultaneous. Run together, both slides sit
-   near half opacity in the middle of the transition and the two faces ghost
-   over each other. The outgoing one leaves first and the incoming one waits
-   for it, which is also what "in and out" describes.
-
-   An inactive slide is hidden THREE ways - opacity, visibility and
-   pointer-events. Opacity alone leaves a full-size layer over the live one
-   swallowing every click, which is the same bug the mobile nav panel shipped
-   with. */
+   THE VIEWPORT IS 3.18 CARDS WIDE ON PURPOSE. A sliver of the fourth card is
+   what tells you the row continues; three cards fitting exactly would look
+   like a grid that happens to be short. */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { TEAM } from '../data/team.js'
-
-const pad = (n) => String(n).padStart(2, '0')
+import TeamCard from './TeamCard.jsx'
+import { prefersReducedMotion } from '../lib/motion.js'
 
 export default function TeamCarousel() {
-  const [i, setI] = useState(0)
-  const stage = useRef(null)
-  const touch = useRef(null)
+  const view = useRef(null)
+  const drag = useRef(null)
+  const moved = useRef(false)
+  const [edge, setEdge] = useState({ l: false, r: true })
+  const [thumb, setThumb] = useState({ w: 30, x: 0 })
 
-  const go = useCallback((n) => setI((n + TEAM.length) % TEAM.length), [])
-  const step = useCallback((d) => setI((c) => (c + d + TEAM.length) % TEAM.length), [])
-
-  /* Arrow keys, but only while the carousel itself has focus: capturing them
-     on the document would fight the page scroll. */
-  const onKey = (e) => {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1) }
-    if (e.key === 'ArrowRight') { e.preventDefault(); step(1) }
+  /* One card plus one gap: what an arrow press and a snap step are worth. */
+  const stride = () => {
+    const el = view.current
+    if (!el) return 0
+    const card = el.querySelector('.teamtrack-card')
+    if (!card) return el.clientWidth
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0
+    return card.getBoundingClientRect().width + gap
   }
 
-  /* Swipe. Without it the arrows are the only way through on a phone, where
-     a row of five faces is exactly the thing a thumb expects to drag. */
-  useEffect(() => {
-    const el = stage.current
+  const readPosition = useCallback(() => {
+    const el = view.current
     if (!el) return
-    const start = (e) => { touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY } }
-    const end = (e) => {
-      const s = touch.current
-      if (!s) return
-      touch.current = null
-      const dx = e.changedTouches[0].clientX - s.x
-      const dy = e.changedTouches[0].clientY - s.y
-      /* Horizontal intent only: a mostly-vertical drag is the reader scrolling
-         the page past the carousel, not turning it. */
-      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1)
+    const max = el.scrollWidth - el.clientWidth
+    const frac = el.clientWidth / el.scrollWidth
+    const at = max > 0 ? el.scrollLeft / max : 0
+    setEdge({ l: el.scrollLeft > 2, r: el.scrollLeft < max - 2 })
+    setThumb({ w: frac * 100, x: at * (100 - frac * 100) })
+  }, [])
+
+  useEffect(() => {
+    const el = view.current
+    if (!el) return
+    readPosition()
+    el.addEventListener('scroll', readPosition, { passive: true })
+    window.addEventListener('resize', readPosition)
+    return () => {
+      el.removeEventListener('scroll', readPosition)
+      window.removeEventListener('resize', readPosition)
     }
-    el.addEventListener('touchstart', start, { passive: true })
-    el.addEventListener('touchend', end, { passive: true })
-    return () => { el.removeEventListener('touchstart', start); el.removeEventListener('touchend', end) }
-  }, [step])
+  }, [readPosition])
+
+  const step = (d) => {
+    const el = view.current
+    if (!el) return
+    el.scrollBy({ left: d * stride(), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  }
+
+  /* Mouse drag. Touch is left to the browser, which already does it better.
+
+     THE POINTER IS CAPTURED ONLY ONCE A DRAG ACTUALLY STARTS, never on
+     pointerdown. Capturing up front retargets the pointerup to the scroller,
+     and the click is then dispatched at the common ancestor rather than at the
+     button under the cursor - which silently killed every Read more and
+     LinkedIn in the row. Snapping is switched off for the same window:
+     mandatory snap pulls the row back under the cursor on every frame. */
+  const onPointerDown = (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return
+    drag.current = { x: e.clientX, left: view.current.scrollLeft, on: false }
+    moved.current = false
+  }
+
+  const onPointerMove = (e) => {
+    const d = drag.current
+    if (!d) return
+    const dx = e.clientX - d.x
+    if (!d.on) {
+      if (Math.abs(dx) <= 4) return        /* still a click, not a drag */
+      d.on = true
+      moved.current = true
+      view.current.style.scrollSnapType = 'none'
+      view.current.setPointerCapture(e.pointerId)
+    }
+    view.current.scrollLeft = d.left - dx
+  }
+
+  const endDrag = (e) => {
+    const d = drag.current
+    if (!d) return
+    drag.current = null
+    if (!d.on) return
+    const el = view.current
+    el.style.scrollSnapType = ''          /* back to the stylesheet's mandatory snap */
+    if (el.hasPointerCapture?.(e.pointerId)) el.releasePointerCapture(e.pointerId)
+  }
+
+  /* A drag that ends over "Read more" must not also toggle it. The click fires
+     after pointerup, so it is swallowed here rather than guarded in the card. */
+  const onClickCapture = (e) => {
+    if (moved.current) { e.preventDefault(); e.stopPropagation() }
+    moved.current = false
+  }
 
   return (
-    <div
-      className="teamcar"
-      role="group"
-      aria-roledescription="carousel"
-      aria-label="Team"
-      tabIndex={0}
-      onKeyDown={onKey}
-    >
-      {/* No eyebrow here. The section's own hero says "Team" a screen above,
-          and repeating it over the controls just puts the word on the page
-          twice. The controls carry the hairline on their own. */}
-      <div className="teamcar-head">
-        <div className="teamcar-controls">
-          <button className="teamcar-arrow" onClick={() => step(-1)} aria-label="Previous team member">
-            <span aria-hidden="true">&larr;</span>
-          </button>
-          <p className="teamcar-count">
-            <span className="teamcar-count-now">{pad(i + 1)}</span>
-            <span className="teamcar-count-sep">/</span>
-            {pad(TEAM.length)}
-          </p>
-          <button className="teamcar-arrow" onClick={() => step(1)} aria-label="Next team member">
-            <span aria-hidden="true">&rarr;</span>
-          </button>
-        </div>
+    <div className="teamtrack">
+      <div className="teamtrack-head">
+        <button className="teamcar-arrow" onClick={() => step(-1)}
+                disabled={!edge.l} aria-label="Previous team members">
+          <span aria-hidden="true">&larr;</span>
+        </button>
+        <button className="teamcar-arrow" onClick={() => step(1)}
+                disabled={!edge.r} aria-label="More team members">
+          <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
-      <div className="teamcar-stage" ref={stage}>
-        {TEAM.map((p, n) => {
-          const on = n === i
-          return (
-            <article
-              className={'teamcar-slide' + (on ? ' is-on' : '')}
-              key={p.name}
-              aria-hidden={!on}
-            >
-              <div className="teamcar-portrait">
-                <img src={p.img} alt={p.name} loading={n === 0 ? 'eager' : 'lazy'} />
-              </div>
-              <div className="teamcar-copy">
-                <h3 className="teamcar-name">{p.name}</h3>
-                <p className="team-role">{p.role}</p>
-                <p className="teamcar-bio">{p.bio}</p>
-                {p.linkedin && (
-                  <a className="team-li" href={p.linkedin} target="_blank" rel="noreferrer" tabIndex={on ? 0 : -1}>
-                    LinkedIn
-                  </a>
-                )}
-              </div>
-            </article>
-          )
-        })}
-      </div>
-
-      {/* A rail of five ticks rather than dots: the same hairline the rest of
-          the page is ruled with, and it reads as a position in a sequence
-          instead of decoration. */}
-      <div className="teamcar-rail">
-        {TEAM.map((p, n) => (
-          <button
-            key={p.name}
-            className={'teamcar-tick' + (n === i ? ' is-on' : '')}
-            onClick={() => go(n)}
-            aria-label={p.name}
-            aria-current={n === i}
-          >
-            <span className="teamcar-tick-name">{p.name}</span>
-          </button>
+      <div
+        className={'teamtrack-view' + (edge.l ? ' fade-l' : '') + (edge.r ? ' fade-r' : '')}
+        ref={view}
+        tabIndex={0}
+        role="group"
+        aria-label="Team members, scroll sideways for more"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
+      >
+        {TEAM.map((p) => (
+          <div className="teamtrack-card" key={p.name}>
+            <TeamCard person={p} />
+          </div>
         ))}
+      </div>
+
+      {/* The rail is the scrollbar, drawn in the page's own hairline: the thumb
+          is as wide a share of it as the viewport is of the row. */}
+      <div className="teamtrack-rail" aria-hidden="true">
+        <span className="teamtrack-thumb"
+              style={{ width: thumb.w + '%', left: thumb.x + '%' }} />
       </div>
     </div>
   )

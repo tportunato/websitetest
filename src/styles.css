@@ -936,33 +936,22 @@ h2 {
   border-bottom: 1px solid rgba(247, 245, 240, 0.25);
 }
 
-/* ---------- Team carousel ---------- */
-/* Five members turn one at a time. The slides are stacked in ONE grid cell so
-   the stage measures the tallest bio and nothing resizes as it turns; see the
-   comment at the top of TeamCarousel.jsx for why the fades are staggered. */
-.teamcar {
+/* ---------- Team, as a row you drag ---------- */
+/* The cards are the grid's cards, untouched. Only the container changed: five
+   members do not fit across, so the row scrolls instead of wrapping. */
+.teamtrack {
+  --cards: 3;        /* whole cards in view */
+  --peek: 0.18;      /* and this much of the next one, which is the cue */
+  --track-gap: 34px; /* the same gap .team-grid uses */
   margin-top: 26px;
-  outline: none;
 }
 
-.teamcar:focus-visible {
-  outline: 1px solid var(--line);
-  outline-offset: 18px;
-}
-
-.teamcar-head {
+.teamtrack-head {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 24px;
+  gap: 14px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--line);
-}
-
-.teamcar-controls {
-  display: flex;
-  align-items: center;
-  gap: 14px;
 }
 
 .teamcar-arrow {
@@ -976,154 +965,97 @@ h2 {
   color: var(--paper);
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
 }
 
-.teamcar-arrow:hover {
+.teamcar-arrow:hover:not(:disabled) {
   background: rgba(247, 245, 240, 0.08);
   border-color: rgba(247, 245, 240, 0.4);
 }
 
-/* Tabular figures, so the counter does not shuffle as it counts. */
-.teamcar-count {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  color: rgba(247, 245, 240, 0.45);
-  font-variant-numeric: tabular-nums;
-  min-width: 68px;
-  text-align: center;
+.teamcar-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
-.teamcar-count-now {
-  color: var(--paper);
-}
-
-.teamcar-count-sep {
-  margin: 0 6px;
-}
-
-.teamcar-stage {
-  display: grid;
-  margin-top: 40px;
-}
-
-/* Every slide occupies the same cell. */
-.teamcar-slide {
-  grid-area: 1 / 1;
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 54px;
-  align-items: start;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.22s ease, visibility 0s linear 0.22s;
-}
-
-/* The incoming slide WAITS for the outgoing one. Run together they both sit
-   near half opacity mid-transition and the two faces ghost over each other. */
-.teamcar-slide.is-on {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transition: opacity 0.34s ease 0.2s, visibility 0s;
-}
-
-/* The portraits are shot on white and cut with an oval fade at the bottom, so
-   they sit on a paper plate and melt into it rather than being punched into a
-   disc on the near-black ground. */
-.teamcar-portrait {
-  background: var(--paper);
-  border-radius: 10px;
-  overflow: hidden;
-  aspect-ratio: 1;
-}
-
-.teamcar-portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.teamcar-copy {
-  padding-top: 8px;
-}
-
-.teamcar-name {
-  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-  font-weight: 400;
-  line-height: 1.1;
-}
-
-.teamcar-copy .team-role {
-  margin-top: 10px;
-}
-
-.teamcar-bio {
-  margin-top: 22px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 60ch;
-}
-
-.teamcar-copy .team-li {
-  display: inline-block;
-  margin-top: 24px;
-}
-
-/* A rail of five ticks, one per member, ruled with the same hairline as the
-   rest of the page: position in a sequence rather than decoration. */
-.teamcar-rail {
+.teamtrack-view {
   display: flex;
-  gap: 10px;
-  margin-top: 40px;
+  gap: var(--track-gap);
+  margin-top: 34px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;   /* a flick at the end must not page the browser back */
+  scroll-snap-type: x mandatory;
+  cursor: grab;
+  /* The scrollbar is drawn as the hairline rail below instead. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.teamcar-tick {
+.teamtrack-view::-webkit-scrollbar {
+  display: none;
+}
+
+.teamtrack-view:active {
+  cursor: grabbing;
+}
+
+.teamtrack-view:focus-visible {
+  outline: 1px solid var(--line);
+  outline-offset: 10px;
+}
+
+/* 3 whole cards + a sliver of the fourth, with a gap between each. */
+.teamtrack-card {
+  flex: 0 0 calc((100% - var(--cards) * var(--track-gap)) / (var(--cards) + var(--peek)));
+  scroll-snap-align: start;
+  display: flex;
+}
+
+.teamtrack-card > .team-card {
+  width: 100%;
+}
+
+/* Cards dissolve at the edges rather than being chopped by one, and only on
+   the side that actually has more row behind it. */
+.teamtrack-view.fade-r {
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 90px), transparent 100%);
+}
+
+.teamtrack-view.fade-l {
+  mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 100%);
+}
+
+.teamtrack-view.fade-l.fade-r {
+  mask-image: linear-gradient(90deg, transparent 0, #000 60px,
+                              #000 calc(100% - 90px), transparent 100%);
+}
+
+/* The rail IS the scrollbar: the thumb is as wide a share of it as the
+   viewport is of the row, so it says how much is off-screen as well as where
+   you are. */
+.teamtrack-rail {
   position: relative;
-  flex: 1;
   height: 2px;
-  padding: 0;
-  border: none;
+  margin-top: 34px;
   background: var(--line);
-  cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-.teamcar-tick:hover {
-  background: rgba(247, 245, 240, 0.4);
-}
-
-.teamcar-tick.is-on {
-  background: var(--accent);
-}
-
-.teamcar-tick-name {
+.teamtrack-thumb {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  transition: left 0.12s linear, width 0.12s linear;
+}
+
+@media (max-width: 960px) {
+  .teamtrack {
+    --cards: 1;
+    --peek: 0.15;
+  }
 }
 
 @media (max-width: 880px) {
-  .teamcar-slide {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .teamcar-portrait {
-    max-width: 280px;
-  }
-
-  .teamcar-bio {
-    font-size: 0.95rem;
-  }
-
   /* 44px is the smallest a thumb reliably hits. */
   .teamcar-arrow {
     width: 44px;
@@ -1131,11 +1063,8 @@ h2 {
   }
 }
 
-/* Reduce means the page settles: the slide still changes, it just does not
-   animate getting there. */
 @media (prefers-reduced-motion: reduce) {
-  .teamcar-slide,
-  .teamcar-slide.is-on {
+  .teamtrack-thumb {
     transition: none;
   }
 }

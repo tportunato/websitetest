@@ -57,8 +57,8 @@ Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
 Vision & Mission, Sustainability and the team are SECTIONS of `#/about`, not
 routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx`
-holds what was lifted out of the old Leadership page - the advisory grid, and
-`src/sections/TeamCarousel.jsx` for the team itself.
+holds what was lifted out of the old Leadership page - the advisory grid -
+and `src/sections/TeamCarousel.jsx` is the team row.
 
 **The section is LABELLED "Team"; its id and its URL are still `leadership`.**
 That split is deliberate. `#/leadership` is a published address, `SECTION_OF`
@@ -86,34 +86,73 @@ already on About EASES, because that is an in-page anchor. A ref tells the two
 apart. Bare `#/about` has to be handled explicitly: the page key does not
 change between these four URLs, so `jumpToTop` never fires for them.
 
-## The team carousel
+## The team row
 
-Five members turn one at a time in `src/sections/TeamCarousel.jsx`. Three
-things there are load-bearing:
+Five members do not fit across, so the row in `src/sections/TeamCarousel.jsx`
+scrolls sideways instead of wrapping to three and two, which reads as a team
+with a hole in it. **The CARDS are the grid's cards, unchanged** - same width,
+same 108px circular portrait, same copy. Only the container moved. The advisers
+stay a grid: there are three of them and they are a board, not a sequence.
+`src/sections/TeamCard.jsx` is the one card, shared by both.
 
-- **Every slide is in the DOM at once, stacked in ONE grid cell.** The stage
-  then measures the tallest bio, so moving from Tomaso's three lines to
-  Dominique's eight does not resize the page under the reader's cursor, and the
-  fade is a real crossfade rather than a swap. Absolutely positioning the
-  slides would have hidden them from the height as well as from the flow.
-- **The two fades are STAGGERED**, out then in. Run together, both slides sit
-  near half opacity mid-transition and the two faces ghost over each other. The
-  incoming slide carries a 0.2s transition delay; that is the whole mechanism.
-- **An inactive slide is hidden three ways** - opacity, visibility and
-  pointer-events - for the same reason the mobile nav panel is. Opacity alone
-  leaves a full-size layer over the live one swallowing every click.
+It is a NATIVE scroller, not a transform track: momentum on a phone, trackpad,
+keyboard and scroll-snap all come for free, and a hand-driven scroll rig is
+exactly what Lenis taught this repo not to build. Nothing hijacks wheel events
+here - Lenis is constructed by Landing and destroyed on a route change.
 
-Photos: the six published members are still hotlinked from daacap.com. The
-three under `public/images/team/` were supplied to us directly and are cut to
-match that set - head and shoulders on white, the bottom melting out along an
-oval arc rather than meeting a straight edge. The arc is generated, not
-hand-masked; it dips below the frame at the centre and rises at the edges. The
-portrait sits on a `--paper` plate in the carousel so it has something white to
-melt INTO; punched into a disc on the near-black ground the fade does nothing.
+Four things there are load-bearing:
 
-`TEAM[].linkedin` may be `null` and the card then drops the link. Two seats are
-null today: the incoming CIO, whose name is not public, and Tomaso, whose
-profile URL has not been supplied. Do not guess one.
+- **The viewport is 3.18 cards wide.** A sliver of the fourth is the cue that
+  the row continues; three fitting exactly looks like a short grid. `--cards`
+  and `--peek` on `.teamtrack` own it, one card and 0.15 below 960px.
+- **The pointer is captured only once a drag actually starts**, never on
+  pointerdown. Capturing up front retargets the pointerup to the scroller, the
+  click is then dispatched at the common ancestor rather than the button under
+  the cursor, and every Read more and LinkedIn in the row silently stops
+  working. Snap is switched off for the same window, or mandatory snap drags
+  the row back under the cursor every frame.
+- **A drag that ends on a button must not also press it.** The click fires
+  after pointerup, so it is swallowed in `onClickCapture`.
+- **The rail is the scrollbar**, drawn in the page's hairline: the thumb is as
+  wide a share of it as the viewport is of the row, so it reports how much is
+  off-screen as well as where you are. The native bar is hidden.
+
+`TeamCard` clamps a bio at 150 characters and shows Read more ONLY if it is
+longer, and drops the LinkedIn link when `linkedin` is null. Both only started
+mattering with the two new seats: the old card truncated unconditionally, which
+put a "…" and a button that revealed nothing on the incoming CIO's two lines.
+Two seats are null today - the CIO, whose name is not public, and Tomaso, whose
+URL has not been supplied. Do not guess one.
+
+## Team portraits
+
+The six published members are still hotlinked from daacap.com, which is BLOCKED
+from the build sandbox, so they render blank locally and are fine on the
+deploy. The three under `public/images/team/` were supplied directly.
+
+They are cut to a MEASURED frame rather than by eye, because the row puts them
+side by side and a head half a size out is obvious: 400x400, crown at 0.08 of
+the frame, crown-to-neck 0.54, face centred. The neck is found as the narrowest
+row between the crown and the shoulders, which is what makes three different
+source photographs comparable. At 0.54 the head still clears the circle's edge
+at its widest.
+
+Two traps, both of which shipped once:
+
+- **A studio backdrop is not pure white.** Philippe's is a flat 250,250,250, so
+  padding the frame out with 255 left a grey rectangle plainly visible inside
+  the 108px circle. Near-neutral, very bright pixels are snapped to 255 first;
+  the test is deliberately narrow so it cannot reach a pale blue shirt.
+- **The oval bottom must fall OUTSIDE the inscribed circle.** The portraits are
+  rounded off at the bottom rather than ending on a straight cut, but the cards
+  crop them to a circle, and an arc that bites inside it puts a white wedge at
+  the lower flanks that the six published portraits do not have. The arc is
+  swept wide and deep (cy 0.55, ry 0.60, rx 0.90, band 0.07) so no column of it
+  intrudes - verified, 0 of 2001 sampled columns. It is only visible if a
+  portrait is ever shown square.
+
+Tomaso's source is 118x150. It is upscaled and soft; a larger original is the
+only fix.
 
 ## Regulatory status is not a marketing argument
 
