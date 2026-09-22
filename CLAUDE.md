@@ -59,6 +59,14 @@ Vision & Mission, Sustainability and Leadership are SECTIONS of `#/about`, not
 routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx` is
 the team grid lifted out of the old Leadership page.
 
+**Each section keeps the hero it had as a page.** Vision & Mission and
+Sustainability open on the same boxed `PageHero`, with the same photograph, as
+when they were routes of their own, and Leadership opens on the team photo.
+`section` on PageHero is the in-page form: a `<section>` with an id and an h2
+instead of a `<header>` with the page's one h1. The first attempt folded them
+in as plain eyebrow-and-statement bands and the page stopped feeling like the
+places it carries. Do not flatten them again.
+
 **Their URLs still exist and still mean something.** `#/vision`,
 `#/sustainability` and `#/leadership` render About and land on the matching
 section, which is what keeps every old link, bookmark and dropdown item honest

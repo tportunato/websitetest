@@ -5,6 +5,14 @@
    item ought to take you somewhere rather than only open a menu, and because
    the four read as one story about the firm rather than four destinations.
 
+   EACH SECTION KEEPS THE HERO IT HAD AS A PAGE. Vision & Mission and
+   Sustainability open on the same boxed PageHero, with the same photograph, as
+   when they were routes of their own; Leadership opens on the team photograph.
+   The first attempt folded them in as plain eyebrow-and-statement bands, which
+   stripped exactly the thing that made them feel like places. `section` on
+   PageHero is what carries that over: a <section> with an id and an h2 instead
+   of a <header> with the page's one h1.
+
    THE OLD URLS STILL WORK AND STILL MEAN SOMETHING. `#/vision`,
    `#/sustainability` and `#/leadership` render this page and land on the
    matching section, so every existing link, bookmark and dropdown item goes
@@ -37,34 +45,19 @@ export default function About() {
         </div>
       </PageHero>
 
-      <section className="alt" id="our-team">
-        <div className="alt-inner">
-          <div className="alt-copy">
-            <p className="eyebrow" data-reveal>{ABOUT.team.eyebrow}</p>
-            <h2 className="firm-statement" data-reveal>{ABOUT.team.statement}</h2>
-            <div className="firm-notes">
-              {ABOUT.team.notes.map((n) => <p key={n.slice(0, 20)} data-reveal>{n}</p>)}
-            </div>
-            <a className="btn btn--lg btn--outline" href="#/leadership">
-              <span>{ABOUT.team.cta}</span>
-              <span className="btn-arrow">&rarr;</span>
-            </a>
-          </div>
-          <div className="alt-media">
-            <img src="/images/team-photo.jpg" alt="" />
-          </div>
+      <PageHero
+        section
+        id="vision"
+        variant="boxed"
+        eyebrow="DAA Capital Partners"
+        title={<>Vision &amp;<br />Mission</>}
+        image="/images/depot-aerial.jpg"
+        lead={VISION.lead}
+      >
+        <div className="phero-cols">
+          {VISION.body.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
         </div>
-      </section>
-
-      <section className="about-sec" id="vision">
-        <div className="about-sec-inner">
-          <p className="eyebrow" data-reveal>Vision &amp; Mission</p>
-          <h2 className="firm-statement" data-reveal>{VISION.lead}</h2>
-          <div className="phero-cols">
-            {VISION.body.map((p) => <p key={p.slice(0, 20)} data-reveal>{p}</p>)}
-          </div>
-        </div>
-      </section>
+      </PageHero>
 
       <section className="cta-band cta-band--media">
         <div className="cta-band-inner">
@@ -83,15 +76,19 @@ export default function About() {
         </div>
       </section>
 
-      <section className="about-sec" id="sustainability">
-        <div className="about-sec-inner">
-          <p className="eyebrow" data-reveal>Sustainability</p>
-          <h2 className="firm-statement" data-reveal>{S.lead}</h2>
-          <div className="phero-cols">
-            {S.body.map((p) => <p key={p.slice(0, 20)} data-reveal>{p}</p>)}
-          </div>
+      <PageHero
+        section
+        id="sustainability"
+        variant="boxed"
+        eyebrow="DAA Capital Partners"
+        title="Sustainability"
+        image="/images/sustainability-hero.jpg"
+        lead={S.lead}
+      >
+        <div className="phero-cols">
+          {S.body.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
         </div>
-      </section>
+      </PageHero>
 
       <section className="pillars">
         <div className="pillars-inner pillars-inner--four">
@@ -104,10 +101,27 @@ export default function About() {
         </div>
       </section>
 
-      <section className="about-sec about-sec--team" id="leadership">
+      {/* Leadership opens on the team photograph, which is what the About page
+          used to spend its own `alt` band on. That band carried a button down
+          to the leadership PAGE; on one page it would have scrolled you a few
+          hundred pixels, so it is the section's opener instead of a teaser for
+          it. */}
+      <PageHero
+        section
+        id="leadership"
+        variant="boxed"
+        eyebrow={ABOUT.team.eyebrow}
+        title="Leadership"
+        image="/images/team-photo.jpg"
+        lead={ABOUT.team.statement}
+      >
+        <div className="phero-cols">
+          {ABOUT.team.notes.map((n) => <p key={n.slice(0, 20)}>{n}</p>)}
+        </div>
+      </PageHero>
+
+      <section className="about-sec about-sec--team">
         <div className="about-sec-inner">
-          <p className="eyebrow" data-reveal>Leadership</p>
-          <h2 className="firm-statement" data-reveal>The people who answer for the portfolio.</h2>
           <TeamGrid />
         </div>
       </section>

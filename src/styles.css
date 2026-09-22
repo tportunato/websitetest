@@ -2293,19 +2293,37 @@ main {
 }
 
 /* ---------- About page sections ----------
-   Vision & Mission, Sustainability and Leadership are bands on the About page
-   rather than pages of their own. Same rhythm as .alt and .pillars so the page
-   reads as one document: the container tokens own the measure, the band does
-   not invent a padding of its own.
+   Vision & Mission, Sustainability and Leadership are sections of the About
+   page rather than pages of their own, and they keep the boxed PageHero they
+   each had as a page: the photograph is what makes a section feel like a
+   place. `.phero--section` is the in-page form of that hero.
+
+   A section hero does NOT need the full-page hero's top clearance, because it
+   is not sitting under the fixed bar on arrival; it follows a band. It does
+   need a rule above it, so the page reads as a sequence of parts.
 
    scroll-margin-top is the belt to scroll.js's braces. That helper takes the
    fixed bar off the target itself, but a native anchor jump (a pasted URL, a
    browser restoring position) does not go through it, and without this the
-   header would sit over the section heading. */
+   header would sit over the section title. */
+.phero--section {
+  scroll-margin-top: var(--nav-h);
+  border-top: 1px solid var(--line);
+}
+
+.phero--section .phero-head {
+  min-height: 52vh;
+  min-height: 52svh;
+}
+
+/* The section titles are a step down from the page's own h1: still the whole
+   composition, but the reader should not mistake one for the top of a page. */
+.phero--section .phero-title {
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
+}
+
 .about-sec {
   padding: var(--band) var(--gutter);
-  border-top: 1px solid var(--line);
-  scroll-margin-top: var(--nav-h);
 }
 
 .about-sec-inner {
@@ -2313,9 +2331,7 @@ main {
   margin: 0 auto;
 }
 
-.about-sec .firm-statement { margin-bottom: 40px; }
-
-.about-sec--team .team-grid { margin-top: 34px; }
+.about-sec--team { padding-top: calc(var(--band) * 0.6); }
 
 /* ---------- Pillars ---------- */
 .pillars {
