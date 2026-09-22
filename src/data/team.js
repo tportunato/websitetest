@@ -2,18 +2,22 @@
 
    The three original principals and all three advisers are REAL and already
    published on daacap.com/leadership; their bios and photos come from there.
-   Two seats were added in September 2026: the incoming CIO, whose name is not
-   public yet, and Tomaso. Their copy is the client's own.
+   Tomaso was added in September 2026 and his copy is the client's own.
 
-   ORDER IS DELIBERATE and is the order the carousel runs in. It is seniority
-   on the investment side first, which is not the same as the old grid's
+   A seat for an incoming CIO, "Joining in December 2026", sat second in this
+   list and was pulled on the client's instruction before the appointment was
+   announced. It is in the git history with its copy and its grey placeholder
+   portrait, which is still in /images/team/ for it; restore both together.
+
+   ORDER IS DELIBERATE and is the order the row runs in. It is seniority on the
+   investment side first, which is not the same as the old grid's
    alphabetical-ish accident.
 
-   Photos: the six published ones are hotlinked from the WordPress media
-   library. The three under /images/team/ are local because they were supplied
-   to us directly. They are cut the same way as the published set - head and
-   shoulders on white, the bottom melting out along an oval arc - so the
-   carousel does not change character as it turns. */
+   Photos: the published ones are hotlinked from the WordPress media library.
+   Those under /images/team/ are local because they were supplied to us
+   directly. They are cut the same way as the published set - head and
+   shoulders on white, the head measured to the same size in frame - so the row
+   does not change character as it scrolls. */
 export const TEAM = [
   {
     name: 'Philippe Riachi',
@@ -21,15 +25,6 @@ export const TEAM = [
     img: '/images/team/philippe-riachi.jpg',
     linkedin: 'https://www.linkedin.com/in/philippe-riachi-0a17b0189/',
     bio: 'Philippe has over 30 years of experience in investment banking and alternative asset management and has led the real estate portfolio since 2020. He was co-founder and Managing Partner at Jabre Capital Partners, which grew to $6 billion in assets under management at its peak. Before that he spent a long career at Morgan Stanley, ultimately as Managing Director and co-head of Global Prime Brokerage Risk Management. He holds a degree in Economics from Concordia University.'
-  },
-  {
-    /* The appointment is announced, the name is not. The seat is shown rather
-       than hidden because an incoming CIO is part of the argument. */
-    name: 'Joining in December 2026',
-    role: 'Partner · CIO',
-    img: '/images/team/placeholder.jpg',
-    linkedin: null,
-    bio: 'Previously Head of Development, France at a major European logistics investor, with a €600m transaction track record.'
   },
   {
     name: 'Anne-Lorraine de Malliard',

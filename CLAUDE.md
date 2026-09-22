@@ -88,9 +88,10 @@ change between these four URLs, so `jumpToTop` never fires for them.
 
 ## The team row
 
-Five members do not fit across, so the row in `src/sections/TeamCarousel.jsx`
-scrolls sideways instead of wrapping to three and two, which reads as a team
-with a hole in it. **The CARDS are the grid's cards, unchanged** - same width,
+Four members do not fit across, so the row in `src/sections/TeamCarousel.jsx`
+scrolls sideways instead of wrapping to three and one, which reads as a team
+with a hole in it. It was five until the incoming CIO's seat was pulled before
+the appointment was announced; `src/data/team.js` says where that copy went. **The CARDS are the grid's cards, unchanged** - same width,
 same 108px circular portrait, same copy. Only the container moved. The advisers
 stay a grid: there are three of them and they are a board, not a sequence.
 `src/sections/TeamCard.jsx` is the one card, shared by both.
@@ -118,17 +119,20 @@ Four things there are load-bearing:
   off-screen as well as where you are. The native bar is hidden.
 
 `TeamCard` clamps a bio at 150 characters and shows Read more ONLY if it is
-longer, and drops the LinkedIn link when `linkedin` is null. Both only started
-mattering with the two new seats: the old card truncated unconditionally, which
-put a "…" and a button that revealed nothing on the incoming CIO's two lines.
-Two seats are null today - the CIO, whose name is not public, and Tomaso, whose
-URL has not been supplied. Do not guess one.
+longer, and drops the LinkedIn link when `linkedin` is null. Neither was true
+of the old card, which truncated unconditionally and always rendered the link:
+the first short bio got a "…" and a button that revealed nothing. Tomaso's
+`linkedin` is null today because the URL has not been supplied. Do not guess
+one.
 
 ## Team portraits
 
-The six published members are still hotlinked from daacap.com, which is BLOCKED
+The published members are still hotlinked from daacap.com, which is BLOCKED
 from the build sandbox, so they render blank locally and are fine on the
 deploy. The three under `public/images/team/` were supplied directly.
+`placeholder.jpg` is referenced by nothing right now - it is the grey
+silhouette for the CIO seat that was pulled, kept so restoring the seat is one
+line.
 
 They are cut to a MEASURED frame rather than by eye, because the row puts them
 side by side and a head half a size out is obvious: 400x400, crown at 0.08 of
@@ -146,7 +150,7 @@ Two traps, both of which shipped once:
 - **The oval bottom must fall OUTSIDE the inscribed circle.** The portraits are
   rounded off at the bottom rather than ending on a straight cut, but the cards
   crop them to a circle, and an arc that bites inside it puts a white wedge at
-  the lower flanks that the six published portraits do not have. The arc is
+  the lower flanks that the published portraits do not have. The arc is
   swept wide and deep (cy 0.55, ry 0.60, rx 0.90, band 0.07) so no column of it
   intrudes - verified, 0 of 2001 sampled columns. It is only visible if a
   portrait is ever shown square.
