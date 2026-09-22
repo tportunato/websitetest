@@ -9,9 +9,9 @@
    announced. It is in the git history with its copy and its grey placeholder
    portrait, which is still in /images/team/ for it; restore both together.
 
-   ORDER IS DELIBERATE and is the order the row runs in. It is seniority on the
-   investment side first, which is not the same as the old grid's
-   alphabetical-ish accident.
+   ORDER IS DELIBERATE and is the order the row runs in: the chair, then the
+   two partners, then the associate. It is not alphabetical and it is not the
+   old grid's order - set by the client, so do not "tidy" it.
 
    Photos: the published ones are hotlinked from the WordPress media library.
    Those under /images/team/ are local because they were supplied to us
@@ -19,6 +19,13 @@
    shoulders on white, the head measured to the same size in frame - so the row
    does not change character as it scrolls. */
 export const TEAM = [
+  {
+    name: 'Dominique Turpin',
+    role: 'Chairman',
+    img: 'https://www.daacap.com/wp-content/uploads/2021/06/Dominique-Turpin_White-background-Medium-e1623754599927-400x400.jpg',
+    linkedin: 'https://www.linkedin.com/in/dominiqueturpin/',
+    bio: 'Dr. Turpin is President (Europe) of the China Europe International Business School (CEIBS), the leading business school in Asia, and Emeritus Professor in Marketing at IMD, where he served as Dean and President from 2010 to 2016. He has extensive teaching, consulting and research experience in marketing and international strategy across Europe, Asia and the Americas, and has worked with international companies including Coca-Cola, Danone, Nestlé, Novo Nordisk and Philips. He holds a doctorate in economics from Sophia University, Tokyo.'
+  },
   {
     name: 'Philippe Riachi',
     role: 'Partner · CEO',
@@ -39,13 +46,6 @@ export const TEAM = [
     img: '/images/team/tomaso-portunato.jpg',
     linkedin: null,   /* not supplied yet; the card drops the link when it is null */
     bio: 'Tomaso is a former entrepreneur with expertise in operations and fundraising. He leads the firm’s work on applied AI, building the origination tooling that screens urban logistics catchments down to the assets worth underwriting, and extending it across the investment workflow from market mapping to document review.'
-  },
-  {
-    name: 'Dominique Turpin',
-    role: 'Chairman',
-    img: 'https://www.daacap.com/wp-content/uploads/2021/06/Dominique-Turpin_White-background-Medium-e1623754599927-400x400.jpg',
-    linkedin: 'https://www.linkedin.com/in/dominiqueturpin/',
-    bio: 'Dr. Turpin is President (Europe) of the China Europe International Business School (CEIBS), the leading business school in Asia, and Emeritus Professor in Marketing at IMD, where he served as Dean and President from 2010 to 2016. He has extensive teaching, consulting and research experience in marketing and international strategy across Europe, Asia and the Americas, and has worked with international companies including Coca-Cola, Danone, Nestlé, Novo Nordisk and Philips. He holds a doctorate in economics from Sophia University, Tokyo.'
   }
 ]
 
