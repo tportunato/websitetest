@@ -126,11 +126,13 @@ inverted) because a contour reveals area in fits and starts.
 
 A DASH ONLY GROWS FORWARD FROM ITS OWN START, so a phase whose interval begins
 away from where the pen is appears as a mark of its own, floating. That is what
-decides the phase list. **The whole second A is ONE dash, SHORT 0.605 to 1.0 —
-do not split it.** Splitting it put the bottom sweep's start at the far corner
-of the foot, which the foot had not reached yet, and the letter broke apart at
-the bottom right. The foot is traversed in passing, the same way the long
-contour dips through the first A's foot.
+decides the phase list. **The second A's main stroke is ONE dash, SHORT 0.63 to
+1.0 — do not split it there.** An earlier version cut it into top, bottom and
+foot: that put the bottom sweep's start at the far corner of the foot, which
+the foot had not reached yet, and the letter broke apart at the bottom right.
+The foot is traversed in passing, the same way the long contour dips through
+the first A's foot. The ONE split that is correct is the tip, below, and it
+overlaps rather than abuts.
 
 THREE THINGS ABOUT A DASH DECIDE HOW IT READS: where it starts, which way it
 grows, and whether it merely abuts the next one. **Two dashes that share a
@@ -164,8 +166,9 @@ Change any of those and re-measure.
 THREE NUMBERS THERE WERE SWEPT, not chosen, and each closes a visible defect:
 the stem stops at dash 0.07 (0.075 spills 716 pixels of the first A's diagonal
 and 0.09 spills 2872 - it grew a branch out of the D before the D existed); the
-second A starts at SHORT 0.62, not earlier, or its first ink lands on the
-crossing; and it uses a brush of 11, since 7.6 cannot reach the inner edge at
+second A's main stroke starts at SHORT 0.63, not earlier: at 0.62 the leading
+edge of an 11-wide brush still reaches 276 pixels sideways across the gap onto
+the crossing, which is drawn at the end; and it uses a brush of 11, since 7.6 cannot reach the inner edge at
 x 120-123 from the side the pen travels. Every timing
 map is also forced to end at 1, or each phase leaves its interval's last sliver
 undrawn. There is no settle phase.
@@ -174,8 +177,13 @@ undrawn. There is no settle phase.
 >128 threshold pronounced all of this complete and shipped a black slash across
 the crossing where the first A passes under the second - 3.3 square units of
 hole that 4x smeared over. The check that matters renders at 10x and compares
-pixel for pixel with the two fills. Six pixels stay dark; that is the floor,
-since brushing both contours whole with no phases at all leaves five.
+pixel for pixel with the two fills.
+
+That 10x check is necessary but NOT sufficient, and believing otherwise cost
+three rounds. It reported six stubborn dark pixels, which got written off as an
+antialiasing floor; they were not. A butt-cap seam scores the same on it as a
+mark with no seam at all. The live-page check above is the one that settles it,
+and it now reports ZERO pixels dimmer than the fill.
 
 ## Where the wordmark animation plays
 
@@ -191,14 +199,16 @@ exactly two places:
 - **The nav logo** (`src/sections/Nav.jsx`), on pointer enter. It never plays
   unbidden.
 
-The three subpage headers are `mode="none"` — a static fill. They used to draw
-on mount, which animated the furniture on every route change.
+There is no third place. Content pages route through `PageBar` -> the same
+`Nav`, so one logo serves every route; the per-page headers that used to draw
+on mount, animating the furniture on every route change, are gone with the
+pass-7 restructure.
 
 **The veil lifts when the wordmark reports itself finished** (`onDone`), never
 on a timer. Timing it by hand needs two clocks to agree and they do not: React
 mounts and starts the draw's rAF loop about 300ms after the veil's own CSS
 animation begins, so a delay picked to match the 2320ms draw still lifted while
-the last stroke was travelling. It used to lift at 1150ms and nobody had ever
+the last stroke was travelling. It used to lift at 1750ms and nobody had ever
 seen the last 15% of the mark on the real site. Measured end to end: the draw
 finishes at 2320ms, the veil holds 300ms, the lift takes 600ms, the page is
 there at 3240ms. Change the pace and none of those numbers need touching.

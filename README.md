@@ -220,12 +220,20 @@ repeats it on the same page, so the default there moved to `hold`.
 
 ## Pass 7 notes — the wordmark draw
 
-Measured rather than eyeballed, at 10x against the plain fill. An earlier round
-was verified at 4x with a brightness threshold, pronounced complete, and shipped
-a black slash across the crossing where the first **a** passes under the second —
-3.3 square units of hole that 4x smeared over. Six pixels stay dark in the
-finished mark, which is the floor: brushing both contours whole, with no phases
-at all, leaves five in the same place.
+Measured rather than eyeballed. Two rounds of the measuring were themselves
+wrong, which is the most useful thing in these notes:
+
+- **4x was too coarse.** A 4x render with a brightness threshold pronounced the
+  mark complete and shipped a black slash across the crossing where the first
+  **a** passes under the second — 3.3 square units of hole that 4x smeared over.
+- **10x was necessary but not sufficient.** It left six stubborn dark pixels,
+  which got written off as an antialiasing floor. They were not: a butt-cap seam
+  scores the same on it as a mark with no seam at all, and the seam was plainly
+  visible in a screenshot of the rendered page.
+
+The check that settles it screenshots the real element, redraws that same
+element as the plain fill, and compares pixel for pixel. It reports **zero**
+pixels dimmer than the fill.
 
 ### A dash only grows forward from its own start
 This is the rule the phase list is built around. Three corollaries, each of
