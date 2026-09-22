@@ -53,6 +53,24 @@ it), `SplitFeature` (the firm section's layout, reusable), `NewsStrip`,
 
 Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
+## The DAA group is one page
+
+Vision & Mission, Sustainability and Leadership are SECTIONS of `#/about`, not
+routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx` is
+the team grid lifted out of the old Leadership page.
+
+**Their URLs still exist and still mean something.** `#/vision`,
+`#/sustainability` and `#/leadership` render About and land on the matching
+section, which is what keeps every old link, bookmark and dropdown item honest
+without rewriting any of them. `SECTION_OF` in `src/App.jsx` maps URL to
+section id; the ids live on the sections in About.jsx. Rename one and fix both
+in the same commit.
+
+Arriving at a section from another page JUMPS; moving between sections while
+already on About EASES, because that is an in-page anchor. A ref tells the two
+apart. Bare `#/about` has to be handled explicitly: the page key does not
+change between these four URLs, so `jumpToTop` never fires for them.
+
 ## Regulatory status is not a marketing argument
 
 The firm is not allowed to use its regulatory status as a selling point, and the
@@ -89,8 +107,10 @@ That is deliberate and pending a decision from the partners; leave it.
   numbers (firm 14vh/1240px, news 16vh, closing 24vh, beats flush-left at
   900px), so copy started at a different x depending where you were on the page.
   A new section resolves through the tokens; it does not invent a padding.
-- **The nav groups.** Two dropdowns (`DAA`, `Strategy`) plus three flat links,
-  following axis-re.nl's grouping. Below 980px they collapse into a full-screen
+- **The nav groups.** One dropdown (`DAA`) plus four flat links, following
+  axis-re.nl's grouping. **The DAA label is a link, not a button**: it goes to
+  `#/about`. As a button it appeared to do nothing, because hover had already
+  opened the menu. Below 980px they collapse into a full-screen
   panel — before that there was no mobile navigation at all and every subpage
   was unreachable on a phone. There is deliberately no `#track-record` link:
   that section was deleted in pass 5.
