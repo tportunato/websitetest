@@ -18,7 +18,7 @@ export const ABOUT = {
   ],
   team: {
     eyebrow: 'Our team',
-    statement: 'A small team, close to every asset.',
+    statement: 'One team, from underwriting to exit.',
     notes: [
       'Investment, asset management and finance sit in one office in Geneva. The people who underwrite a building are the people who reposition it, and the people who answer to investors for it.'
     ],
