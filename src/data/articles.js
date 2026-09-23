@@ -364,7 +364,7 @@ export const ARTICLES = [
     title: 'Logistics Real Estate Bubble or Secular Trend?',
     standfirst: 'Of all the real estate sectors, logistics has had a particularly buoyant decade: in 2018 for the first time, industrial investment volumes overtook retail, making it the third most-invested asset class after office and residential. The weight of capital targeting European logistics saw yields compress from c. 7% in 2012/2013 to average prime yields of',
     standDupe: true,
-    img: '/images/sustainability-hero.jpg',
+    img: '/images/solar-roof.jpg',
     imgReal: false,
     link: 'https://www.daacap.com/logistics-real-estate-bubble-or-new-normal/',
     body: [
