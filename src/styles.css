@@ -2316,12 +2316,53 @@ main {
   object-fit: cover;
 }
 
+/* --hero-rgb is the ONE source of truth for the colour a hero resolves to. It
+   paints the head's own ground, the panel below it, and the veil's darkening,
+   so the photo, the ground it dissolves into and the panel it meets can never
+   drift apart. They had: the veil faded to --navy while the boxed panel under
+   it is --navy2, which put a tonal step and a bright hairline across the seam.
+
+   The media is then MASKED to transparency at the bottom rather than covered
+   to opacity, so the last band is genuinely the ground rather than a colour
+   chosen to look like it. Same reasoning as the firm section's photo panel. */
+.phero,
+.art-hero {
+  --hero-rgb: 7, 17, 31;
+}
+
+.phero--boxed {
+  --hero-rgb: 10, 30, 51;
+}
+
+.phero-head,
+.art-hero {
+  background: rgb(var(--hero-rgb));
+}
+
+.phero-media,
+.art-hero-media {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 62%,
+    rgba(0, 0, 0, 0.72) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 62%,
+    rgba(0, 0, 0, 0.72) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
 .phero-veil {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(7, 17, 31, 0.82) 0%, rgba(7, 17, 31, 0.32) 42%, rgba(7, 17, 31, 0.78) 100%),
-    linear-gradient(90deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.1) 62%);
+    linear-gradient(180deg, rgba(var(--hero-rgb), 0.82) 0%, rgba(var(--hero-rgb), 0.32) 42%, rgba(var(--hero-rgb), 0.78) 100%),
+    linear-gradient(90deg, rgba(var(--hero-rgb), 0.72) 0%, rgba(var(--hero-rgb), 0.1) 62%);
 }
 
 .phero-head {
@@ -2358,7 +2399,7 @@ main {
   position: relative;
   z-index: 1;
   padding: 8vh var(--gutter);
-  background: var(--navy);
+  background: rgb(var(--hero-rgb));
 }
 
 .phero-panel-inner {
@@ -2391,10 +2432,12 @@ main {
 }
 
 /* boxed: the image stops short and a solid panel carries the copy under it */
+/* .phero--boxed sets --hero-rgb to --navy2, so these resolve to the panel's
+   own colour without naming it. */
 .phero--boxed .phero-veil {
   background:
-    linear-gradient(180deg, rgba(7, 17, 31, 0.72) 0%, rgba(7, 17, 31, 0.25) 40%, rgba(7, 17, 31, 0.92) 100%),
-    linear-gradient(90deg, rgba(7, 17, 31, 0.6) 0%, rgba(7, 17, 31, 0.06) 66%);
+    linear-gradient(180deg, rgba(var(--hero-rgb), 0.72) 0%, rgba(var(--hero-rgb), 0.25) 40%, rgba(var(--hero-rgb), 0.92) 100%),
+    linear-gradient(90deg, rgba(var(--hero-rgb), 0.6) 0%, rgba(var(--hero-rgb), 0.06) 66%);
 }
 
 .phero--boxed .phero-head {
@@ -2403,8 +2446,9 @@ main {
 }
 
 .phero--boxed .phero-panel {
-  background: var(--navy2);
-  border-top: 1px solid var(--line);
+  /* No border-top: it drew a bright rule straight across the fade. The boxed
+     variant still reads as a panel because the photo stops, not because a
+     hairline says so. */
   padding: 7vh var(--gutter);
 }
 
@@ -2894,8 +2938,8 @@ main {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(7, 17, 31, 0.78) 0%, rgba(7, 17, 31, 0.34) 40%, rgba(7, 17, 31, 0.9) 100%),
-    linear-gradient(90deg, rgba(7, 17, 31, 0.7) 0%, rgba(7, 17, 31, 0.12) 64%);
+    linear-gradient(180deg, rgba(var(--hero-rgb), 0.78) 0%, rgba(var(--hero-rgb), 0.34) 40%, rgba(var(--hero-rgb), 0.9) 100%),
+    linear-gradient(90deg, rgba(var(--hero-rgb), 0.7) 0%, rgba(var(--hero-rgb), 0.12) 64%);
 }
 
 .art-hero-inner {

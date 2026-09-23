@@ -422,6 +422,17 @@ there at 3240ms. Change the pace and none of those numbers need touching.
   composites the same way with nothing to support. `.split--flip` mirrors the
   gradient to 270deg; it cannot use `scaleX(-1)`, which flipped the old overlay
   ELEMENT and has nothing to act on now.
+- **A hero's vertical fade has the same trap, and it had it.** `.phero-veil`
+  faded the photo down to `--navy` while `.phero--boxed`'s panel underneath is
+  `--navy2`, and the panel carried a `border-top` hairline on top of that: the
+  seam measured a tonal step AND a bright `rgb(43,60,77)` rule straight across
+  it. `--hero-rgb` is now the one source of truth - it paints the head's ground,
+  the panel below it and the veil's darkening, so the three cannot drift - and
+  `.phero-media` / `.art-hero-media` are masked to transparency at the bottom
+  rather than covered to opacity. The boxed panel's border-top is deliberately
+  gone: a seamless fade cannot carry a rule across its middle. Measured on
+  #/about, worst row-to-row step at the seam: boxed 44 -> 0, article hero 42 ->
+  3, and what is left is photo content, not an edge.
 - **Film grain uses `mix-blend-mode: overlay`**, which *lightens* near-black.
   Fine over footage, a veil over a dark instrument — hence `.stage--instrument`.
 - **A zero-length dash is not nothing.** With `stroke-linecap: round` it still
