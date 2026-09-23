@@ -53,7 +53,7 @@ export default function About() {
         variant="boxed"
         eyebrow="DAA Capital Partners"
         title={<>Vision &amp;<br />Mission</>}
-        image="/images/depot-aerial.jpg"
+        image="/images/vision-aerial.jpg"
         lead={VISION.lead}
       >
         <div className="phero-cols">
