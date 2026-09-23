@@ -45,7 +45,7 @@ export const TEAM = [
     role: 'Associate',
     img: '/images/team/tomaso-portunato.jpg',
     linkedin: null,   /* not supplied yet; the card drops the link when it is null */
-    bio: 'Tomaso is a former entrepreneur with expertise in operations and fundraising. He leads the firm’s work on applied AI, building the origination tooling that screens urban logistics catchments down to the assets worth underwriting, and extending it across the investment workflow from market mapping to document review.'
+    bio: 'Tomaso is a former entrepreneur with expertise in operations and fundraising. He works across acquisitions and asset management, from underwriting and due diligence on new investments through to business plan execution on assets in the portfolio. He also leads the firm’s work on applied AI.'
   }
 ]
 
