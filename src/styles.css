@@ -1410,39 +1410,60 @@ main {
   object-position: center;
 }
 
-/* The fade has to reach the section's OWN ground colour, or the panel's left
-   edge shows as a tonal step. .firm sits on #060d16, .manifesto on a gradient
-   that lands near --navy, so each sets --photo-bg for itself. */
+/* The panel is MASKED to transparency, not covered by a gradient in the
+   section's colour. It used to be the latter, fading to a hardcoded
+   --photo-bg, and it left a visible dark seam down the photo's left edge:
+   .firm's base colour is #060d16, but .firm-bg--hold paints a radial gradient
+   OVER it, so the ground at the seam measured rgb(10,23,38) while the fade
+   landed on rgb(6,13,22). A flat colour cannot match a gradient, and there are
+   three backgrounds here switchable at runtime with ?bg=, so it could only ever
+   have matched one of them at one point.
+
+   A mask has nothing to match: the photo simply stops being there and whatever
+   is behind it shows through. Correct on every background, at every width, and
+   at both ends of the vertical fade.
+
+   The two axes are masked on DIFFERENT ELEMENTS on purpose - horizontal on the
+   panel, vertical on the img inside it. Two mask layers on one element would
+   need `mask-composite: intersect`, and where that is not honoured the layers
+   ADD instead, which fills the horizontal fade back in and undoes the whole
+   thing. Nesting composites the same way with nothing to support. */
 .firm-photo,
 .manifesto-photo {
-  --photo-bg: 6, 13, 22;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.4) 34%,
+    rgba(0, 0, 0, 0.76) 54%,
+    rgba(0, 0, 0, 1) 74%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.4) 34%,
+    rgba(0, 0, 0, 0.76) 54%,
+    rgba(0, 0, 0, 1) 74%
+  );
 }
 
-.manifesto-photo {
-  --photo-bg: 7, 17, 31;
-}
-
-.firm-photo::after,
-.manifesto-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(var(--photo-bg), 1) 0%,
-      rgba(var(--photo-bg), 0.92) 14%,
-      rgba(var(--photo-bg), 0.6) 34%,
-      rgba(var(--photo-bg), 0.24) 54%,
-      rgba(var(--photo-bg), 0) 74%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(var(--photo-bg), 0.6) 0%,
-      rgba(var(--photo-bg), 0) 26%,
-      rgba(var(--photo-bg), 0) 74%,
-      rgba(var(--photo-bg), 0.6) 100%
-    );
+.firm-photo img,
+.manifesto-photo img {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 1) 26%,
+    rgba(0, 0, 0, 1) 74%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 1) 26%,
+    rgba(0, 0, 0, 1) 74%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
 }
 
 /* Keep the copy clear of the photo at every width. */
@@ -2725,8 +2746,25 @@ main {
 /* ---------- Split feature (mirror of the firm section) ---------- */
 .split--flip .firm-photo { right: auto; left: 0; }
 
-.split--flip .firm-photo::after {
-  transform: scaleX(-1);
+/* Mirrored, not scaleX(-1): that transformed the old overlay element, and a
+   mask is a paint source on this element rather than a child to flip. */
+.split--flip .firm-photo {
+  -webkit-mask-image: linear-gradient(
+    270deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.4) 34%,
+    rgba(0, 0, 0, 0.76) 54%,
+    rgba(0, 0, 0, 1) 74%
+  );
+  mask-image: linear-gradient(
+    270deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.4) 34%,
+    rgba(0, 0, 0, 0.76) 54%,
+    rgba(0, 0, 0, 1) 74%
+  );
 }
 
 .split--flip .firm-inner { padding-right: 0; padding-left: 46%; }

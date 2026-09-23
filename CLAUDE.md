@@ -406,6 +406,22 @@ there at 3240ms. Change the pace and none of those numbers need touching.
 - **Reduced motion means the whole page settles**, not just the veil and the
   scroll cue: Lenis is not constructed at all (it is smooth-scroll hijacking),
   and the scrub tweens are skipped. `src/lib/motion.js` is the one check.
+- **Feather a photo panel with a MASK, not a gradient in the ground colour.**
+  `.firm-photo` used to be covered by a `rgba(--photo-bg)` gradient fading to
+  the section's base colour. That base is `#060d16`, but `.firm-bg--hold` paints
+  a radial gradient OVER it, so the ground at the panel's left edge measured
+  `rgb(10,23,38)` while the fade landed on `rgb(6,13,22)`: a visible dark seam
+  down the whole edge. A flat colour cannot track a gradient, and the three
+  backgrounds are switchable at runtime with `?bg=`, so it could only ever have
+  matched one of them at one point. The panel is now masked to transparency and
+  whatever is behind shows through - verified pixel-identical across the seam on
+  all three backgrounds. **The two axes are masked on different elements**
+  (horizontal on `.firm-photo`, vertical on the `img` inside it) because two
+  mask layers on one element need `mask-composite: intersect`, and where that is
+  not honoured they ADD instead and fill the horizontal fade back in. Nesting
+  composites the same way with nothing to support. `.split--flip` mirrors the
+  gradient to 270deg; it cannot use `scaleX(-1)`, which flipped the old overlay
+  ELEMENT and has nothing to act on now.
 - **Film grain uses `mix-blend-mode: overlay`**, which *lightens* near-black.
   Fine over footage, a veil over a dark instrument — hence `.stage--instrument`.
 - **A zero-length dash is not nothing.** With `stroke-linecap: round` it still
