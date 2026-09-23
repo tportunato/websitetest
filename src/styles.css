@@ -12,8 +12,12 @@
   --maxw: 1240px;
   --band: 16vh;
 
-  --navy: #07111f;
-  --navy2: #0a1e33;
+  /* Both forms of each ground, from one definition: the hex for backgrounds,
+     the components for anything that needs an alpha (the hero veils). */
+  --navy-rgb: 7, 17, 31;
+  --navy2-rgb: 10, 30, 51;
+  --navy: rgb(var(--navy-rgb));
+  --navy2: rgb(var(--navy2-rgb));
   --paper: #f7f5f0;
   --accent: #f7f5f0;
   --line: rgba(247, 245, 240, 0.14);
@@ -2327,11 +2331,13 @@ main {
    chosen to look like it. Same reasoning as the firm section's photo panel. */
 .phero,
 .art-hero {
-  --hero-rgb: 7, 17, 31;
+  --hero-rgb: var(--navy-rgb);
 }
 
+/* The boxed default. The About page overrides it per destination - see THE
+   TONE SEQUENCE below. */
 .phero--boxed {
-  --hero-rgb: 10, 30, 51;
+  --hero-rgb: var(--navy2-rgb);
 }
 
 .phero-head,
@@ -2530,6 +2536,41 @@ main {
 }
 
 .about-sec--team { padding-top: calc(var(--band) * 0.6); }
+
+/* ---------- THE TONE SEQUENCE ----------
+
+   The About page carries FOUR destinations, and the ground tone is what tells
+   you that you have arrived at a new one: it changes when the SUBJECT changes
+   and at no other time. One tone per destination, alternating.
+
+     About us + intro ............ navy
+     Vision & Mission ............ navy2
+     Sustainability .............. navy     (hero, panel AND its commitments)
+     Team ........................ navy2    (hero AND the team row)
+     CTA, news, contact, footer .. navy
+
+   It used to track which COMPONENT was used rather than what the content was,
+   which made it noise: Vision and Sustainability were both navy2 and ran
+   together as one block with no boundary between two different destinations,
+   and Sustainability's commitments dropped to navy half way through their own
+   topic, so the tone changed where the subject did not.
+
+   A destination is one tone from its hero to its last band. Add a band to one
+   of these and it takes that destination's tone; add a destination and it
+   takes the opposite tone to the one above it. */
+
+/* Scoped to .page--about: .cta-band is shared with #/profile, where the
+   lighter block is the one call to action on an otherwise flat page and is
+   doing a different job. */
+.page--about #sustainability {
+  --hero-rgb: var(--navy-rgb);
+}
+
+/* The commitments belong to Sustainability, the team row to Team, so each
+   carries its own destination's ground rather than the page's. */
+.page--about .pillars { background: var(--navy); }
+.page--about .about-sec--team { background: var(--navy2); }
+.page--about .cta-band { background: var(--navy); }
 
 /* ---------- Pillars ---------- */
 .pillars {

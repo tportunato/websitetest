@@ -30,7 +30,9 @@ import { ABOUT, VISION, SUSTAINABILITY as S } from '../data/pages.js'
 
 export default function About() {
   return (
-    <div className="page">
+    /* page--about scopes THE TONE SEQUENCE in styles.css. The bands it
+       retones (.cta-band above all) are shared with other pages. */
+    <div className="page page--about">
       <PageBar title="About us" />
 
       <PageHero
