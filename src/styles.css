@@ -2912,12 +2912,25 @@ main {
 
 .points-list li:first-child { border-top: 1px solid var(--line); }
 
-.bullet-arrow {
-  width: clamp(22px, 2.4vw, 30px);
-  height: clamp(22px, 2.4vw, 30px);
+/* A 6px square, not an arrow. The filled right-pointing chevron that was here
+   is the shape a disclosure control uses, so the list read as six things you
+   could open.
+
+   The square is drawn as a BACKGROUND on a box the width the arrow had, rather
+   than as a 6px element: that keeps the text's left edge exactly where it was -
+   which also keeps the one-line type fit measured on .points-list li intact -
+   and `height: 1.38em` is the li's own line-height, so `center` lands the square
+   on the middle of the FIRST line at any font size, with no magic offset to
+   re-tune when the type scale moves. */
+.points-mark {
   flex: none;
-  margin-top: 0.22em;
-  opacity: 0.7;
+  width: clamp(22px, 2.4vw, 30px);
+  height: 1.38em;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  opacity: 0.85;
 }
 
 @media (max-width: 880px) {

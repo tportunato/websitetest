@@ -23,6 +23,12 @@ export function Plane({ className = 'btn-ico' }) {
   )
 }
 
+/* UNUSED as of 2026-09-29. It was the bullet on the Investment profile points
+   list until that became a square: a filled right-pointing chevron reads as a
+   disclosure control, so the list looked like six things you could open. Kept
+   rather than deleted - it is the client's own supplied artwork, and the note
+   above about the inverted icon is the reason its PNG looked blank. The `->`
+   on the buttons is a text character in .btn-arrow, not this. */
 export function Arrow({ className = 'bullet-arrow' }) {
   return (
     <svg className={className} viewBox="22 22 56 56" aria-hidden="true">

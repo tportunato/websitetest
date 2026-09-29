@@ -8,7 +8,6 @@ import GetInTouch from '../sections/GetInTouch.jsx'
 import Footer from '../sections/Footer.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 import { INVESTMENT } from '../data/pages.js'
-import { Arrow } from '../sections/Icons.jsx'
 
 
 export default function InvestmentProfile() {
@@ -34,7 +33,7 @@ export default function InvestmentProfile() {
         <ul className="points-list">
           {INVESTMENT.points.map((t) => (
             <li key={t.slice(0, 24)} data-reveal>
-              <Arrow />
+              <span className="points-mark" aria-hidden="true" />
               <span>{t}</span>
             </li>
           ))}
