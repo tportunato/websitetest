@@ -1246,9 +1246,6 @@ button:focus-visible {
   max-width: none;
 }
 
-.closing .eyebrow {
-  margin-bottom: 24px;
-}
 
 .closing-cta {
   display: inline-block;

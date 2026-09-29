@@ -185,6 +185,8 @@ was inflating every screen-space radius.
 - Market section: the -35% stat is removed.
 - Asset management headline: "We underwrite the building it becomes."
 - Closing section now names City Logistics Industrial Capital Fund I (CLIC).
+  REVERSED on 2026-09-29 at the client's instruction: the fund is not named
+  anywhere on the site. The closing section carries the serif line alone.
 - New `#/contact` page (`src/pages/Contact.jsx`); the nav Contact link points
   there instead of scrolling to the footer. The form opens a pre-filled mail
   draft — wire a real endpoint when one exists.
