@@ -32,11 +32,22 @@ export default function Footer() {
           </p>
         </div>
       </div>
-      {/* Regulatory status, stated once and quietly. It is not a selling
-          point and must never be set as one; the full wording is on #/legal. */}
+      {/* Regulatory status, stated once and quietly. It is not a selling point
+          and must never be set as one; the full wording is on #/legal.
+
+          SO-FIT IS DELIBERATELY NOT NAMED HERE. Its "Conditions d'utilisation de
+          l'image de SO-FIT et de la FINMA" (Assujettis, 31.07.2023) require that
+          a reference to SO-FIT on a website carry a prescribed sentence saying
+          what SO-FIT is. Whether that binds the site once or every page that
+          names it is ambiguous in their wording - so the reference lives in one
+          place only, on #/legal, with the prescribed sentence beside it, and the
+          ambiguity stops applying. The alternative was 35 words about SO-FIT in
+          the footer of every page, which is the opposite of stating this
+          quietly. Do not add "supervised by SO-FIT" back here without bringing
+          the prescribed sentence with it. */}
       <p className="regstatus">
-        DAA Capital Partners SA is a Swiss portfolio manager licensed by FINMA and
-        supervised by SO-FIT.
+        DAA Capital Partners SA is authorised by FINMA as a portfolio manager
+        under the Financial Institutions Act (FinIA).
       </p>
 
       <div className="legal">

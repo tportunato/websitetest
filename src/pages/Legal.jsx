@@ -27,10 +27,13 @@ export default function Legal() {
         {/* PRESCRIBED TEXT - do not paraphrase, shorten or drop.
             SO-FIT's "Conditions d'utilisation de l'image de SO-FIT et de la FINMA"
             (Assujettis version, 31.07.2023) requires that ANY reference to SO-FIT on
-            a website carry this sentence. The site says "supervised by SO-FIT" in the
-            footer too, so the requirement is live and this paragraph is what answers
-            it. The original is French; this is a faithful rendering, kept here
-            because the site is English-only. The French reads:
+            a website carry this sentence. THIS PAGE IS THE ONLY PLACE ON THE SITE
+            THAT NAMES SO-FIT - the footer deliberately does not - so the reference
+            and its required sentence sit together and it does not matter whether
+            the rule binds the site once or every page. Name SO-FIT anywhere else
+            and this sentence has to go there too. The original is French; this is
+            a faithful rendering, and the client confirmed English is acceptable.
+            The French reads:
             "SO-FIT est un organisme de surveillance autorise par l'Autorite federale
             suisse de surveillance des marches financiers (FINMA) pour la surveillance
             des gestionnaires de fortune et des trustees au sens des articles 43ss de

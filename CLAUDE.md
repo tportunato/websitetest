@@ -179,6 +179,20 @@ FINMA now appears in two places only, and nowhere else:
   copyright, never larger and never styled as a badge;
 - the full wording on `#/legal` (`src/pages/Legal.jsx`).
 
+**SO-FIT is named in ONE place only, `#/legal`, and that is load-bearing.**
+SO-FIT's "Conditions d'utilisation de l'image de SO-FIT et de la FINMA"
+(Assujettis, 31.07.2023) require a reference to SO-FIT on a website to carry a
+prescribed sentence saying what SO-FIT is. Their wording does not say whether
+that binds the site once or every page that names it, so the reference was
+pulled back to a single page where the prescribed sentence sits beside it, and
+the ambiguity stops mattering. The footer used to say "supervised by SO-FIT"
+and did not carry the sentence. Name SO-FIT anywhere else and the prescribed
+sentence has to go there too - which is 35 words about the supervisor on every
+page, the opposite of stating this quietly.
+
+Neither logo may be used. SO-FIT's needs its prior written agreement; FINMA's
+needs FINMA's, and unauthorised use can bring civil and criminal proceedings.
+
 Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or a hero.
 `#/legal` is NOT the full investor disclaimer, which is a separate document;
 folding that in here would make the page read as defensive.
