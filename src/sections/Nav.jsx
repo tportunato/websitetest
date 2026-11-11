@@ -1,7 +1,15 @@
-/* Header. One grouped dropdown (DAA) following axis-re.nl's information
-   architecture; Strategy was a second group until it became a single page,
-   and every dropdown item is its own route rather than an anchor on a
-   one-pager. The same bar is used on the landing page and on every content
+/* Header. One grouped dropdown (Firm); Strategy was a second group until it
+   became a single page, and every dropdown item is its own route rather than an
+   anchor on a one-pager.
+
+   The information architecture was modelled on axis-re.nl, and until 2026-11
+   the labels were too: Home / Axis-or-DAA dropdown (About us, Vision & Mission,
+   Team, Sustainability) / Portfolio / Investment Profile / News / Get in touch,
+   word for word and in the same order. The partners asked for distance without
+   changing the site's structure, so the group is "Firm" and sits LAST rather
+   than straight after Home, two of its items are renamed (ESG, People) and the
+   button reads Contact. URLs are untouched - #/sustainability and #/leadership
+   still work - only the words and the order moved. The same bar is used on the landing page and on every content
    page (via PageBar), so it never resizes between routes.
 
    The Investor Login pill replaced the Investor Login link at the client's
@@ -12,17 +20,17 @@ import Wordmark from './Wordmark.jsx'
 
 const GROUPS = [
   {
-    id: 'daa',
-    label: 'DAA',
-    /* The group label is itself a destination. Clicking DAA used to only
+    id: 'firm',
+    label: 'Firm',
+    /* The group label is itself a destination. Clicking it used to only
        toggle the menu, which on a trackpad reads as nothing happening at all
        because hover had already opened it. */
     href: '#/about',
     items: [
       { label: 'About us', href: '#/about' },
       { label: 'Vision & Mission', href: '#/vision' },
-      { label: 'Sustainability', href: '#/sustainability' },
-      { label: 'Team', href: '#/leadership' }
+      { label: 'ESG', href: '#/sustainability' },
+      { label: 'People', href: '#/leadership' }
     ]
   }
 ]
@@ -88,6 +96,12 @@ export default function Nav({ pageTitle }) {
         <nav className="nav-main" aria-label="Primary">
           <a className="nav-link" href={home.href} onClick={close}>{home.label}</a>
 
+          {rest.map((it) => (
+            <a key={it.href} className="nav-link" href={it.href} onClick={close}>{it.label}</a>
+          ))}
+
+          {/* The group comes LAST. Straight after Home it reproduced Axis's bar
+              item for item; at the end, next to Contact, the silhouette is ours. */}
           {GROUPS.map((g) => (
             <div
               key={g.id}
@@ -117,15 +131,11 @@ export default function Nav({ pageTitle }) {
               </div>
             </div>
           ))}
-
-          {rest.map((it) => (
-            <a key={it.href} className="nav-link" href={it.href} onClick={close}>{it.label}</a>
-          ))}
         </nav>
 
         <div className="nav-end">
           <a className="btn btn--solid btn--nav" href="#/contact" onClick={close}>
-            <span>Get in touch</span>
+            <span>Contact</span>
             <Plane />
           </a>
           <button
@@ -161,7 +171,7 @@ export default function Nav({ pageTitle }) {
             </div>
           ))}
           <a className="btn btn--lg btn--solid" href="#/contact" onClick={close}>
-            <span>Get in touch</span>
+            <span>Contact</span>
             <Plane />
           </a>
         </div>

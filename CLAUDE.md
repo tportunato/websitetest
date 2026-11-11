@@ -45,7 +45,11 @@ purpose, so the WORDS have to stay clearly DAA's. The home page's asset-strategy
 band once read "Turning standing stock into future-proof assets." against Axis's
 "Turning assets into future proof solutions." - same verb, same construction,
 same position on the page - and the partners asked for it to go. It is now
-"Irreplaceable locations. Outdated buildings." Before writing a headline for a
+"Irreplaceable locations. Outdated buildings." The NAV was the same story: every
+label matched Axis's, in Axis's order, button included. It now reads Home /
+Strategy / Portfolio / Investment profile / News / Firm (About us, Vision &
+Mission, ESG, People) / Contact, and the About page's section titles follow the
+renames so the menu and the page agree. URLs did not change. Before writing a headline for a
 band that has an Axis counterpart, read theirs first; avoid "future-proof" and
 "the future of logistics", which are both on their homepage.
 
@@ -71,7 +75,7 @@ routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx`
 holds what was lifted out of the old Leadership page - the advisory grid -
 and `src/sections/TeamCarousel.jsx` is the team row.
 
-**The section is LABELLED "Team"; its id and its URL are still `leadership`.**
+**The section is LABELLED "People"; its id and its URL are still `leadership`.**
 That split is deliberate. `#/leadership` is a published address, `SECTION_OF`
 maps it to the section id, and renaming the id to match a word nobody sees
 would break every existing link. Rename both together or neither.
@@ -229,8 +233,10 @@ That is deliberate and pending a decision from the partners; leave it.
   numbers (firm 14vh/1240px, news 16vh, closing 24vh, beats flush-left at
   900px), so copy started at a different x depending where you were on the page.
   A new section resolves through the tokens; it does not invent a padding.
-- **The nav groups.** One dropdown (`DAA`) plus four flat links, following
-  axis-re.nl's grouping. **The DAA label is a link, not a button**: it goes to
+- **The nav groups.** Home, four flat links, then one dropdown (`Firm`: About
+  us, Vision & Mission, ESG, People) at the END, then the Contact button. The
+  grouping follows axis-re.nl's; the labels and order deliberately do not (see
+  "Do not echo axis-re.nl's copy"). **The Firm label is a link, not a button**: it goes to
   `#/about`. As a button it appeared to do nothing, because hover had already
   opened the menu. Below 980px they collapse into a full-screen
   panel — before that there was no mobile navigation at all and every subpage

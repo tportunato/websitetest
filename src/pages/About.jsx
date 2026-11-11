@@ -66,7 +66,7 @@ export default function About() {
         id="sustainability"
         variant="boxed"
         eyebrow="DAA Capital Partners"
-        title="Sustainability"
+        title="ESG"
         image="/images/fleet-field.jpg"
         lead={S.lead}
       >
@@ -86,7 +86,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* THE SECTION IS LABELLED "Team", THE ID AND THE URL ARE STILL
+      {/* THE SECTION IS LABELLED "People", THE ID AND THE URL ARE STILL
           "leadership". That is not an oversight: #/leadership is a published
           address and SECTION_OF in App.jsx maps it here, so renaming the id to
           match the label would break every existing link for the sake of a
@@ -102,7 +102,7 @@ export default function About() {
         id="leadership"
         variant="boxed"
         eyebrow={ABOUT.team.eyebrow}
-        title="Team"
+        title="People"
         image="/images/team-photo.jpg"
         lead={ABOUT.team.statement}
       >

@@ -17,7 +17,7 @@ export const ABOUT = {
     'Buildings are acquired to be improved rather than simply held. Specification, energy performance and lease structure are the levers, and they are worked from the day an asset comes into the portfolio.'
   ],
   team: {
-    eyebrow: 'Our team',
+    eyebrow: 'DAA Capital Partners',
     statement: 'One team, from underwriting to exit.',
     notes: [
       'Investment, asset management and finance sit in one office in Geneva. The people who underwrite a building are the people who reposition it, and the people who answer to investors for it.'
@@ -44,7 +44,7 @@ export const VISION = {
 }
 
 export const SUSTAINABILITY = {
-  title: 'Sustainability',
+  title: 'ESG',
   lead:
     'ESG is underwritten as a driver of valuation, resilience and lettability, not as a reporting exercise.',
   body: [
