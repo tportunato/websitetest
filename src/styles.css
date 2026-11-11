@@ -1183,6 +1183,38 @@ button:focus-visible {
   transform: scaleX(1);
 }
 
+/* ---------- Nav labels in the eyebrow voice ----------
+   A trial, kept in ONE block so it can be reverted by deleting it. Axis sets
+   its menu in plain sentence-case sans; ours now uses the site's own mono
+   uppercase, the voice of every eyebrow and instrument caption, which is the
+   most DAA-specific thing the bar can carry.
+
+   Mono uppercase runs far wider than DM Sans, so the size comes down from
+   1.22rem to keep the bar's measured fit: at 1160px, just above the burger
+   breakpoint, the menu has to clear both the logo and the Contact button.
+   Tracking is 0.14em, not the eyebrow's 0.2em, which at six labels would push
+   it into the button. The Contact button stays sans - buttons are one .btn
+   component, and the phone panel keeps its large sans links. */
+.nav-link,
+.nav-trigger {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+.nav-main {
+  gap: 40px;
+}
+
+.nav-menu a {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+}
+
 /* CTA arrow nudge */
 .cta-arrow {
   display: inline-block;
