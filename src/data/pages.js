@@ -78,7 +78,12 @@ export const INVESTMENT = {
 
 export const FUTUREPROOF = {
   eyebrow: 'Asset strategy',
-  statement: 'Turning standing stock into future-proof assets.',
+  /* Was "Turning standing stock into future-proof assets." - near word for word
+     axis-re.nl's homepage line "Turning assets into future proof solutions.",
+     in the same place on the page doing the same job. The partners asked for
+     distance. This states the gap the strategy buys; the first note below
+     says why it is a gap, the second how it is closed. */
+  statement: 'Irreplaceable locations. Outdated buildings.',
   notes: [
     'Most of the urban logistics stock inside Europe’s ring roads was built for a different decade of distribution. The location still works. The building often does not.',
     'We buy that gap and close it: reconfigured layouts and vehicle flows, modern docks, upgraded envelopes and roof-mounted generation, delivered around the occupier rather than around a certificate.'

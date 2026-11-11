@@ -38,6 +38,17 @@ The firm section was rebuilt once for exactly this reason: two supplied
 paragraphs set at equal weight in two columns. The fix was hierarchy — one claim
 at display size, notes demoted under it, a mono spec rail on a hairline.
 
+## Do not echo axis-re.nl's copy
+
+The layout, the nav grouping and the page set were modelled on axis-re.nl on
+purpose, so the WORDS have to stay clearly DAA's. The home page's asset-strategy
+band once read "Turning standing stock into future-proof assets." against Axis's
+"Turning assets into future proof solutions." - same verb, same construction,
+same position on the page - and the partners asked for it to go. It is now
+"Irreplaceable locations. Outdated buildings." Before writing a headline for a
+band that has an Axis counterpart, read theirs first; avoid "future-proof" and
+"the future of logistics", which are both on their homepage.
+
 ## Structure (pass 7)
 
 The one-pager became a site. Home is hero, firm, market, portfolio and a
