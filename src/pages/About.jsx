@@ -54,10 +54,20 @@ export default function About() {
         eyebrow="DAA Capital Partners"
         title={<>Vision &amp;<br />Mission</>}
         image="/images/solar-roof.jpg"
-        lead={VISION.lead}
       >
+        {/* Two parts under one title, each with a mono label: the vision, with
+            its reasoning, then the mission as a single statement at the same
+            size as the vision's lead, so the two read as a pair. The lead is
+            passed as a child rather than through `lead` so a label can sit
+            above it. */}
+        <p className="eyebrow vm-label">Vision</p>
+        <p className="phero-lead">{VISION.lead}</p>
         <div className="phero-cols">
           {VISION.body.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
+        </div>
+        <div className="vm-mission">
+          <p className="eyebrow vm-label">Mission</p>
+          <p className="phero-lead">{VISION.mission}</p>
         </div>
       </PageHero>
 

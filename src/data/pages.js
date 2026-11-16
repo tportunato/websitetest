@@ -28,13 +28,17 @@ export const ABOUT = {
 
 export const VISION = {
   title: 'Vision & Mission',
+  /* Partner-supplied, November 2026. The section is titled "Vision & Mission"
+     but until then carried no mission at all; it now has both, each labelled. */
   lead:
-    'We think the future of logistics is about proximity, not scale.',
+    'We believe the future of urban logistics is about proximity, not scale.',
   body: [
-    'Cities have changed what they ask of a warehouse. Speed and flexibility now matter more than floor area, and the buildings that can deliver them sit inside the ring rather than out on the motorway. Urban logistics has quietly become infrastructure: most of what a city expects to arrive the same day passes through a building somebody stopped noticing years ago.',
-    'We back small- and mid-box assets because that is where we think the resilience sits. Real occupier demand, very little replacement supply, and locations that cannot be recreated once the land goes to housing.',
-    'What we are building is a portfolio that still works in ten years. Well located, properly specified, and responsible enough to stay lettable as standards tighten. In practice that means making buildings cleaner and more adaptable rather than simply holding them and hoping.'
+    'Cities have changed what they ask of a warehouse. Speed and flexibility now matter more than floor area, and the buildings that can deliver them sit inside the ring rather than out on the motorway. Urban logistics has quietly become infrastructure: much of what a city expects to arrive the same day passes through buildings that have served these locations for decades.',
+    'We back small- and mid-box assets because we believe this is where resilience is strongest. Real occupier demand, very little replacement supply, and locations that cannot be recreated once the land goes to housing.',
+    'What we are building is a portfolio that still works in ten years. Well located, properly specified, and adaptable enough to remain lettable as standards tighten. In practice, that means making buildings cleaner and more adaptable rather than relying on passive ownership.'
   ],
+  mission:
+    'To create long-term value by sourcing, improving and aggregating urban logistics assets through local knowledge, active asset management and disciplined execution.',
   investment: {
     eyebrow: 'Investment profile',
     statement: 'We are actively looking to expand the portfolio.',

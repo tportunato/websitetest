@@ -2466,6 +2466,19 @@ main {
   max-width: 880px;
 }
 
+/* Vision & Mission: the two parts of one section. The labels are eyebrows,
+   tightened, because the section title above already says "Vision & Mission";
+   these only divide it. The mission sits on a hairline the width of the body
+   column, so the rule ends where the reading does. */
+.vm-label { margin-bottom: 14px; }
+
+.vm-mission {
+  max-width: 880px;
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
 /* boxed: the image stops short and a solid panel carries the copy under it */
 /* .phero--boxed sets --hero-rgb to --navy2, so these resolve to the panel's
    own colour without naming it. */
