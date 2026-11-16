@@ -34,7 +34,6 @@ const OFFICES = [
 ]
 
 const SUBJECTS = [
-  'Investor relations',
   'An asset or an off-market opportunity',
   'Media or general enquiry'
 ]
@@ -73,9 +72,9 @@ export default function Contact() {
         <p className="eyebrow">Contact</p>
         <h1 className="contact-h1">Talk to us.</h1>
         <p className="contact-intro">
-          For investor enquiries, off-market opportunities in the &euro;5m to &euro;50m
-          segment, or anything else, reach the Geneva office directly, or send a
-          note and the right person will come back to you.
+          For off-market opportunities in the &euro;5m to &euro;50m segment, or
+          anything else, reach the Geneva office directly, or send a note and the
+          right person will come back to you.
         </p>
 
         <div className="contact-grid">
@@ -103,17 +102,6 @@ export default function Contact() {
               </div>
             ))}
 
-            <div className="office-card office-card--quiet">
-              <p className="office-role">Existing investors</p>
-              <p className="office-address">
-                Reporting, capital accounts and fund documents are in the investor portal.
-              </p>
-              <p className="office-contact">
-                <a href="https://daacap.my.site.com/Investor" target="_blank" rel="noreferrer">
-                  Investor Login &rarr;
-                </a>
-              </p>
-            </div>
           </div>
 
           <form className="contact-form" onSubmit={submit}>

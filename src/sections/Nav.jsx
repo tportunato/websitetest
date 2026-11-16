@@ -12,8 +12,8 @@
    still work - only the words and the order moved. The same bar is used on the landing page and on every content
    page (via PageBar), so it never resizes between routes.
 
-   The Investor Login pill replaced the Investor Login link at the client's
-   request. Its paper plane comes from ./Icons.jsx. */
+   The Contact pill's paper plane comes from ./Icons.jsx. There is no Investor
+   Login anywhere on the site: the portal link was dead and was removed. */
 import { useEffect, useRef, useState } from 'react'
 import { Plane } from './Icons.jsx'
 import Wordmark from './Wordmark.jsx'

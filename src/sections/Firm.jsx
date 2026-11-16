@@ -235,7 +235,7 @@ export default function Firm() {
 
         {/* Regulatory status is NOT a marketing argument and must not appear
             here as a badge or credential. It is stated once, quietly, in the
-            footer, with the full wording on #/legal. */}
+            footer, in footer type, and nowhere else. */}
         <h2 className="firm-statement" data-reveal>
           A Swiss investment firm, specializing in logistics real estate across
           key European corridors.

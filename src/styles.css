@@ -3198,20 +3198,27 @@ main {
   .newsstrip-archive { grid-template-columns: 1fr; }
 }
 
-/* ---------- Regulatory status line in the footer ---------- */
+/* ---------- Regulatory statement in the footer ---------- */
 /* Quiet on purpose. Status is not a selling point: same weight as the
-   copyright line, never larger, never set as a badge. */
-.regstatus {
+   copyright line, never larger, never set as a badge.
+
+   `.footer .regstatus`, NOT `.regstatus`. `.footer p` (0,1,1) outranks a bare
+   class (0,1,0), so for as long as this line existed it rendered at 15.2px in
+   --muted - LARGER and BRIGHTER than the 12.8px copyright under it, the exact
+   opposite of what this rule says. Nobody noticed while it was one line; at two
+   sentences it was the loudest thing in the footer. The width is set so the
+   statement sits in about four lines at desktop rather than seven. */
+.footer .regstatus {
   margin-top: 56px;
   color: rgba(247, 245, 240, 0.42);
   font-size: 0.78rem;
   line-height: 1.6;
-  max-width: 70ch;
+  max-width: 104ch;
 }
 
 .regstatus + .legal { margin-top: 18px; }
 
-/* ---------- Legal & Regulatory page ---------- */
+/* ---------- Legal pages (Terms of Use, Privacy Policy) ---------- */
 .legalpage {
   max-width: 760px;
   margin: 0 auto;

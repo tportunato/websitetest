@@ -2,7 +2,7 @@
    2026-09-22 so the site can stand on its own when WordPress is switched off.
    The footer used to link out to both; now they are routes here.
 
-   These are NOT the regulatory statement on #/legal and NOT the full investor
+   These are NOT the regulatory statement (in the footer) and NOT the full investor
    disclaimer. See CLAUDE.md: three separate documents, deliberately kept
    apart. */
 

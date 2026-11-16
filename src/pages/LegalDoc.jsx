@@ -1,5 +1,6 @@
-/* Terms of Use and Privacy Policy. One template, two routes, same shape as
-   #/legal so the three legal documents read as a set.
+/* Terms of Use and Privacy Policy. One template, two routes, so the two legal
+   documents read as a set. (There was a third, #/legal; its regulatory wording
+   now lives in the footer of every page.)
 
    They used to be outbound links to daacap.com. The site has to stand on its
    own once WordPress is switched off, so the text lives here. */
@@ -7,7 +8,7 @@ import PageBar from '../sections/PageBar.jsx'
 import Footer from '../sections/Footer.jsx'
 import BackToTop from '../sections/BackToTop.jsx'
 
-export default function LegalDoc({ doc, eyebrow = 'Legal & Regulatory' }) {
+export default function LegalDoc({ doc, eyebrow = 'Legal' }) {
   return (
     <div className="page">
       <PageBar title={doc.title} />
@@ -23,7 +24,6 @@ export default function LegalDoc({ doc, eyebrow = 'Legal & Regulatory' }) {
         )}
 
         <div className="legalpage-links">
-          <a href="#/legal">Regulatory information &rarr;</a>
           <a href="#/terms">Terms of Use &rarr;</a>
           <a href="#/privacy">Privacy Policy &rarr;</a>
         </div>

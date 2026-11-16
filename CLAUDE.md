@@ -189,31 +189,34 @@ The firm is not allowed to use its regulatory status as a selling point, and the
 homepage carried exactly that: "A FINMA regulated Swiss investment firm..." set
 at display size as the firm statement. It is gone.
 
-FINMA now appears in two places only, and nowhere else:
-- one quiet line in the footer, `.regstatus`, at the same weight as the
-  copyright, never larger and never styled as a badge;
-- the full wording on `#/legal` (`src/pages/Legal.jsx`).
+FINMA appears in ONE place: the footer, `.regstatus`, on every page, in footer
+type at the same weight as the copyright - never larger, never styled as a
+badge. Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or
+a hero.
 
-**SO-FIT is named in ONE place only, `#/legal`, and that is load-bearing.**
-SO-FIT's "Conditions d'utilisation de l'image de SO-FIT et de la FINMA"
-(Assujettis, 31.07.2023) require a reference to SO-FIT on a website to carry a
-prescribed sentence saying what SO-FIT is. Their wording does not say whether
-that binds the site once or every page that names it, so the reference was
-pulled back to a single page where the prescribed sentence sits beside it, and
-the ambiguity stops mattering. The footer used to say "supervised by SO-FIT"
-and did not carry the sentence. Name SO-FIT anywhere else and the prescribed
-sentence has to go there too - which is 35 words about the supervisor on every
-page, the opposite of stating this quietly.
+**There is no Legal & Regulatory page.** `#/legal` was removed at the partners'
+request and its exact wording moved into the footer: the firm's authorisation
+under FinIA, and SO-FIT's prescribed sentence. An old `#/legal` link falls
+through to the landing page.
+
+**The two footer sentences travel together.** SO-FIT's "Conditions
+d'utilisation de l'image de SO-FIT et de la FINMA" (Assujettis, 31.07.2023)
+require any reference to SO-FIT on a website to carry a prescribed sentence
+saying what SO-FIT is. The first sentence names SO-FIT, so the second has to be
+beside it - and with both in the footer of every page, the stricter per-page
+reading of that rule is met. Never keep the first and drop the second. The
+prescribed text cites "articles 43ss de la LEFin", which looks wrong (FinIA
+art. 43 is foreign-controlled securities firms; supervisory organisations are
+FINMASA art. 43a); it is reproduced as prescribed, and a query to SO-FIT is
+pending. `Footer.jsx` carries the French original.
 
 Neither logo may be used. SO-FIT's needs its prior written agreement; FINMA's
 needs FINMA's, and unauthorised use can bring civil and criminal proceedings.
 
-Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or a hero.
-`#/legal` is NOT the full investor disclaimer, which is a separate document;
-folding that in here would make the page read as defensive.
-
-The About page still says the firm is "regulated in Switzerland" in body copy.
-That is deliberate and pending a decision from the partners; leave it.
+The About page no longer says the firm is "regulated in Switzerland"; the
+partners removed it. There is no Investor Login anywhere: the portal link was
+dead and was taken out of the footer and the contact page, and the contact form
+has no "Investor relations" subject.
 
 ## Conventions
 
@@ -532,9 +535,8 @@ WordPress. Three things follow from that and are easy to undo by accident:
   never rendered. Do not wire it back into the page.
 - **Terms of Use and Privacy Policy are real routes**, `#/terms` and `#/privacy`,
   built from `src/data/legal.js` through `src/pages/LegalDoc.jsx` (one template,
-  both documents, matching `#/legal`'s shape). They used to be outbound links.
-  `#/legal` stays separate: it is the regulatory page, not the investor
-  disclaimer.
+  both documents). They used to be outbound links. The regulatory statement is
+  not among them - it is in the footer.
 
 `mailto:info@daacap.com` is the firm's address and stays. The audit is
 
