@@ -23,6 +23,9 @@ const ROUTES = [
   ['#/portfolio', 'portfolio', PortfolioMap],
   ['#/leadership', 'about', About],
   ['#/contact', 'contact', Contact],
+  /* #/firm is the page's address, matching the "Firm" menu label. #/about is
+     kept as an alias so links shared before the rename still land here. */
+  ['#/firm', 'about', About],
   ['#/about', 'about', About],
   ['#/vision', 'about', About],
   ['#/sustainability', 'about', About],
@@ -117,7 +120,7 @@ export default function App() {
     const id = sectionFor(mark)
     const eased = wasAbout.current
     wasAbout.current = true
-    /* Bare #/about means the top of the page. Without this it did nothing at
+    /* Bare #/firm (or its alias #/about) means the top of the page. Without this it did nothing at
        all when you were already on About: the page key has not changed, so the
        jumpToTop above does not fire, and there is no section to go to - so
        clicking About us from the Leadership section left you in the team

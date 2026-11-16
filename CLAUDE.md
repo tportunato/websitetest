@@ -70,8 +70,9 @@ Buttons are one `.btn` component. The old `.beat-cta` underlined link is gone.
 
 ## The DAA group is one page
 
-Vision & Mission, Sustainability and the team are SECTIONS of `#/about`, not
-routes. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx`
+Vision & Mission, Sustainability and the team are SECTIONS of one page, not
+routes. Its address is `#/firm`, to match the "Firm" menu label; `#/about` is
+kept as an alias so links shared before the rename still work. `src/pages/About.jsx` carries all four; `src/sections/TeamGrid.jsx`
 holds what was lifted out of the old Leadership page - the advisory grid -
 and `src/sections/TeamCarousel.jsx` is the team row.
 
@@ -92,13 +93,14 @@ places it carries. Do not flatten them again.
 **Their URLs still exist and still mean something.** `#/vision`,
 `#/sustainability` and `#/leadership` render About and land on the matching
 section, which is what keeps every old link, bookmark and dropdown item honest
-without rewriting any of them. `SECTION_OF` in `src/App.jsx` maps URL to
+without rewriting any of them. They were deliberately NOT renamed to match the
+menu (ESG, People): they are the addresses already shared. `SECTION_OF` in `src/App.jsx` maps URL to
 section id; the ids live on the sections in About.jsx. Rename one and fix both
 in the same commit.
 
 Arriving at a section from another page JUMPS; moving between sections while
 already on About EASES, because that is an in-page anchor. A ref tells the two
-apart. Bare `#/about` has to be handled explicitly: the page key does not
+apart. Bare `#/firm` (and `#/about`) has to be handled explicitly: the page key does not
 change between these four URLs, so `jumpToTop` never fires for them.
 
 ## The team row
@@ -242,7 +244,7 @@ has no "Investor relations" subject.
   us, Vision & Mission, ESG, People) at the END, then the Contact button. The
   grouping follows axis-re.nl's; the labels and order deliberately do not (see
   "Do not echo axis-re.nl's copy"). **The Firm label is a link, not a button**: it goes to
-  `#/about`. As a button it appeared to do nothing, because hover had already
+  `#/firm`. As a button it appeared to do nothing, because hover had already
   opened the menu. Below 980px they collapse into a full-screen
   panel — before that there was no mobile navigation at all and every subpage
   was unreachable on a phone. There is deliberately no `#track-record` link:

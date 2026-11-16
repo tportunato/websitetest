@@ -25,9 +25,9 @@ const GROUPS = [
     /* The group label is itself a destination. Clicking it used to only
        toggle the menu, which on a trackpad reads as nothing happening at all
        because hover had already opened it. */
-    href: '#/about',
+    href: '#/firm',
     items: [
-      { label: 'About us', href: '#/about' },
+      { label: 'About us', href: '#/firm' },
       { label: 'Vision & Mission', href: '#/vision' },
       { label: 'ESG', href: '#/sustainability' },
       { label: 'People', href: '#/leadership' }

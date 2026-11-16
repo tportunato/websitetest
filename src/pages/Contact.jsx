@@ -72,9 +72,9 @@ export default function Contact() {
         <p className="eyebrow">Contact</p>
         <h1 className="contact-h1">Talk to us.</h1>
         <p className="contact-intro">
-          For off-market opportunities in the &euro;5m to &euro;50m segment, or
-          anything else, reach the Geneva office directly, or send a note and the
-          right person will come back to you.
+          To discuss off-market urban logistics opportunities in the &euro;5m to
+          &euro;50m segment, or any other enquiry, please contact our Geneva office
+          directly or send us a message.
         </p>
 
         <div className="contact-grid">
