@@ -1073,14 +1073,6 @@ h2 {
   }
 }
 
-.page-foot {
-  max-width: 1200px;
-  margin: 10vh auto 0;
-  padding: 24px 0 30px;
-  border-top: 1px solid var(--line);
-  color: rgba(247, 245, 240, 0.45);
-  font-size: 0.8rem;
-}
 
 
 /* ---------- Logo ---------- */

@@ -139,9 +139,6 @@ export default function Contact() {
           </form>
         </div>
 
-        <div className="page-foot">
-          <span>&copy; 2026 DAA Capital Partners SA. For professional investors only.</span>
-        </div>
       </div>
       <Footer />
       <BackToTop />

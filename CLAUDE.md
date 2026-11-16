@@ -525,8 +525,9 @@ site are deliberately synthetic. The industrial points are real.
   logo and one grouped dropdown (`Axis` → About us / Vision & Mission / Team)
   alongside flat items. The bar height, the 50px logo and the two nav groups
   here follow it.
-- Copy says "specializing"; `index.html`'s meta says "specialising". Supplied
-  copy was left as given.
+- ~~Copy says "specializing"; `index.html`'s meta says "specialising".~~
+  RESOLVED 2026-11: the firm statement now says "specialising". The site is UK
+  English throughout ("authorised", "organisation").
 
 ## WordPress is switched off
 

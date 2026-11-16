@@ -1,5 +1,11 @@
 /* Terms of Use and Privacy Policy, reproduced verbatim from daacap.com on
    2026-09-22 so the site can stand on its own when WordPress is switched off.
+
+   ONE DEPARTURE FROM VERBATIM: the Privacy Policy's "Cookies Policy" section
+   was removed in November 2026 at the client's instruction. It said the site
+   uses cookies and fed Google Analytics, which described the old WordPress
+   site; this one sets no cookies and runs no analytics. If either is ever
+   added, the policy has to say so again before it goes live.
    The footer used to link out to both; now they are routes here.
 
    These are NOT the regulatory statement (in the footer) and NOT the full investor
@@ -20,7 +26,5 @@ export const PRIVACY = {
   title: 'Privacy Policy',
   blocks: [
     { t: 'p', v: 'By browsing further on this website, you consent to the Privacy Policy as described below. We may, at any time, revise this policy by updating this page. Every time you wish to use our website, please check this policy to ensure that you understand the terms that apply at that time. As you navigate our website, our server automatically registers information relating to your visit such as the IP address, the referring website, the type of browser used, as well as your navigation history on the website including the date and time of your visit. DAA Capital Partners SA does not use this information to identify any particular person and does not disclose it. Our website may contain links to other websites and resources that are not operated by us. These hyperlinks are provided for your reference and convenience only and do not imply any endorsement of the activities of such third-party websites or any association with their operators.' },
-    { t: 'h2', v: 'COOKIES POLICY' },
-    { t: 'p', v: 'This site uses cookies –small text files that are placed on your machine to help the site provide a better user experience. In general, cookies are used to retain user preferences, store information for things like shopping baskets, and provide anonymized tracking data to third party applications like Google Analytics. As a rule, cookies will make your browsing experience better. However, you may prefer to disable cookies on this site and on others.' },
   ]
 }
