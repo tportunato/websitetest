@@ -189,9 +189,11 @@ The firm is not allowed to use its regulatory status as a selling point, and the
 homepage carried exactly that: "A FINMA regulated Swiss investment firm..." set
 at display size as the firm statement. It is gone.
 
-FINMA appears in ONE place: the footer, `.regstatus`, on every page, in footer
-type at the same weight as the copyright - never larger, never styled as a
-badge. Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or
+FINMA appears in ONE place: the footer, `.regstatus`, in footer type at the
+same weight as the copyright - never larger, never styled as a badge. The
+footer is on every page EXCEPT `#/portfolio`, a full-screen map that has never
+had one; the client chose to keep it that way (2026-11), so the regulatory
+statement and "For professional investors only" are absent there by decision. Do not reintroduce it into a heading, an eyebrow, a stat, a spec rail or
 a hero.
 
 **There is no Legal & Regulatory page.** `#/legal` was removed at the partners'

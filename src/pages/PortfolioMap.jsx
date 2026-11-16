@@ -1,6 +1,11 @@
 /* Portfolio map page: dark MapLibre map of Western Europe, one marker per
    asset, click opens a slide-in sidebar with photo, specs and press link.
-   All asset data from public press releases (src/data/assets.js). */
+   All asset data from public press releases (src/data/assets.js).
+
+   NO FOOTER, deliberately - the one page without one, so it also carries no
+   regulatory statement. A footer here would need the map to stop taking the
+   scroll wheel (cooperative gestures) so the page could scroll past it; the
+   client chose to keep the full-screen map instead. */
 import PageBar from '../sections/PageBar.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { ASSETS } from '../data/assets.js'
