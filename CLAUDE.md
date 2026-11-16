@@ -512,8 +512,13 @@ site are deliberately synthetic. The industrial points are real.
   page's other voices. If a graphic plate is ever made for this section, it goes
   behind the type, not beside it.
 - **Contact form has no backend.** It opens a pre-filled mail draft rather than
-  appearing to send and dropping the message. Wire a real endpoint when one
-  exists.
+  appearing to send and dropping the message. PARKED (2026-11) by the client.
+  When it comes back, the preferred route is the firm's own Microsoft 365
+  (daacap.com's MX is Exchange Online): a Vercel function sending through the
+  Microsoft Graph API with an Entra app registration limited to one mailbox, so
+  no new third party handles enquiries. Its secret goes in Vercel's settings,
+  never in a `VITE_*` variable. Formspree was the quicker alternative offered.
+  Either way the Privacy Policy must name whoever processes the messages.
 - ~~**Header size and the contact page** were built against `axis-re.nl` as a
   reference, which could not be loaded from the build environment.~~ RESOLVED:
   axis-re.nl was reachable on 2026-09-17. Its header is a fixed bar with a wide
