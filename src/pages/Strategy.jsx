@@ -30,7 +30,7 @@ export default function Strategy() {
         image="/images/futureproof.jpg"
       >
         <a className="btn btn--lg btn--solid btn--spaced" href="#/investment-profile">
-          <span>Let&rsquo;s work together</span>
+          <span>Discuss an opportunity</span>
           <span className="btn-arrow">&rarr;</span>
         </a>
       </SplitFeature>

@@ -51,7 +51,10 @@ Strategy / Portfolio / Investment profile / News / Firm (About us, Vision &
 Mission, ESG, People) / Contact, and the About page's section titles follow the
 renames so the menu and the page agree. URLs did not change. Before writing a headline for a
 band that has an Axis counterpart, read theirs first; avoid "future-proof" and
-"the future of logistics", which are both on their homepage.
+"the future of logistics", which are both on their homepage. ONE EXCEPTION, by
+the partners' choice (2026-11): the Vision line reads "We believe the future of
+logistics is about proximity, not scale." The overlap was raised and accepted;
+do not "fix" it.
 
 ## Structure (pass 7)
 

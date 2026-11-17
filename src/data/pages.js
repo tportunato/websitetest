@@ -10,17 +10,17 @@
 export const ABOUT = {
   title: 'About us',
   lead:
-    'DAA Capital Partners builds portfolios of small- and mid-box last-mile urban logistics real estate.',
+    'DAA Capital Partners builds portfolios of small- and mid-box urban logistics assets.',
   body: [
-    'The firm invests across Western Europe\u2019s main logistics corridors, with selective geography on a fund-by-fund basis.',
-    'We buy in the \u20ac5m to \u20ac50m segment, where most assets change hands off-market or through a single adviser rather than a broad process.',
-    'Buildings are acquired to be improved rather than simply held. Specification, energy performance and lease structure are the levers, and they are worked from the day an asset comes into the portfolio.'
+    'The firm invests across Western Europe\u2019s main logistics corridors, with geographic focus defined by each investment mandate.',
+    'We buy in the \u20ac5m to \u20ac50m segment, where assets often change hands off-market or through a single adviser rather than a broad process.',
+    'Buildings are acquired to be improved rather than simply held. Specification, energy performance and lease structure are key levers and are addressed from the outset.'
   ],
   team: {
     eyebrow: 'DAA Capital Partners',
     statement: 'One team, from underwriting to exit.',
     notes: [
-      'Investment, asset management and finance sit in one office in Geneva. The people who underwrite a building are the people who reposition it, and the people who answer to investors for it.'
+      'Investment, asset management and finance sit in one office in Geneva. The team that underwrites an asset remains involved through repositioning and exit, maintaining continuity throughout the investment process.'
     ],
     cta: 'Get to know us'
   }
@@ -31,7 +31,7 @@ export const VISION = {
   /* Partner-supplied, November 2026. The section is titled "Vision & Mission"
      but until then carried no mission at all; it now has both, each labelled. */
   lead:
-    'We believe the future of urban logistics is about proximity, not scale.',
+    'We believe the future of logistics is about proximity, not scale.',
   body: [
     'Cities have changed what they ask of a warehouse. Speed and flexibility now matter more than floor area, and the buildings that can deliver them sit inside the ring rather than out on the motorway. Urban logistics has quietly become infrastructure: much of what a city expects to arrive the same day passes through buildings that have served these locations for decades.',
     'We back small- and mid-box assets because we believe this is where resilience is strongest. Real occupier demand, very little replacement supply, and locations that cannot be recreated once the land goes to housing.',
@@ -41,18 +41,18 @@ export const VISION = {
     'To create long-term value by sourcing, improving and aggregating urban logistics assets through local knowledge, active asset management and disciplined execution.',
   investment: {
     eyebrow: 'Investment profile',
-    statement: 'We are actively looking to expand the portfolio.',
+    statement: 'We are actively looking for new investment opportunities.',
     note:
-      'If you are selling, advising on a sale, or placing capital, our investment profile sets out what we buy and how we transact.'
+      'If you are selling, advising on a sale or introducing an opportunity, our investment profile sets out what we buy and how we transact.'
   }
 }
 
 export const SUSTAINABILITY = {
   title: 'ESG',
   lead:
-    'ESG is underwritten as a driver of valuation, resilience and lettability, not as a reporting exercise.',
+    'ESG is underwritten as a driver of valuation, resilience and lettability, not solely as a reporting exercise.',
   body: [
-    'Older urban logistics stock carries the location advantage but rarely the building specification. That gap is the value-add: refurbishment to modern dock, floor-loading and energy standards converts a constrained legacy asset into institutional-grade product without leaving the catchment.',
+    'Older urban logistics stock carries the location advantage but often lacks the building specification required by modern occupiers. That gap creates the value-add opportunity: refurbishment to modern dock, floor-loading and energy standards can transform a constrained legacy asset while preserving its location advantage.',
     'Upgrades are specified around occupier requirements, so that environmental performance and lettability improve together rather than competing for the same capex.'
   ],
   commitments: [
@@ -67,16 +67,16 @@ export const INVESTMENT = {
   title: 'Investment profile',
   lead: 'What we buy, where we buy it, and how we transact.',
   points: [
-    'Small- and mid-box last-mile and light-industrial assets, single or in small portfolios.',
-    'Western Europe\u2019s main logistics corridors, with geography selected fund by fund.',
-    'Standing stock, including buildings that need work. Vacancy is not a problem where the location is right.',
-    'Asset deals, share deals and sale-and-leasebacks, worked around the seller\u2019s timetable.',
+    'Small- and mid-box last-mile and light-industrial assets, individually or in small portfolios.',
+    'Western Europe\u2019s main logistics corridors, with geographic focus defined by each investment mandate.',
+    'Standing stock, including buildings that need work. Vacancy can represent an opportunity where the underlying location is compelling.',
+    'Asset deals, share deals and sale-and-leasebacks, structured around the seller\u2019s timetable.',
     'Off-market and bilateral conversations preferred to broad processes.',
-    'Decisions taken in-house, so you get a real answer quickly rather than a holding one.'
+    'Investment decisions are taken in-house, enabling clear and timely feedback.'
   ],
   closing: {
-    statement: 'If it fits, we will tell you quickly.',
-    note: 'Send the asset, or the outline of one, and you will get a considered answer rather than a placeholder.'
+    statement: 'We respond promptly to opportunities that meet our investment criteria.',
+    note: 'Send us an asset or opportunity outline and we will respond promptly with a considered view.'
   }
 }
 
@@ -89,7 +89,7 @@ export const FUTUREPROOF = {
      says why it is a gap, the second how it is closed. */
   statement: 'Irreplaceable locations. Outdated buildings.',
   notes: [
-    'Most of the urban logistics stock inside Europe’s ring roads was built for a different decade of distribution. The location still works. The building often does not.',
-    'We buy that gap and close it: reconfigured layouts and vehicle flows, modern docks, upgraded envelopes and roof-mounted generation, delivered around the occupier rather than around a certificate.'
+    'Much of the urban logistics stock inside Europe’s ring roads was built for a different decade of distribution. The location still works. The building often does not.',
+    'We buy that gap and close it: reconfigured layouts and vehicle flows, modern docks, upgraded envelopes and roof-mounted generation, designed around occupier requirements rather than around a certificate.'
   ]
 }

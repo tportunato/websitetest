@@ -11,7 +11,7 @@ export default function Squeeze() {
           <h2 data-reveal>Demand keeps rising. The land it needs does not.</h2>
           <p className="body" data-reveal>
             Last-mile demand compounds while first-ring industrial land is absorbed by housing.
-            The result is a structural supply shortfall across Western Europe&rsquo;s main corridors.
+            The result is structurally constrained supply across Western Europe&rsquo;s main logistics corridors.
           </p>
         </div>
       </div>

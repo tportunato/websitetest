@@ -15,7 +15,7 @@ export default function News() {
       <PageHero
         variant="full"
         eyebrow="DAA Capital Partners"
-        title={<>News &amp;<br />press releases</>}
+        title={<>News &amp;<br />Insights</>}
         image="/images/news-hero.jpg"
         lead="Market commentary and transaction announcements from the firm."
       />

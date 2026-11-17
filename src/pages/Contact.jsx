@@ -24,6 +24,7 @@ const OFFICES = [
   {
     id: 'luxembourg',
     city: 'Luxembourg',
+    role: 'Luxembourg office',
     entity: 'Clareville Partners Luxembourg Sàrl',
     lines: ['1B, rue Jean Piret', 'L-2350 Luxembourg'],
     phone: '+352 45 12 32 32',
@@ -80,8 +81,9 @@ export default function Contact() {
           <div className="contact-offices">
             {OFFICES.map((o) => (
               <div className="office-card" key={o.id}>
-                {/* Optional. Luxembourg's "Fund administration" was removed at the
-                    partners' request; Geneva keeps "Head office". */}
+                {/* Luxembourg's label was "Fund administration", removed and then
+                    replaced with "Luxembourg office" at the partners' request. Kept
+                    optional so a card can go without one. */}
                 {o.role && <p className="office-role">{o.role}</p>}
                 <h2 className="office-city">{o.city}</h2>
                 <p className="office-entity">{o.entity}</p>

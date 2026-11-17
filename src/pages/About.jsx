@@ -138,7 +138,7 @@ export default function About() {
             <h2 className="firm-statement" data-reveal>{VISION.investment.statement}</h2>
             <p className="cta-band-note" data-reveal>{VISION.investment.note}</p>
             <a className="btn btn--lg btn--solid" href="#/investment-profile">
-              <span>Let&rsquo;s work together</span>
+              <span>Discuss an opportunity</span>
               <span className="btn-arrow">&rarr;</span>
             </a>
           </div>

@@ -237,14 +237,15 @@ export default function Firm() {
             here as a badge or credential. It is stated once, quietly, in the
             footer, in footer type, and nowhere else. */}
         <h2 className="firm-statement" data-reveal>
-          A Swiss investment firm, specialising in logistics real estate across
-          key European corridors.
+          A Swiss investment manager specialising in urban logistics real estate
+          across key European corridors.
         </h2>
 
         <div className="firm-notes">
           <p data-reveal>
-            We focus on last-mile properties in prime locations, leveraging our
-            expertise, global network, and market insights to create long-term value.
+            We focus on last-mile assets in well-located urban markets, combining local
+            knowledge, active asset management and disciplined execution to create
+            long-term value.
           </p>
           <p data-reveal>
             We enhance asset performance through strategic asset management, including

@@ -45,7 +45,7 @@ export default function InvestmentProfile() {
           <h2 className="firm-statement" data-reveal>{INVESTMENT.closing.statement}</h2>
           <p className="cta-band-note" data-reveal>{INVESTMENT.closing.note}</p>
           <a className="btn btn--lg btn--solid" href="#/contact">
-            <span>Let&rsquo;s talk</span>
+            <span>Discuss an opportunity</span>
             <span className="btn-arrow">&rarr;</span>
           </a>
         </div>

@@ -11,7 +11,8 @@ export default function Work() {
           <h2 data-reveal>We underwrite the building it becomes.</h2>
           <p className="body" data-reveal>
             Refurbishment, repositioning and ESG-led upgrades: modern docks, solar roofs,
-            BREEAM certification and stronger tenant relationships, compounding into resilient income.
+            BREEAM certification and stronger tenant relationships, designed to improve
+            lettability, operating performance and income resilience.
           </p>
         </div>
       </div>
