@@ -2010,12 +2010,6 @@ main {
   transform: translateX(6px);
 }
 
-.form-note {
-  color: rgba(247, 245, 240, 0.45);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-
 /* ---------- Back to top ---------- */
 .to-top {
   position: fixed;

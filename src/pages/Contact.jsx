@@ -135,9 +135,6 @@ export default function Contact() {
             <button className="contact-send" type="submit">
               Send <span className="cta-arrow">&rarr;</span>
             </button>
-            <p className="form-note">
-              This opens a message to info@daacap.com in your mail client.
-            </p>
           </form>
         </div>
 
