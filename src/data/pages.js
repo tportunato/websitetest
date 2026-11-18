@@ -10,9 +10,9 @@
 export const ABOUT = {
   title: 'About us',
   lead:
-    'DAA Capital Partners builds portfolios of small- and mid-box urban logistics assets.',
+    'DAA Capital Partners is a Swiss investment manager specialising in urban logistics real estate across Western Europe. We focus on small- and mid-box last-mile and light-industrial assets, combining local knowledge, active asset management and disciplined execution to create long-term value.',
   body: [
-    'The firm invests across Western Europe\u2019s main logistics corridors, with geographic focus defined by each investment mandate.',
+    'The firm invests across the region\u2019s main logistics corridors, with geographic focus defined by each investment mandate.',
     'We buy in the \u20ac5m to \u20ac50m segment, where assets often change hands off-market or through a single adviser rather than a broad process.',
     'Buildings are acquired to be improved rather than simply held. Specification, energy performance and lease structure are key levers and are addressed from the outset.'
   ],
