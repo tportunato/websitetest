@@ -3360,3 +3360,89 @@ main {
 }
 
 .legalpage-body + .legalpage-body { margin-top: 20px; }
+
+/* The risk list in the Terms. Set in the body's voice and measure, so it reads
+   as part of the document rather than as a feature list. */
+.legalpage-list {
+  margin-top: 20px;
+  padding-left: 1.2em;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.72;
+}
+.legalpage-list li + li { margin-top: 10px; }
+.legalpage-list strong { color: var(--paper); font-weight: 500; }
+.legalpage-list + .legalpage-body { margin-top: 20px; }
+
+/* ---------- Access gate (draft, only with ?gate) ----------
+   A page of its own, not an overlay: nothing else is mounted until a visitor
+   is through, so it scrolls like any page on a phone. */
+.gate {
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--navy);
+  display: flex;
+  justify-content: center;
+  padding: 10vh var(--gutter) 12vh;
+}
+.gate-inner { width: 100%; max-width: 640px; }
+.gate .logo-img { height: 44px; }
+.gate-draft {
+  margin-top: 18px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(247, 245, 240, 0.4);
+  padding-bottom: 7vh;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 7vh;
+}
+.gate-title {
+  margin-top: 18px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+}
+.gate-body {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+.gate-field { margin-top: 34px; }
+.gate-status {
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.gate-status legend { margin-bottom: 14px; }
+.gate-choice {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  color: var(--paper);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.gate-choice input {
+  margin-top: 0.35em;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--paper);
+}
+.gate-agree {
+  margin-top: 34px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.gate-agree a { color: var(--paper); }
+.gate-btn { margin-top: 34px; font-family: inherit; }
+.gate-btn.btn--outline { background: none; }
+.gate-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }

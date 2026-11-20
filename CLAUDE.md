@@ -506,6 +506,13 @@ site are deliberately synthetic. The industrial points are real.
 
 ## Open decisions
 
+- **The access gate** (`src/sections/Gate.jsx`), counsel's advice of 2026-11:
+  domicile + investor-status screen before the site opens. It is a DRAFT for
+  counsel and is inert unless the URL carries `?gate`. Its country list, its
+  wording and whether an answer is remembered are all counsel's to settle. It
+  replaces the site rather than covering it, so the arrival veil plays after it.
+- **Terms of Use ombudsman block** has bracketed placeholders until the firm
+  names its ombudsman. Do not publish it to main with them in.
 - **Firm section background.** Three are built (`corridors`, `hold`, `frame`),
   switchable at runtime with `?bg=`. Default is `hold`. Once one is chosen,
   delete the other two and the query-param hatch.

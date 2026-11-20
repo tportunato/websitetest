@@ -17,11 +17,21 @@ export default function LegalDoc({ doc, eyebrow = 'Legal' }) {
         <p className="eyebrow">{eyebrow}</p>
         <h1 className="legalpage-title">{doc.title}</h1>
 
-        {doc.blocks.map((b, i) =>
-          b.t === 'h2'
-            ? <h2 className="legalpage-h2" key={i}>{b.v}</h2>
-            : <p className="legalpage-body" key={i}>{b.v}</p>
-        )}
+        {doc.blocks.map((b, i) => {
+          if (b.t === 'h2') return <h2 className="legalpage-h2" key={i}>{b.v}</h2>
+          /* A list item is [term, definition]: the risk list in the Terms
+             names each risk, then says what it is. */
+          if (b.t === 'ul') {
+            return (
+              <ul className="legalpage-list" key={i}>
+                {b.v.map(([term, def]) => (
+                  <li key={term}><strong>{term}:</strong> {def}</li>
+                ))}
+              </ul>
+            )
+          }
+          return <p className="legalpage-body" key={i}>{b.v}</p>
+        })}
 
         <div className="legalpage-links">
           <a href="#/terms">Terms of Use &rarr;</a>
